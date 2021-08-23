@@ -1,0 +1,8 @@
+.trails-text {
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+
+.trails-text > div {
+  overflow: hidden;
+}

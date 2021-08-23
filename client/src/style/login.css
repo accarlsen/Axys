@@ -1,0 +1,20 @@
+.login-wrapper{
+    width: 100%;
+}
+
+.login-card{
+    display: grid;
+    overflow: hidden;
+    margin: auto;
+    position: relative;
+
+    row-gap: 20px;
+    grid-template-rows: repeat(auto-fill, minmax(2rem, 2rem));
+
+    margin-top: 20vh;
+    width: 30vw;
+    min-width: 240px;
+    min-height: 240px;
+    padding: 4vw;
+    padding-top: 10vh;
+}

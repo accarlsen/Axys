@@ -1,0 +1,197 @@
+.create-task-wrapper{
+    width: 60vw;
+    margin-top: 5vh;
+    text-align: center;
+}
+
+.create-task-input-wrapper{
+    overflow: hidden;
+    width: 100%;
+    padding-left: 1vw;
+
+    border: 1.5px solid grey;
+    border-radius: 5px;
+
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr 0.5fr ;
+    vertical-align: middle;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.create-task-input{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid grey;
+    font-size: 0.9rem;
+
+    width: 100%;
+
+    padding-top: 1.5vh;
+    padding-bottom: 0.5vh;
+    padding-left: 0.3rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.create-task-input:active,
+.create-task-input:focus{
+    border-bottom: 1px solid black;
+}
+
+.create-task-button{
+    text-align: center;
+    border: none;
+    outline: none;
+    background-color: none;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding-top: 0.6vh;
+    font-size: 0.9rem;
+    color: white;
+    background-color: var(--green);
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.create-task-button:focus,
+.create-task-button:active{
+    background-color: var(--greenlight);
+}
+
+.create-task-expander{
+    padding: 1vw;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1vh;
+}
+
+
+.create-subtask-wrapper{
+    width: 60vw;
+    text-align: center;
+}
+
+.create-subtask-input-wrapper{
+    overflow: hidden;
+    width: 100%;
+    padding-left: 1vw;
+
+    border: 1.5px solid grey;
+    border-radius: 5px;
+
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr 0.5fr ;
+    vertical-align: middle;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.create-subtask-input{
+    border: none;
+    outline: none;
+    border-right: 1.5px solid grey;
+    font-size: 0.8rem;
+
+    width: 100%;
+
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+.create-subtask-button{
+    text-align: center;
+    border: none;
+    outline: none;
+    background-color: none;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding-top: 0.6vh;
+    font-size: 0.8rem;
+    background-color: #EFEFEF;
+}
+
+.create-subtask-expander{
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0.3vw;
+    width: 50vw;
+}
+
+.create-project-input-wrapper{
+    overflow: hidden;
+    width: 100%;
+    margin-top: 1.5vh;
+
+    /*border: 1px solid grey;*/
+    padding: 0.5rem;
+
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: 1fr 1fr 0.5fr 0.5fr ;
+    vertical-align: middle;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.create-fighter-input-wrapper{
+    overflow: hidden;
+    width: 40vw;
+    margin: auto;
+    margin-top: 1.5vh;
+
+    /*border: 1px solid grey;*/
+    padding: 0.5rem;
+
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: 1fr 0.5fr 0.5fr ;
+    vertical-align: middle;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.create-fighter-expander{
+    padding: 1vw;
+    cursor: pointer;
+    width: 100%;
+    padding-top: 3vh;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.create-match-input-wrapper{
+    overflow: hidden;
+    width: 60vw;
+    margin: auto;
+    margin-top: 1.5vh;
+
+    /*border: 1px solid grey;*/
+    padding: 0.5rem;
+
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: 1fr 1fr 1fr 0.5fr 0.5fr ;
+    vertical-align: middle;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
