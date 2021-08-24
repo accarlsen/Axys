@@ -1,8 +1,5 @@
 import React, {useContext} from 'react';
 import { useSpring, animated as a } from 'react-spring';
-import './../style/meeting.css';
-import './../style/common.css';
-import './../style/root.css';
 import { getProjects, addMutationTest } from './../components/queries';
 import { AuthContext } from './../context/auth-context';
 

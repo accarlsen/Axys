@@ -1,8 +1,17 @@
 :root{
     --primary: #eb912a;
     --secondary: #d17c1c;
-    --background: white;
+    --background: #f9f9f9;
+
     --shadow: #b8b8b8;
-    --green: #DA727E;
-    --greenlight: #AC6C82;
+    --shadow-highlight: #969696;
+    --text: #000;
+    --text-off: #272727;
+    --text-inverted: #FFF;
+    --grey: rgb(248, 248, 248);
+    --grey-dark: rgb(133, 133, 133);
+
+    --green: #4ff4a2;
+    --greenlight: #4ff4a2;
+    --red: #f7532b;
 }

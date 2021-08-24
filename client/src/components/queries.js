@@ -66,6 +66,10 @@ const addTask = gql`
       parentId: $parentId,
     ){
       id
+      name
+      progress
+      weight
+      parentId
     }
   }
 `;

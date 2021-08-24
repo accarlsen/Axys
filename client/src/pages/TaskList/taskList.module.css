@@ -1,3 +1,124 @@
 .wrapper{
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    align-items: center;
+    /*background-image: url('../../assets/Pattern3.png');*/
+}
+
+.taskListWrapper{
+    overflow: hidden;
+    overflow-y: auto;
+
+    border-radius: 0.5rem;
+    width: 25rem;
+    max-height: 75%;
+
+    box-shadow: 0px 1px 8px 2px var(--shadow);
+    background-color: white;
+
+    margin: auto;
     margin-top: 5rem;
+}
+
+.taskWrapper{
+    display: grid;
+    grid-template-columns: 1rem 2rem auto 4rem;
+    column-gap: 1rem;
+
+    padding-left: 0.5rem;
+    width: 25rem;
+    border-bottom: 1px solid var(--background);
+    cursor: pointer;
+}
+
+.taskWrapper:hover{
+    background-color: var(--grey);
+    border-bottom: 1px solid var(--grey);
+}
+
+.taskWrapper:hover > .removeTask{
+    color: var(--grey-dark);
+}
+
+.taskNum{
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--text-off);
+    height: fit-content;
+    margin: auto;
+}
+
+.doneWrapper{
+    width: 1rem;
+    height: 1rem;
+    margin: auto;
+}
+
+.doneBg{
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid var(--shadow);
+}
+
+.taskName{
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--text);
+}
+
+.removeTask{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 10px 15px 10px 15px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: #FFFFFF00;
+    cursor: pointer;
+}
+
+.CTWrapper{
+    display: grid;
+    grid-template-columns: auto 5rem 5.3rem;
+    column-gap: 1rem;
+
+    position: absolute;
+    bottom: 1rem;
+    left: calc(50% - 15rem);
+
+    background-color: white;
+    padding: 7px 5px 7px 5px;
+    box-shadow: 0px 1px 8px 2px var(--shadow);
+    border-radius: 5px;
+    width: 30rem;
+    overflow: hidden;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.CTPreview{
+    position: absolute;
+    bottom: 1rem;
+    left: calc(50% - 7.5rem);
+
+    padding: 7px 5px 7px 5px;
+    box-shadow: 0px 1px 8px 2px var(--shadow);
+    border-radius: 5px;
+    width: 15rem;
+    overflow: hidden;
+    background-color: white;
+    text-align: center;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }

@@ -4,9 +4,10 @@ import { Link, useHistory } from "react-router-dom";
 import { gql, useQuery, useMutation } from '@apollo/client';
 import { AuthContext } from '../../context/auth-context';
 import { addTask, getTasks } from '../../components/queries';
-import CreateTask from '../../components/CreateTask';
+import CreateTask from './components/CreateTask';
 
 import style from './taskList.module.css'
+import Task from './components/task';
 
 
 function TaskList() {
@@ -62,9 +63,11 @@ function TaskList() {
 
     if (data) return (
         <div className={style.wrapper}>
-            {data.tasks.map((task) => (
-                <span>{task.name}</span>
+            <div className={style.taskListWrapper}>
+            {data.tasks.map((task, i) => (
+                <Task task={task} index={i+1} />
             ))}
+            </div>
             <div>
                 <CreateTask active={newTask} activationLetter={activationLetter} />
             </div>
