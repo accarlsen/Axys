@@ -6,7 +6,7 @@ import { printIntrospectionSchema } from 'graphql';
 import style from './../taskList.module.css'
 
 function CreateTask(props) {
-    const [name, setName] = useState(props.activationLetter);
+    const [name, setName] = useState("");
 
     const [newTask, setNewTask] = useState(false);
 
@@ -17,8 +17,11 @@ function CreateTask(props) {
     const authorId = localStorage.getItem("personId");
 
     useEffect(() => {
-        setNewTask(props.active)
-    }, [props]);
+        if (!newTask) {
+            setNewTask(props.active)
+            setName(props.activationLetter)
+        }
+    }, [props.active]);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && (String(name.replace(/\s/g, '')).length >= 1)) {
@@ -28,10 +31,10 @@ function CreateTask(props) {
                     name: name,
                     authorId: localStorage.getItem("personId"),
                 },
-                refetchQueries: [{ query: getTasks }]
+                refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
             });
-            setName("");
             setNewTask(false);
+            setName("");
         }
         else if (event.key === 'Escape') {
             setNewTask(false);

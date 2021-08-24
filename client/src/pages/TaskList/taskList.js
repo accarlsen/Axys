@@ -8,6 +8,7 @@ import CreateTask from './components/CreateTask';
 
 import style from './taskList.module.css'
 import Task from './components/task';
+import SearchTask from './components/SearchTask';
 
 
 function TaskList() {
@@ -15,7 +16,10 @@ function TaskList() {
 
     const [name, setName] = useState("");
     const [newTask, setNewTask] = useState(false);
+    const [searchActive, setSearchActive] = useState(false);
     const [activationLetter, setActivationLetter] = useState("");
+    const [activationNumber, setActivationNumber] = useState("");
+
 
     const [AddTask, { errorAT }] = useMutation(addTask, {
         variables: { name }
@@ -32,16 +36,25 @@ function TaskList() {
             if (event.keyCode >= 48 && event.keyCode <= 57) {
                 //Number
                 console.log("Number");
-                
+                if (!searchActive && !newTask) {
+                    setSearchActive(true);
+                    setActivationNumber(String.fromCharCode(event.keyCode));
+                }
+
             }
-            else if ( (event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122) ){
+            else if ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
                 //Higher and lower case letter
                 console.log("Letter");
-                if (!newTask) {
+                if (!newTask && !searchActive) {
                     setNewTask(true);
                     setActivationLetter(String.fromCharCode(event.keyCode));
                 }
-                
+            }
+            else if (event.key === 'Enter') {
+                setNewTask(false);
+                setActivationLetter("");
+                setSearchActive(false);
+                setActivationNumber("");
             }
         }
 
@@ -64,13 +77,14 @@ function TaskList() {
     if (data) return (
         <div className={style.wrapper}>
             <div className={style.taskListWrapper}>
-            {data.tasks.map((task, i) => (
-                <Task task={task} index={i+1} />
-            ))}
+                {data.tasks.map((task, i) => (
+                    <Task task={task} index={i + 1} />
+                ))}
             </div>
             <div>
                 <CreateTask active={newTask} activationLetter={activationLetter} />
             </div>
+            <SearchTask active={searchActive} activationNumber={activationNumber} />
         </div>
     )
 

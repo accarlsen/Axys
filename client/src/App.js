@@ -5,7 +5,6 @@ import './style/root.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import MeetingList from './pages/MeetingList';
 import NavBar from './components/NavBar';
 import {AuthContext} from './context/auth-context';
 import TaskList from './pages/TaskList/taskList';
