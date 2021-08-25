@@ -8,7 +8,7 @@ import style from './../taskList.module.css'
 function Task(props) {
 
     return(
-        <div className={style.taskWrapper}>
+        <div key={props.index} className={style.taskWrapper}>
             <p className={style.taskNum}>{props.index}</p>
             {/*<div className={style.doneWrapper}> 
                 <div className={style.doneBg}>

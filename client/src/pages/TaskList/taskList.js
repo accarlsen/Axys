@@ -12,18 +12,11 @@ import SearchTask from './components/SearchTask';
 
 
 function TaskList() {
-    const context = useContext(AuthContext);
 
-    const [name, setName] = useState("");
-    const [newTask, setNewTask] = useState(false);
+    const [taskActive, setTaskActive] = useState(false);
     const [searchActive, setSearchActive] = useState(false);
     const [activationLetter, setActivationLetter] = useState("");
     const [activationNumber, setActivationNumber] = useState("");
-
-
-    const [AddTask, { errorAT }] = useMutation(addTask, {
-        variables: { name }
-    });
 
     const { loading, error, data } = useQuery(getTasks,
         {
@@ -33,25 +26,23 @@ function TaskList() {
 
     useEffect(() => {
         const handleDown = (event) => {
+
             if (event.keyCode >= 48 && event.keyCode <= 57) {
                 //Number
-                console.log("Number");
-                if (!searchActive && !newTask) {
-                    setSearchActive(true);
+                if (!searchActive && !taskActive) {
                     setActivationNumber(String.fromCharCode(event.keyCode));
+                    setSearchActive(true);
                 }
-
             }
             else if ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
                 //Higher and lower case letter
-                console.log("Letter");
-                if (!newTask && !searchActive) {
-                    setNewTask(true);
+                if (!taskActive && !searchActive) {
                     setActivationLetter(String.fromCharCode(event.keyCode));
+                    setTaskActive(true);
                 }
             }
-            else if (event.key === 'Enter') {
-                setNewTask(false);
+            else if (event.key === 'Enter' || event.key === 'Escape') {
+                setTaskActive(false);
                 setActivationLetter("");
                 setSearchActive(false);
                 setActivationNumber("");
@@ -68,7 +59,7 @@ function TaskList() {
             window.removeEventListener("keyup", handleUp)
             window.removeEventListener("keydown", handleDown)
         }
-    }, [])
+    })
 
 
     if (loading) return <span>Loading...</span>
@@ -82,9 +73,9 @@ function TaskList() {
                 ))}
             </div>
             <div>
-                <CreateTask active={newTask} activationLetter={activationLetter} />
+                <CreateTask active={taskActive} activationLetter={activationLetter} />
             </div>
-            <SearchTask active={searchActive} activationNumber={activationNumber} />
+            <SearchTask active={searchActive} activationNumber={activationNumber} tasks={data.tasks} />
         </div>
     )
 

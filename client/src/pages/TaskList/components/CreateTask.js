@@ -20,6 +20,8 @@ function CreateTask(props) {
         if (!newTask) {
             setNewTask(props.active)
             setName(props.activationLetter)
+        } else{
+            setNewTask(props.active)
         }
     }, [props.active]);
 

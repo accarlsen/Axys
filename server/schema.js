@@ -152,7 +152,7 @@ const RootQuery = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                return Task.find({ authorId: args.authorId });
+                return Task.find({ authorId: args.authorId, done: false });
             }
         },
         persons: {
