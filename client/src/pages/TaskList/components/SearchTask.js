@@ -27,9 +27,12 @@ function SearchTask(props) {
         }
 
         console.log(props.tasks[0])
-        if (search.length > 0 && search < props.tasks.length) {
+        if (search.length > 0 && search -1 < props.tasks.length) {
             setTask(props.tasks[parseInt(search, 10) - 1]);
             setId(props.tasks[parseInt(search, 10) - 1].id)
+        } else if (search -1 > props.tasks.length || search -1 < 0) {
+            setTask();
+            setId("");
         }
 
     }, [props.active, search, id]);
@@ -42,14 +45,16 @@ function SearchTask(props) {
                     id: id,
                     done: true,
                 },
-                refetchQueries: [{ query: getTasks }]
+                refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
             });
             setSearch("");
             setActive(false);
         }
         else if (event.key === 'Escape') {
             setActive(false);
-            setSearch("")
+            setSearch("");
+            setTask();
+            setId(""); 
         }
     }
 
@@ -64,7 +69,7 @@ function SearchTask(props) {
                     <div className={style.STGrid}>
                         <input type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={"search tasks..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
 
-                        <span className="button red" onClick={() => { setActive(false); setSearch("") }}>Delete</span>
+                        <span className="button red" onClick={() => { setActive(false); setSearch(""); setTask(); setId("") }}>Delete</span>
 
                     </div>
                     <div className={style.STResults}>
