@@ -1,17 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client';
-import { addTask, deleteTask, getTasks, taskDone } from '../../../components/queries';
-import { printIntrospectionSchema } from 'graphql';
+import React, { useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { getTasks, taskDone, deleteTask } from '../../../components/queries';
 
 import style from './../taskList.module.css'
 
 function SearchTask(props) {
+
+    //Variables
     const [search, setSearch] = useState("");
     const [id, setId] = useState("");
     const [task, setTask] = useState();
-
     const [active, setActive] = useState(false);
+    
+    const authorId = localStorage.getItem("personId");
 
+    //Queries & mutations
     const [TaskDone, { error }] = useMutation(taskDone, {
         variables: { id: id }
     })
@@ -20,8 +23,37 @@ function SearchTask(props) {
         variables: { id: id }
     })
 
-    const authorId = localStorage.getItem("personId");
+    //Methods
+    const updateStatus = (event) => {
+        event.preventDefault(); //Enable custom behaviour
+        TaskDone({
+            variables: {
+                id: id,
+                done: true,
+            },
+            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+        });
+        setSearch("");
+        setActive(false);
+    }
 
+    const deleteTaskE = (event) => {
+        event.preventDefault();
+        DeleteTask({
+            variables: {
+                id: id
+            },
+            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+        });
+        setSearch("");
+        setActive(false); 
+    }
+
+    const cancel = () => {
+        setActive(false); setSearch(""); setTask(); setId("")
+    }
+
+    //UseEffect, runs upon update of component activation status or of selected states
     useEffect(() => {
         if (!active) {
             setActive(props.active)
@@ -41,38 +73,20 @@ function SearchTask(props) {
 
     }, [props.active, search, id]);
 
+    //Keyboard input handler
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault(); //very important for some reason
-            TaskDone({
-                variables: {
-                    id: id,
-                    done: true,
-                },
-                refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
-            });
-            setSearch("");
-            setActive(false);
+            updateStatus(event);
         }
         else if (event.key === 'Delete') {
-            event.preventDefault(); //very important for some reason
-            DeleteTask({
-                variables: {
-                    id: id
-                },
-                refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
-            });
-            setSearch("");
-            setActive(false); 
+            deleteTaskE(event);
         }
         else if (event.key === 'Escape') {
-            setActive(false);
-            setSearch("");
-            setTask();
-            setId(""); 
+            cancel();
         }
     }
 
+    //Mutation error-handlers
     if (error) {
         console.log("error: ", error.message);
     };
@@ -80,32 +94,20 @@ function SearchTask(props) {
         console.log("error: ", errorD.message);
     };
 
+    //DOM
     if (active) {
         return (
             <div className={style.STWrapper} onKeyDown={handleKeyDown}>
                 <div className={style.STInner}>
                     <div className={style.STGrid}>
                         <input type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={"search tasks..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
-
-                        <span className="button red" onClick={() => { setActive(false); setSearch(""); setTask(); setId("") }}>Delete</span>
-
+                        <button className={style.removeTask} >x</button>
                     </div>
                     <div className={style.STResults}>
                         {search.length > 0 && task !== null && task !== undefined && <div>
-                            <span>{task.name}</span>
-                            <span className="button green" onClick={e => {
-                                e.preventDefault(); //very important for some reason
-                                TaskDone({
-                                    variables: {
-                                        id: id,
-                                        done: false,
-                                    },
-                                    refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
-                                });
-                                setSearch("");
-                                setActive(false);
-                            }
-                            }>Done</span>
+                            <span className={style.STResText}>{task.name}</span>
+                            <span className="button red" onClick={(e) => { deleteTaskE(e) }}>Delete</span>
+                            <span className="button green" onClick={e => { updateStatus(e); } }>Done</span>
                         </div>}
                     </div>
 
