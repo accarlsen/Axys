@@ -24,7 +24,7 @@ function SearchTask(props) {
     })
 
     //Methods
-    const updateStatus = (event) => {
+    const updateStatusQuery = (event) => {
         event.preventDefault(); //Enable custom behaviour
         TaskDone({
             variables: {
@@ -37,7 +37,7 @@ function SearchTask(props) {
         setActive(false);
     }
 
-    const deleteTaskE = (event) => {
+    const deleteTaskQuery = (event) => {
         event.preventDefault();
         DeleteTask({
             variables: {
@@ -76,10 +76,10 @@ function SearchTask(props) {
     //Keyboard input handler
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            updateStatus(event);
+            updateStatusQuery(event);
         }
         else if (event.key === 'Delete') {
-            deleteTaskE(event);
+            deleteTaskQuery(event);
         }
         else if (event.key === 'Escape') {
             cancel();
@@ -106,8 +106,8 @@ function SearchTask(props) {
                     <div className={style.STResults}>
                         {search.length > 0 && task !== null && task !== undefined && <div>
                             <span className={style.STResText}>{task.name}</span>
-                            <span className="button red" onClick={(e) => { deleteTaskE(e) }}>Delete</span>
-                            <span className="button green" onClick={e => { updateStatus(e); } }>Done</span>
+                            <span className="button red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</span>
+                            <span className="button green" onClick={e => { updateStatusQuery(e); } }>Done</span>
                         </div>}
                     </div>
 

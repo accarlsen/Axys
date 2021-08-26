@@ -6,16 +6,38 @@ import { printIntrospectionSchema } from 'graphql';
 import style from './../taskList.module.css'
 
 function CreateTask(props) {
+    
+    //Variables
     const [name, setName] = useState("");
-
     const [newTask, setNewTask] = useState(false);
 
+    const authorId = localStorage.getItem("personId");
+
+    //Queries and mutations
     const [AddTask, { error }] = useMutation(addTask, {
         variables: { name }
     })
 
-    const authorId = localStorage.getItem("personId");
+    //Methods
+    const addTaskQuery = (event) => {
+        event.preventDefault(); //Enable custom behaviour
+        AddTask({
+            variables: {
+                name: name,
+                authorId: localStorage.getItem("personId"),
+            },
+            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+        });
+        setNewTask(false);
+        setName("");
+    }
 
+    const cancel = () => {
+        setNewTask(false);
+        setName("");
+    }
+   
+    //USeeffect, runs when component activation status is updated
     useEffect(() => {
         if (!newTask) {
             setNewTask(props.active)
@@ -25,22 +47,13 @@ function CreateTask(props) {
         }
     }, [props.active]);
 
+    //Keyboard input handler
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && (String(name.replace(/\s/g, '')).length >= 1)) {
-            event.preventDefault(); //very important for some reason
-            AddTask({
-                variables: {
-                    name: name,
-                    authorId: localStorage.getItem("personId"),
-                },
-                refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
-            });
-            setNewTask(false);
-            setName("");
+            addTaskQuery(event);
         }
         else if (event.key === 'Escape') {
-            setNewTask(false);
-            setName("")
+            cancel();
         }
     }
 
@@ -48,25 +61,13 @@ function CreateTask(props) {
         console.log("error: ", error);
     };
 
+    //DOM
     if (newTask) {
         return (
             <div className={style.CTWrapper} onKeyDown={handleKeyDown}>
                 <input className="inputNoBorder" autoFocus={true} value={name} placeholder={"name..."} onChange={e => { setName(String(e.target.value)); }}></input>
-
-                <span className="button grey" onClick={() => { setNewTask(false); setName("") }}>Cancel</span>
-                <span className="button green" onClick={e => {
-                    e.preventDefault(); //very important for some reason
-                    AddTask({
-                        variables: {
-                            name: name,
-                            authorId: localStorage.getItem("personId"),
-                        },
-                        refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
-                    });
-                    setName("");
-                    setNewTask(false);
-                }
-                }>Create</span>
+                <span className="button grey" onClick={() => { cancel() }}>Cancel</span>
+                <span className="button green" onClick={e => { addTaskQuery(e) } }>Create</span>
             </div>
         )
     }
