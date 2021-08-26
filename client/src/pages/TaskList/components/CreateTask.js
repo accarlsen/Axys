@@ -53,7 +53,7 @@ function CreateTask(props) {
             <div className={style.CTWrapper} onKeyDown={handleKeyDown}>
                 <input className="inputNoBorder" autoFocus={true} value={name} placeholder={"name..."} onChange={e => { setName(String(e.target.value)); }}></input>
 
-                <span className="button red" onClick={() => { setNewTask(false); setName("") }}>Cancel</span>
+                <span className="button grey" onClick={() => { setNewTask(false); setName("") }}>Cancel</span>
                 <span className="button green" onClick={e => {
                     e.preventDefault(); //very important for some reason
                     AddTask({

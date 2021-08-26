@@ -19,6 +19,7 @@
 
 .red{ border: solid 2px var(--red); }
 .green{ border: solid 2px var(--green) }
+.grey{ border: solid 2px var(--grey-dark) }
 
 .button:hover, .buttonGreen:focus{
 }

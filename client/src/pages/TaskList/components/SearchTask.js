@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { addTask, getTasks, taskDone } from '../../../components/queries';
+import { addTask, deleteTask, getTasks, taskDone } from '../../../components/queries';
 import { printIntrospectionSchema } from 'graphql';
 
 import style from './../taskList.module.css'
@@ -13,6 +13,10 @@ function SearchTask(props) {
     const [active, setActive] = useState(false);
 
     const [TaskDone, { error }] = useMutation(taskDone, {
+        variables: { id: id }
+    })
+
+    const [DeleteTask, { errorD }] = useMutation(deleteTask, {
         variables: { id: id }
     })
 
@@ -50,6 +54,17 @@ function SearchTask(props) {
             setSearch("");
             setActive(false);
         }
+        else if (event.key === 'Delete') {
+            event.preventDefault(); //very important for some reason
+            DeleteTask({
+                variables: {
+                    id: id
+                },
+                refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+            });
+            setSearch("");
+            setActive(false); 
+        }
         else if (event.key === 'Escape') {
             setActive(false);
             setSearch("");
@@ -59,7 +74,10 @@ function SearchTask(props) {
     }
 
     if (error) {
-        console.log("error: ", error);
+        console.log("error: ", error.message);
+    };
+    if (errorD) {
+        console.log("error: ", errorD.message);
     };
 
     if (active) {

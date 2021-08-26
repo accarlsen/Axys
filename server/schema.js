@@ -400,7 +400,7 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLID }
             },
-            resolve(args) {
+            resolve(parent, args) {
                 return Task.findByIdAndDelete(args.id, { useFindAndModify: false });
             }
         }

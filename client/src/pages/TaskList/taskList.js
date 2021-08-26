@@ -41,7 +41,7 @@ function TaskList() {
                     setTaskActive(true);
                 }
             }
-            else if (event.key === 'Enter' || event.key === 'Escape') {
+            else if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'Delete') {
                 setTaskActive(false);
                 setActivationLetter("");
                 setSearchActive(false);
