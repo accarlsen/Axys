@@ -12,21 +12,16 @@ function Login() {
 
     const history = useHistory();
     const routeChange = () => {
-        history.push("/tournament")
+        history.push("/")
     }
 
     const props = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } })
-    const hoverOn = useSpring({ backgroundColor: "#3AAFA9", to: { backgroundColor: "#289692" } });
-    const hoverOff = useSpring({ backgroundColor: "#289692", to: { backgroundColor: "#3AAFA9" } });
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const [loginFunc, { loading, error, data }] = useLazyQuery(login);
 
     const context = useContext(AuthContext);
-
-    const token = localStorage.getItem('token');
 
     if (loading) return <p>Loading ...</p>;
     if (data) {

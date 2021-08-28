@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
-import { useSpring, animated as a } from 'react-spring';
-import { Link, useHistory } from "react-router-dom";
-import { gql, useQuery, useMutation } from '@apollo/client';
-import { AuthContext } from '../../context/auth-context';
-import { addTask, getTasks } from '../../components/queries';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { getTasks } from '../../components/queries';
 import CreateTask from './components/CreateTask';
 
 import style from './taskList.module.css'

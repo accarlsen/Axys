@@ -11,7 +11,7 @@ function SearchTask(props) {
     const [id, setId] = useState("");
     const [task, setTask] = useState();
     const [active, setActive] = useState(false);
-    
+
     const authorId = localStorage.getItem("personId");
 
     //Queries & mutations
@@ -46,7 +46,7 @@ function SearchTask(props) {
             refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
         });
         setSearch("");
-        setActive(false); 
+        setActive(false);
     }
 
     const cancel = () => {
@@ -63,10 +63,10 @@ function SearchTask(props) {
         }
 
         console.log(props.tasks[0])
-        if (search.length > 0 && search -1 < props.tasks.length) {
+        if (search.length > 0 && search - 1 < props.tasks.length) {
             setTask(props.tasks[parseInt(search, 10) - 1]);
             setId(props.tasks[parseInt(search, 10) - 1].id)
-        } else if (search -1 > props.tasks.length || search -1 < 0) {
+        } else if (search - 1 > props.tasks.length || search - 1 < 0) {
             setTask();
             setId("");
         }
@@ -103,13 +103,11 @@ function SearchTask(props) {
                         <input type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={"search tasks..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
                         <button className={style.removeTask} >x</button>
                     </div>
-                    <div className={style.STResults}>
-                        {search.length > 0 && task !== null && task !== undefined && <div>
-                            <span className={style.STResText}>{task.name}</span>
-                            <span className="button red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</span>
-                            <span className="button green" onClick={e => { updateStatusQuery(e); } }>Done</span>
-                        </div>}
-                    </div>
+                    {search.length > 0 && task !== null && task !== undefined && <div className={style.STResults}>
+                        <span className={style.STResText}>{task.name}</span>
+                        <button className="button red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
+                        <button className="button green" onClick={e => { updateStatusQuery(e); }}>Done</button>
+                    </div>}
                 </div>
             </div>
         )
