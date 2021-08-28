@@ -110,7 +110,6 @@ function SearchTask(props) {
                             <span className="button green" onClick={e => { updateStatusQuery(e); } }>Done</span>
                         </div>}
                     </div>
-
                 </div>
             </div>
         )
