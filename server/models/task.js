@@ -8,5 +8,9 @@ const taskSchema = new Schema({
     weight: Number,
     authorId: String,
     parentId: String,
+    date: String,
+    time: String,
+    dateDone: String,
+    timeDone: String,
 });
 module.exports = mongoose.model('Task', taskSchema);

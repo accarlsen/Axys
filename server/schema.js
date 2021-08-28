@@ -35,12 +35,12 @@ const ProjectType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
-        description: { type: GraphQLString},
+        description: { type: GraphQLString },
         date: { type: GraphQLString },
-        estimatedTime: { type: GraphQLFloat},
-        usedTime: { type: GraphQLFloat},
+        estimatedTime: { type: GraphQLFloat },
+        usedTime: { type: GraphQLFloat },
         authorId: { type: GraphQLString },
-        clockifyId: { type: GraphQLString}
+        clockifyId: { type: GraphQLString }
         /*fighters: {
             type: new GraphQLList(FighterType),
             resolve(parent, args) {
@@ -59,7 +59,11 @@ const TaskType = new GraphQLObjectType({
         progress: { type: GraphQLInt },
         weight: { type: GraphQLInt },
         parentId: { type: GraphQLID },
-        authorId: { type: GraphQLString},
+        authorId: { type: GraphQLString },
+        date: { type: GraphQLString },
+        time: { type: GraphQLString },
+        dateDone: { type: GraphQLString },
+        timeDone: { type: GraphQLString },
         author: {
             type: PersonType,
             resolve(parent, args) {
@@ -105,7 +109,7 @@ const AuthType = new GraphQLObjectType({
         personId: { type: GraphQLID },
         token: { type: GraphQLString },
         tokenExpiration: { type: GraphQLInt },
-        admin: { type: GraphQLBoolean}
+        admin: { type: GraphQLBoolean }
     })
 })
 
@@ -304,9 +308,18 @@ const Mutation = new GraphQLObjectType({
                 parentId: { type: GraphQLString },
             },
             resolve(parent, args, context) {
+
+                //Auth
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
+                //Date & time
+                let today = new Date();
+                
+                let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                //New Task
                 let task = new Task({
                     name: args.name,
                     done: false,
@@ -314,6 +327,8 @@ const Mutation = new GraphQLObjectType({
                     progress: 1,
                     authorId: args.authorId,
                     parentId: args.parentId,
+                    date: date,
+                    time: time
                 });
                 return task.save();
             }
@@ -390,8 +405,21 @@ const Mutation = new GraphQLObjectType({
                 done: { type: GraphQLBoolean }
             },
             resolve(parent, args) {
-                return Task.findByIdAndUpdate(args.id, { done: args.done }, { new: true });
-                //return Task.findById(args.id);
+                //Date & time
+                var today = new Date();
+                
+                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                return Task.findByIdAndUpdate(
+                    args.id, 
+                    { 
+                        done: args.done,
+                        dateDone: date,
+                        timeDone: time
+                    }, 
+                    { new: true }
+                );
 
             }
         },
