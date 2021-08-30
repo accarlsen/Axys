@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSpring, animated as a } from 'react-spring';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import InputCheck from './../components/InputCheck.js';
@@ -13,7 +13,7 @@ function Signup() {
 
     const history = useHistory();
     const routeChange = () => {
-        history.push("/")
+        history.push("/login")
     }
 
     const props = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } });
@@ -258,26 +258,22 @@ function Signup() {
 
                 <a.input className="button" type="submit" value="Create user" onClick={e => {
                     //if (toOpacity1 == 1 && toOpacity2 == 1 && toOpacity3 == 1 && toOpacity4 == 1 && toOpacity5 == 1) {
-                        e.preventDefault();
-                        AddPerson({
-                            variables: {
-                                fname: fname,
-                                lname: lname,
-                                email: email,
-                                password: password
-                            }
-                        })
-                        setValue1("");
-                        setValue2("");
-                        setValue3("");
-                        setValue4("");
-                        setValue5("");
-                        setUpdate(true);
-                        routeChange();
-                    /*}
-                    else{
-                        alert("Wrong input!")
-                    }*/
+                    e.preventDefault();
+                    AddPerson({
+                        variables: {
+                            fname: fname,
+                            lname: lname,
+                            email: email,
+                            password: password
+                        }
+                    })
+                    setValue1("");
+                    setValue2("");
+                    setValue3("");
+                    setValue4("");
+                    setValue5("");
+                    setUpdate(true);
+                    routeChange();
                 }}></a.input>
             </a.div>
         </div>

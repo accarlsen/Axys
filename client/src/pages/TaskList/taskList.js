@@ -6,6 +6,7 @@ import CreateTask from './components/CreateTask';
 import style from './taskList.module.css'
 import Task from './components/task';
 import SearchTask from './components/SearchTask';
+import { useHistory } from 'react-router-dom';
 
 
 function TaskList() {
@@ -15,6 +16,7 @@ function TaskList() {
     const [searchActive, setSearchActive] = useState(false);
     const [activationLetter, setActivationLetter] = useState("");
     const [activationNumber, setActivationNumber] = useState("");
+    const history = useHistory();
 
     //Queries
     const { loading, error, data } = useQuery(getTasks, {
@@ -61,9 +63,21 @@ function TaskList() {
         }
     })
 
+    //Methods
+    const routeChange = () => {
+        history.push("/login")
+    }
+
 
     if (loading) return <span>Loading...</span>
-    if (error) return <span>{error.message}</span>
+    if (error) {
+        console.log(error.message);
+        if (error.message === 'Unauthenticated user') {
+            localStorage.setItem('admin', false);
+            localStorage.removeItem('token');
+            routeChange();
+        }
+    }
 
     //DOM
     if (data) return (
@@ -72,8 +86,8 @@ function TaskList() {
                 {data.tasks.map((task, i) => (
                     <Task task={task} index={i + 1} />
                 ))}
-            </div> 
-            <CreateTask active={taskActive} activationLetter={activationLetter} /> 
+            </div>
+            <CreateTask active={taskActive} activationLetter={activationLetter} />
             <SearchTask active={searchActive} activationNumber={activationNumber} tasks={data.tasks} />
         </div>
     )

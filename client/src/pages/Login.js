@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useSpring, animated as a } from 'react-spring';
 import {useHistory} from 'react-router-dom';
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { login } from './../components/queries';
 import { AuthContext } from './../context/auth-context';
 import './../style/login.css';

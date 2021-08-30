@@ -39,12 +39,13 @@ function NavBar() {
             <div className="right">
                 {localStorage.getItem('token') && <li><a onClick={() => {
                     localStorage.setItem('admin', false);
-                    localStorage.setItem('token', "");
+                    localStorage.removeItem('token');
                     setUpdate(true);
                     routeChange();
                 }}>Log out</a></li>}
                 {!localStorage.getItem('token') && <li><Link to="/login">Login</Link></li>}
-                {localStorage.getItem('admin') && <li><Link to="/signup">Create user</Link></li>}
+                {!localStorage.getItem('token') && <li><Link to="/signup">Create user</Link></li>}
+                {localStorage.getItem('token') && <li><Link to="/profile">Youuuuu</Link></li>}
             </div>
         </animated.div>
     )
