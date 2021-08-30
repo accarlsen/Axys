@@ -33,6 +33,22 @@ const getTasks = gql`
   }
 `;
 
+const getFriendRequests = gql`
+  query {
+    friendRequest {
+      id
+      senderId
+      recieverId
+      answer
+      sender{
+        fname
+        lname
+        email
+      }
+    }
+  }
+`;
+
 const getSubTasks = gql`
     query($authorId: ID) {
         task(id: $authorId) {
@@ -100,6 +116,14 @@ const addProject = gql`
   }
 `;
 
+const sendFriendRequest = gql`
+  mutation SendFriendRequest( $email: String ){
+    sendFriendRequest( email: $email ){
+      id
+    }
+  }
+`;
+
 const taskDone = gql`
   mutation TaskDone($id: ID, $done: Boolean){
     taskDone(id: $id, done: $done){
@@ -141,9 +165,11 @@ export {
   getPerson,
   getProjects,
   getTasks,
+  getFriendRequests,
   getSubTasks,
   addTask,
   addMutationTest,
+  sendFriendRequest,
   taskDone,
   deleteTask,
   addPerson,

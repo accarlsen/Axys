@@ -171,7 +171,7 @@ const RootQuery = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                return Task.find({ authorId: args.authorId, done: false });
+                return Task.find({ authorId: context.personId, done: false });
             }
         },
         persons: {
@@ -182,9 +182,8 @@ const RootQuery = new GraphQLObjectType({
         },
         friendRequests: {
             type: new GraphQLList(FriendRequestType),
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return FriendRequestType.find({ recieverId: args.id })
+            resolve(parent, args, context) {
+                return FriendRequestType.find({ recieverId: context.personId })
             }
         },
         login: {
