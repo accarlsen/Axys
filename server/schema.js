@@ -103,6 +103,21 @@ const PersonType = new GraphQLObjectType({
     })
 });
 
+const FriendRequestType = new GraphQLObjectType({
+    name: 'FriendRequest',
+    fields: () => ({
+        senderId: { type: GraphQLString },
+        recieverId: { type: GraphQLString },
+        answer: { type: GraphQLBoolean },
+        sender: {
+            type: PersonType,
+            resolve(parent, args) {
+                return Person.findById( parent.senderId );
+            }
+        }
+    })
+})
+
 const AuthType = new GraphQLObjectType({
     name: 'Auth',
     fields: () => ({
@@ -163,6 +178,13 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(PersonType),
             resolve(parent, args) {
                 return Person.find({});
+            }
+        },
+        friendRequests: {
+            type: new GraphQLList(FriendRequestType),
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args) {
+                return FriendRequestType.find({ recieverId: args.id })
             }
         },
         login: {
@@ -331,6 +353,30 @@ const Mutation = new GraphQLObjectType({
                     time: time
                 });
                 return task.save();
+            }
+        },
+        sendFriendRequest: {
+            type: FriendRequestType,
+            args: { email: {type: GraphQLString} },
+            async resolve( parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
+                //Verify reciever and get their id
+                const reciever = await Person.find({ email: args.email });
+                if (!reciever) {
+                    throw new Error('No user with that email');
+                }
+
+                //New FriendRequest
+                let friendRequest = new FriendRequest({
+                    senderId: context.personId,
+                    recieverId: reciever.id,
+                    answer: false 
+                })
+                return friendRequest.save();
             }
         },
         /*selectWinner: {
