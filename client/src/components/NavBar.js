@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import './../style/navbar.css';
 import { Link, useHistory } from "react-router-dom";
 import { useSpring, animated } from 'react-spring'
+import { getPerson } from './queries';
+import { useQuery } from '@apollo/client';
 
 function NavBar() {
 
@@ -15,6 +17,10 @@ function NavBar() {
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked });
     };
+
+    const { loading, error, data } = useQuery(getPerson, {
+        variables: { id: localStorage.getItem("personId") }
+    });
 
     useEffect(
         () => {
@@ -45,7 +51,7 @@ function NavBar() {
                 }}>Log out</a></li>}
                 {!localStorage.getItem('token') && <li><Link to="/login">Login</Link></li>}
                 {!localStorage.getItem('token') && <li><Link to="/signup">Create user</Link></li>}
-                {localStorage.getItem('token') && <li><Link to="/profile">Youuuuu</Link></li>}
+                {data && localStorage.getItem('token') && <li><Link to="/profile">{data.person.fname}</Link></li>}
             </div>
         </animated.div>
     )

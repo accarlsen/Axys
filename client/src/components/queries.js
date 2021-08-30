@@ -1,12 +1,22 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
 
+const getPerson = gql`
+  query($id: ID!){ 
+    person(id: $id) {
+      id
+      fname
+      lname
+      email
+    }
+  }
+`;
+
 const getProjects = gql`
   query{ 
     projects {
       id
       name
       time
-      winnerId
     }
   }
 `;
@@ -128,6 +138,7 @@ const login = gql`
 
 
 export {
+  getPerson,
   getProjects,
   getTasks,
   getSubTasks,
