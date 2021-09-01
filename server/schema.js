@@ -113,7 +113,7 @@ const FriendRequestType = new GraphQLObjectType({
         sender: {
             type: PersonType,
             resolve(parent, args) {
-                return Person.findById( parent.senderId );
+                return Person.findById(parent.senderId);
             }
         }
     })
@@ -184,7 +184,7 @@ const RootQuery = new GraphQLObjectType({
         friendRequests: {
             type: new GraphQLList(FriendRequestType),
             resolve(parent, args, context) {
-                return FriendRequestType.find({ recieverId: context.personId })
+                return FriendRequest.find({ recieverId: context.personId })
             }
         },
         login: {
@@ -337,8 +337,8 @@ const Mutation = new GraphQLObjectType({
                 }
                 //Date & time
                 let today = new Date();
-                
-                let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+                let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
                 //New Task
@@ -357,8 +357,8 @@ const Mutation = new GraphQLObjectType({
         },
         sendFriendRequest: {
             type: FriendRequestType,
-            args: { email: {type: GraphQLString} },
-            async resolve( parent, args, context) {
+            args: { email: { type: GraphQLString } },
+            async resolve(parent, args, context) {
                 //Auth
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
@@ -374,13 +374,11 @@ const Mutation = new GraphQLObjectType({
                 }
 
                 //Check if request already sent to recipient
-                const similarRequests = await FriendRequest.findOne(
-                    { 
-                        senderId: context.personId,
-                        recieberId: reciever.id
-                    }
-                )
-                if(similarRequests !== undefined || similarRequests !== null) {
+                const similarRequests = await FriendRequest.findOne({
+                    senderId: context.personId,
+                    recieverId: reciever.id
+                })
+                if (similarRequests !== undefined || similarRequests !== null) {
                     throw new Error('Cannot send multiple requests to the same person');
                 }
 
@@ -388,7 +386,7 @@ const Mutation = new GraphQLObjectType({
                 let friendRequest = new FriendRequest({
                     senderId: context.personId,
                     recieverId: reciever.id,
-                    answer: false 
+                    answer: false
                 })
                 return friendRequest.save();
             }
@@ -467,17 +465,17 @@ const Mutation = new GraphQLObjectType({
             resolve(parent, args) {
                 //Date & time
                 var today = new Date();
-                
-                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
                 return Task.findByIdAndUpdate(
-                    args.id, 
-                    { 
+                    args.id,
+                    {
                         done: args.done,
                         dateDone: date,
                         timeDone: time
-                    }, 
+                    },
                     { new: true }
                 );
 

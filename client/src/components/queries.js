@@ -35,8 +35,7 @@ const getTasks = gql`
 
 const getFriendRequests = gql`
   query {
-    friendRequest {
-      id
+    friendRequests {
       senderId
       recieverId
       answer
