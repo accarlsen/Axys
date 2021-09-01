@@ -366,9 +366,22 @@ const Mutation = new GraphQLObjectType({
 
                 //Verify reciever and get their id
                 const reciever = await Person.findOne({ email: args.email });
-                console.log(reciever)
                 if (reciever === undefined || reciever === null) {
                     throw new Error('No user with that email');
+                }
+                if (reciever.id === context.personId) {
+                    throw new Error('Cannot send request to self');
+                }
+
+                //Check if request already sent to recipient
+                const similarRequests = await FriendRequest.findOne(
+                    { 
+                        senderId: context.personId,
+                        recieberId: reciever.id
+                    }
+                )
+                if(similarRequests !== undefined || similarRequests !== null) {
+                    throw new Error('Cannot send multiple requests to the same person');
                 }
 
                 //New FriendRequest
