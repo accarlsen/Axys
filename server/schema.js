@@ -107,6 +107,7 @@ const PersonType = new GraphQLObjectType({
 const FriendRequestType = new GraphQLObjectType({
     name: 'FriendRequest',
     fields: () => ({
+        id: { type: GraphQLID },
         senderId: { type: GraphQLString },
         recieverId: { type: GraphQLString },
         answer: { type: GraphQLBoolean },
@@ -456,6 +457,22 @@ const Mutation = new GraphQLObjectType({
                 return Match.findByIdAndUpdate(args.id, { winner: args.winner }, { new: true, useFindAndModify: false });
             }
         },*/
+        answerFriendRequest: {
+            type: FriendRequestType,
+            args: { 
+                id: {type: GraphQLString},
+                answer: {type: GraphQLBoolean}
+            },
+            resolve(parent, args, context) {
+                return FriendRequest.findByIdAndUpdate(
+                    args.id,
+                    {
+                        answer: args.answer
+                    },
+                    { new: true }
+                );
+            }
+        },
         taskDone: {
             type: TaskType,
             args: {
@@ -478,7 +495,6 @@ const Mutation = new GraphQLObjectType({
                     },
                     { new: true }
                 );
-
             }
         },
         deleteTask: {

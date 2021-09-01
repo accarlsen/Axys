@@ -36,13 +36,14 @@ const getTasks = gql`
 const getFriendRequests = gql`
   query {
     friendRequests {
+      id
       senderId
       recieverId
       answer
       sender{
         fname
         lname
-        email
+        email 
       }
     }
   }
@@ -122,7 +123,7 @@ const sendFriendRequest = gql`
     sendFriendRequest(
       email: $email
     ){
-      answer
+      id
     }
   }
 `;
