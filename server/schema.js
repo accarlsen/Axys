@@ -1,5 +1,6 @@
 const graphql = require('graphql');
 const Task = require('./models/task');
+const FriendRequest = require('./models/friendRequest');
 const Person = require('./models/person');
 const _ = require('lodash');
 const mutationTest = require('./models/mutationTest');
@@ -364,8 +365,9 @@ const Mutation = new GraphQLObjectType({
                 }
 
                 //Verify reciever and get their id
-                const reciever = await Person.find({ email: args.email });
-                if (!reciever) {
+                const reciever = await Person.findOne({ email: args.email });
+                console.log(reciever)
+                if (reciever === undefined || reciever === null) {
                     throw new Error('No user with that email');
                 }
 

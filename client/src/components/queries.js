@@ -117,9 +117,13 @@ const addProject = gql`
 `;
 
 const sendFriendRequest = gql`
-  mutation SendFriendRequest( $email: String ){
-    sendFriendRequest( email: $email ){
-      id
+  mutation SendFriendRequest(
+    $email: String
+  ){
+    sendFriendRequest(
+      email: $email
+    ){
+      answer
     }
   }
 `;
