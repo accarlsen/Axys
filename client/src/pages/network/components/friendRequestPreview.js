@@ -1,33 +1,30 @@
 import { useMutation } from '@apollo/client';
-import React, { useState } from 'react';
-import { sendFriendRequest } from '../../../components/queries';
+import React from 'react';
+import { answerFriendRequest } from '../../../components/queries';
 
 import style from './../network.module.css';
 
 function FriendRequestPreview(props) {
 
-    //Variables
-    const [email, setEmail] = useState("");
-
     //Queries and muattions
-    const [SendFriendRequest, { error }] = useMutation(sendFriendRequest, {
-        variables: { email: email }
-    })
+    const [AnswerFriendRequest, { error }] = useMutation(answerFriendRequest)
 
     //Methods
-    const sendFriendRequestQuery = (event) => {
+    const answerFriendRequestQuery = (event) => {
         event.preventDefault(); //Enable custom behaviour
-        SendFriendRequest({
-            variables: { email: email }
+        AnswerFriendRequest({
+            variables: { 
+                id: props.friendRequest.id,
+                answer: true
+            }
         });
-        setEmail("");
     }
 
     if(error) console.log(JSON.stringify(error, null, 2));
     return (
         <div className={style.FRPreviewWrapper}>
-            
-            <input type={"submit"} value="Send" onClick={e => { sendFriendRequestQuery(e) }}></input>
+            <p>{props.friendRequest.sender.fname + " " + props.friendRequest.sender.lname + " sent you a friend-request."}</p>
+            <input type={"submit"} value="Accept" onClick={e => { answerFriendRequestQuery(e) }}></input>
         </div>
     )
 }

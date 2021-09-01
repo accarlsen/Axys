@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { getFriendRequests } from '../../../components/queries';
 
 import style from './../network.module.css';
+import FriendRequestPreview from './friendRequestPreview';
 
 function FriendRequestList() {
 
@@ -17,7 +18,7 @@ function FriendRequestList() {
     if(data) return (
         <div className={style.FRListWrapper}>
             {data.friendRequests.map((friendReq) => (
-                <span>{friendReq.sender.fname + " " + friendReq.sender.lname + " sent you a friend-request."}</span>
+                <FriendRequestPreview friendRequest={friendReq} />
             ))}
         </div>
     )

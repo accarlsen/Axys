@@ -460,7 +460,7 @@ const Mutation = new GraphQLObjectType({
         answerFriendRequest: {
             type: FriendRequestType,
             args: { 
-                id: {type: GraphQLString},
+                id: {type: GraphQLID},
                 answer: {type: GraphQLBoolean}
             },
             resolve(parent, args, context) {
