@@ -129,8 +129,8 @@ const sendFriendRequest = gql`
 `;
 
 const answerFriendRequest = gql`
-  mutation AnswerFriendRequest($id: ID, $answer: Boolean){
-    answerFriendRequest(id: $id, answer: $answer){
+  mutation AnswerFriendRequest($id: String, $answer: Boolean, $senderId: String){
+    answerFriendRequest(id: $id, answer: $answer, senderId: $senderId){
       id
     }
   }

@@ -95,10 +95,17 @@ const PersonType = new GraphQLObjectType({
         email: { type: GraphQLString },
         admin: { type: GraphQLBoolean },
         password: { type: GraphQLString },
+        friendIds: {type: GraphQLList( GraphQLString )},
         tasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {
                 return Task.find({ authorId: parent.id });
+            }
+        },
+        friends: {
+            type: new GraphQLList(PersonType),
+            resolve(parent, args) {
+                return Person.find({ id: {$in:parent.friendIds} });
             }
         }
     })
@@ -185,7 +192,7 @@ const RootQuery = new GraphQLObjectType({
         friendRequests: {
             type: new GraphQLList(FriendRequestType),
             resolve(parent, args, context) {
-                return FriendRequest.find({ recieverId: context.personId })
+                return FriendRequest.find({ recieverId: context.personId, answer: false })
             }
         },
         login: {
@@ -310,8 +317,7 @@ const Mutation = new GraphQLObjectType({
                             email: args.email,
                             password: hashedPassword,
                             admin: false,
-                            wins: 0,
-                            losses: 0
+                            friendIds: [],
                         });
                         return person.save();
                     })
@@ -379,7 +385,8 @@ const Mutation = new GraphQLObjectType({
                     senderId: context.personId,
                     recieverId: reciever.id
                 })
-                if (similarRequests !== undefined || similarRequests !== null) {
+                console.log(similarRequests)
+                if (similarRequests !== undefined && similarRequests !== null) {
                     throw new Error('Cannot send multiple requests to the same person');
                 }
 
@@ -460,14 +467,51 @@ const Mutation = new GraphQLObjectType({
         answerFriendRequest: {
             type: FriendRequestType,
             args: { 
-                id: {type: GraphQLID},
-                answer: {type: GraphQLBoolean}
+                id: {type: GraphQLString},
+                answer: {type: GraphQLBoolean},
+                senderId: {type: GraphQLString}
             },
-            resolve(parent, args, context) {
+            async resolve(parent, args, context) {
+                const friendRequest = await FriendRequest.findById(args.id);
+                if (friendRequest === null || friendRequest === undefined) {
+                    throw new Error('Failed to find friend-request in database');
+                }
+
+                const person = await Person.findById(context.personId);
+                if (person === null || person === undefined || person.id !== context.personId) {
+                    throw new Error('Failed to find person in database');
+                }
+                /*console.log(friendRequest.senderId)
+                let array = []
+                if(friendRequest.senderId.length > 0) {
+                    array = person.friendIds.push(friendRequest.senderId.toString(10))
+                } else {
+                    array = ["611cfac419703427f0e01b66"]
+                }
+                console.log(array[0])*/
+
+                //Add sender to reciever's friend list
+                await Person.findByIdAndUpdate(
+                    context.personId,
+                    {
+                        $push: { friendIds: friendRequest.senderId }
+                    },
+                    { new: true }
+                );
+
+                //Add reciever to sender's friend list
+                await Person.findByIdAndUpdate(
+                    friendRequest.senderId,
+                    {
+                        $push: { friendIds: context.personId }
+                    },
+                    { new: true }
+                );
+
                 return FriendRequest.findByIdAndUpdate(
                     args.id,
                     {
-                        answer: args.answer
+                        answer: true
                     },
                     { new: true }
                 );

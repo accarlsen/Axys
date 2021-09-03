@@ -10,6 +10,7 @@ const isAuthMiddleWare = require('./middleware/is-auth')
 const server = async () => {
   const app = express();
 
+  mongoose.set('useFindAndModify', false); //Avoid depricated functions for findOneAndModify
 
 
   const server = new ApolloServer({

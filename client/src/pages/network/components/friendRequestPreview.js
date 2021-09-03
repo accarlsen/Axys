@@ -15,7 +15,8 @@ function FriendRequestPreview(props) {
         AnswerFriendRequest({
             variables: { 
                 id: props.friendRequest.id,
-                answer: true
+                answer: true,
+                senderId: props.friendRequest.senderId
             }
         });
     }

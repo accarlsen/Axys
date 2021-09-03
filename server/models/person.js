@@ -7,5 +7,6 @@ const personSchema = new Schema({
     email: String,
     password: String,
     admin: Boolean,
+    friendIds: [String],
 });
 module.exports = mongoose.model('Person', personSchema);
