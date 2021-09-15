@@ -19,9 +19,9 @@ function TaskList() {
     const history = useHistory();
 
     //Queries
-    const { loading, error, data } = useQuery(getTasks, {
-        variables: { authorId: localStorage.getItem("personId") }
-    });
+    const { loading, error, data } = useQuery(getTasks);
+
+    
 
     //UseEffect, runs upon any update to component
     useEffect(() => {

@@ -11,8 +11,6 @@ function CreateTask(props) {
     const [name, setName] = useState("");
     const [newTask, setNewTask] = useState(false);
 
-    const authorId = localStorage.getItem("personId");
-
     //Queries and mutations
     const [AddTask, { error }] = useMutation(addTask, {
         variables: { name }
@@ -24,9 +22,9 @@ function CreateTask(props) {
         AddTask({
             variables: {
                 name: name,
-                authorId: localStorage.getItem("personId"),
+                assigneeId: localStorage.getItem("personId"),
             },
-            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+            refetchQueries: [{ query: getTasks }]
         });
         setNewTask(false);
         setName("");

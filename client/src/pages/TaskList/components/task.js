@@ -6,9 +6,6 @@ import { deleteTask, getTasks } from '../../../components/queries';
 
 function Task(props) {
 
-    //Variables
-    const authorId = localStorage.getItem("personId");
-
     //Queries & mutations
     const [DeleteTask, { errorD }] = useMutation(deleteTask)
 
@@ -19,7 +16,7 @@ function Task(props) {
             variables: {
                 id: props.task.id
             },
-            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+            refetchQueries: [{ query: getTasks }]
         });
     }
 

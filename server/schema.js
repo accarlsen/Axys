@@ -61,6 +61,7 @@ const TaskType = new GraphQLObjectType({
         weight: { type: GraphQLInt },
         parentId: { type: GraphQLID },
         authorId: { type: GraphQLString },
+        assigneeId: { type: GraphQLString},
         date: { type: GraphQLString },
         time: { type: GraphQLString },
         dateDone: { type: GraphQLString },
@@ -99,7 +100,7 @@ const PersonType = new GraphQLObjectType({
         tasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {
-                return Task.find({ authorId: parent.id });
+                return Task.find({ assigneeId: parent.id });
             }
         },
         friends: {
@@ -175,26 +176,47 @@ const RootQuery = new GraphQLObjectType({
         },
         tasks: {
             type: new GraphQLList(TaskType),
-            args: { authorId: { type: GraphQLID } },
             resolve(parent, args, context) {
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                return Task.find({ authorId: context.personId, done: false });
+                return Task.find({ assigneeId: context.personId, done: false });
             }
         },
-        persons: {
+        /*persons: {
             type: new GraphQLList(PersonType),
             resolve(parent, args) {
                 return Person.find({});
             }
-        },
+        },*/
         friendRequests: {
             type: new GraphQLList(FriendRequestType),
             resolve(parent, args, context) {
                 return FriendRequest.find({ recieverId: context.personId, answer: false })
             }
         },
+        friends: {
+            type: new GraphQLList(PersonType),
+            async resolve(parent, args, context) {
+                const person = await Person.findOne({ id: context.personId });
+                return Person.find({ id: {$in:person.friendIds} });
+            }
+        },
+        /*searchFriends: {
+            type: new GraphQLList(PersonType),
+            args: { searchText: { type: GraphQLString}},
+            resolve(parent, args, context) {
+                //Get sender
+                const person = await Person.findOne({ id: context.personId });
+
+                //Go through each name, compare searchText and their full name
+                for (let i = 0; i < person.friends.id; i++) {
+
+                }
+                //Check if search term is within their names
+                return Person.find({ id: {$in:person.friendIds} });
+            }
+        }*/
         login: {
             type: AuthType,
             args: {
@@ -245,23 +267,6 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        addMutationTest: {
-            type: MutationType,
-            args: {
-                name: { type: GraphQLString },
-                done: { type: GraphQLBoolean }
-            },
-            resolve(parent, args, req) {
-                if (!req.isAuth) {
-                    throw new Error('Unauthenticated user');
-                }
-                let mt = new mutationTest({
-                    name: args.name,
-                    done: args.done
-                });
-                return mt.save();
-            }
-        },
         addProject: {
             type: ProjectType,
             args: {
@@ -333,7 +338,7 @@ const Mutation = new GraphQLObjectType({
             type: TaskType,
             args: {
                 name: { type: GraphQLString },
-                authorId: { type: GraphQLString },
+                assigneeId: { type: GraphQLString },
                 parentId: { type: GraphQLString },
             },
             resolve(parent, args, context) {
@@ -354,7 +359,8 @@ const Mutation = new GraphQLObjectType({
                     done: false,
                     weight: 1,
                     progress: 1,
-                    authorId: args.authorId,
+                    assigneeId: args.assigneeId,
+                    authorId: context.personId,
                     parentId: args.parentId,
                     date: date,
                     time: time
@@ -472,25 +478,13 @@ const Mutation = new GraphQLObjectType({
                 senderId: {type: GraphQLString}
             },
             async resolve(parent, args, context) {
+                //Validate friend request
                 const friendRequest = await FriendRequest.findById(args.id);
                 if (friendRequest === null || friendRequest === undefined) {
                     throw new Error('Failed to find friend-request in database');
                 }
 
-                const person = await Person.findById(context.personId);
-                if (person === null || person === undefined || person.id !== context.personId) {
-                    throw new Error('Failed to find person in database');
-                }
-                /*console.log(friendRequest.senderId)
-                let array = []
-                if(friendRequest.senderId.length > 0) {
-                    array = person.friendIds.push(friendRequest.senderId.toString(10))
-                } else {
-                    array = ["611cfac419703427f0e01b66"]
-                }
-                console.log(array[0])*/
-
-                //Add sender to reciever's friend list
+                //Add sender to recipient's friend list
                 await Person.findByIdAndUpdate(
                     context.personId,
                     {
@@ -508,6 +502,7 @@ const Mutation = new GraphQLObjectType({
                     { new: true }
                 );
 
+                //Modify friend request with given answer
                 return FriendRequest.findByIdAndUpdate(
                     args.id,
                     {

@@ -22,12 +22,15 @@ const getProjects = gql`
 `;
 
 const getTasks = gql`
-  query($authorId: ID) {
-    tasks(authorId: $authorId) {
+  query {
+    tasks {
       id
       name
       progress
       weight
+      date
+      time
+      authorId
       parentId
     }
   }
@@ -50,13 +53,14 @@ const getFriendRequests = gql`
 `;
 
 const getSubTasks = gql`
-    query($authorId: ID) {
-        task(id: $authorId) {
+    query {
+        task {
             id
             name
             weight
             progress
             done
+            authorId
             parentId
             subtasks{
                 id
@@ -65,30 +69,21 @@ const getSubTasks = gql`
                 weight
                 progress
                 done
+                authorId
             }
         }
     }
 `;
 
-const addMutationTest = gql`
-  mutation AddMutationTest($name: String!, $done: Boolean){
-      addMutationTest(name: $name, done: $done){
-        id  
-        name
-        done
-      }
-  }
-`;
-
 const addTask = gql`
   mutation AddTask(
     $name: String,
-    $authorId: String,
+    $assigneeId: String,
     $parentId: String,
   ){
     addTask(
       name: $name,
-      authorId: $authorId,
+      assigneeId: $assigneeId,
       parentId: $parentId,
     ){
       id
@@ -96,6 +91,7 @@ const addTask = gql`
       progress
       weight
       parentId
+      assigneeId
     }
   }
 `;
@@ -180,7 +176,6 @@ export {
   getFriendRequests,
   getSubTasks,
   addTask,
-  addMutationTest,
   sendFriendRequest,
   answerFriendRequest,
   taskDone,

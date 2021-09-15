@@ -12,8 +12,6 @@ function SearchTask(props) {
     const [task, setTask] = useState();
     const [active, setActive] = useState(false);
 
-    const authorId = localStorage.getItem("personId");
-
     //Queries & mutations
     const [TaskDone, { error }] = useMutation(taskDone, {
         variables: { id: id }
@@ -31,7 +29,7 @@ function SearchTask(props) {
                 id: id,
                 done: true,
             },
-            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+            refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
         setActive(false);
@@ -43,7 +41,7 @@ function SearchTask(props) {
             variables: {
                 id: id
             },
-            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+            refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
         setActive(false);

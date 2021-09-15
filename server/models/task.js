@@ -7,6 +7,7 @@ const taskSchema = new Schema({
     progress: Number,
     weight: Number,
     authorId: String,
+    assigneeId: String,
     parentId: String,
     date: String,
     time: String,
