@@ -25,7 +25,7 @@ function FriendRequestForm() {
 
     if (error) console.log(JSON.stringify(error, null, 2));
     return (
-        <div className={style.FRWrapper}>
+        <div>
             <h3>Add friends</h3>
             <div>
                 <p>Email: </p>

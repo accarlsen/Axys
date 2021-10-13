@@ -3,6 +3,7 @@ import React from 'react';
 import { getFriends } from '../../../components/queries';
 
 import style from './../network.module.css';
+import FriendPreview from './friendPreview';
 
 function FriendsList() {
 
@@ -15,9 +16,9 @@ function FriendsList() {
     if(data && data.friends.length > 0) return (
         <div className={style.FRListWrapper}>
             {console.log(data.friends)}
-            <h3>Friends: </h3>
+            {/*<h3>Friends: </h3>*/}
             {data.friends.map((friend) => (
-                <span>{friend.fname  + " " + friend.lname}</span>
+                <FriendPreview friend={friend} />
             ))}
         </div>
     )
