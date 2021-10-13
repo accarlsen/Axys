@@ -198,13 +198,13 @@ const RootQuery = new GraphQLObjectType({
         friends: {
             type: new GraphQLList(PersonType),
             async resolve(parent, args, context) {
-                const person = await Person.findOne({ id: context.personId });
+                const person = await Person.findById(context.personId);
                 if (person === null || person === undefined) {
                     throw new Error('Failed to find person in database');
                 }
-                console.log("name: ")
-                console.log("name: " + person.fname)
-                return Person.find({ id: {$in:person.friendIds} });
+                console.log(person.friendIds[0])
+                console.log(person.friendIds[1])
+                return Person.find({ '_id': {$in:person.friendIds} }); //Does'nt work with id, must be '_id' since string-array
                 
             }
         },
