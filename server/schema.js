@@ -491,30 +491,38 @@ const Mutation = new GraphQLObjectType({
 
                 //Add sender to recipient's friend list
                 await Person.findByIdAndUpdate(
-                    context.personId,
-                    {
-                        $push: { friendIds: friendRequest.senderId }
-                    },
-                    { new: true }
+                    context.personId, { $push: { friendIds: friendRequest.senderId } }, { new: true }
                 );
 
                 //Add reciever to sender's friend list
                 await Person.findByIdAndUpdate(
-                    friendRequest.senderId,
-                    {
-                        $push: { friendIds: context.personId }
-                    },
-                    { new: true }
+                    friendRequest.senderId, { $push: { friendIds: context.personId } }, { new: true }
                 );
 
                 //Modify friend request with given answer
                 return FriendRequest.findByIdAndUpdate(
-                    args.id,
-                    {
-                        answer: true
-                    },
-                    { new: true }
+                    args.id, { answer: true }, { new: true }
                 );
+            }
+        },
+        removeFriend: {
+            type: PersonType,
+            args: {
+                friendId: {type: GraphQLID}
+            },
+            async resolve(parent, args, context){
+                //Validation of recipient unecessary, 
+                //will only remove the specific person if already in network
+
+                //Remove the removing party from the other party's network
+                await Person.findByIdAndUpdate(
+                    args.friendId, { $pull: {friendIds: context.personId} }, {new: true}
+                )
+
+                //Remove the other party form the remover's network
+                return Person.findByIdAndUpdate(
+                    context.personId, { $pull: {friendIds: args.friendId} }, {new: true}
+                )
             }
         },
         taskDone: {
