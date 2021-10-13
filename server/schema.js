@@ -514,6 +514,10 @@ const Mutation = new GraphQLObjectType({
                 //Validation of recipient unecessary, 
                 //will only remove the specific person if already in network
 
+                //Remove shared tasks?
+
+                //Remove or invalidate saved friend requests (cannot send a new friend request atm.)
+
                 //Remove the removing party from the other party's network
                 await Person.findByIdAndUpdate(
                     args.friendId, { $pull: {friendIds: context.personId} }, {new: true}

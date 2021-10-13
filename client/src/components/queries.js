@@ -146,6 +146,14 @@ const answerFriendRequest = gql`
   }
 `
 
+const removeFriend = gql`
+  mutation RemoveFriend($friendId: ID){
+    removeFriend(friendId: $friendId){
+      id
+    }
+  }
+`
+
 const taskDone = gql`
   mutation TaskDone($id: ID, $done: Boolean){
     taskDone(id: $id, done: $done){
@@ -193,6 +201,7 @@ export {
   addTask,
   sendFriendRequest,
   answerFriendRequest,
+  removeFriend,
   taskDone,
   deleteTask,
   addPerson,
