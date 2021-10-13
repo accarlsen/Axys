@@ -1,12 +1,16 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
 
 const getPerson = gql`
-  query($id: ID!){ 
+  query ($id: ID){ 
     person(id: $id) {
       id
       fname
       lname
-      email
+      friends{
+        id
+        fname
+        lname
+      }
     }
   }
 `;
@@ -51,6 +55,16 @@ const getFriendRequests = gql`
     }
   }
 `;
+
+const getFriends = gql`
+  query {
+    friends {
+      id
+      fname
+      lname
+    }
+  }
+`
 
 const getSubTasks = gql`
     query {
@@ -174,6 +188,7 @@ export {
   getProjects,
   getTasks,
   getFriendRequests,
+  getFriends,
   getSubTasks,
   addTask,
   sendFriendRequest,

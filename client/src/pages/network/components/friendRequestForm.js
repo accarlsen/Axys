@@ -23,11 +23,15 @@ function FriendRequestForm() {
         setEmail("");
     }
 
-    if(error) console.log(JSON.stringify(error, null, 2));
+    if (error) console.log(JSON.stringify(error, null, 2));
     return (
         <div className={style.FRWrapper}>
-            <input type={"text"} placeholer={"email..."} value={email} onChange={(e) => setEmail(String(e.target.value))}></input>
-            <input type={"submit"} value="Send" onClick={e => { sendFriendRequestQuery(e) }}></input>
+            <h3>Add friends</h3>
+            <div>
+                <p>Email: </p>
+                <input type={"text"} placeholer={"email..."} value={email} onChange={(e) => setEmail(String(e.target.value))}></input>
+                <input type={"submit"} value="Send" onClick={e => { sendFriendRequestQuery(e) }}></input>
+            </div>
         </div>
     )
 }

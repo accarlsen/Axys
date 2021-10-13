@@ -21,8 +21,6 @@ function TaskList() {
     //Queries
     const { loading, error, data } = useQuery(getTasks);
 
-    
-
     //UseEffect, runs upon any update to component
     useEffect(() => {
         const handleDown = (event) => {
@@ -87,7 +85,7 @@ function TaskList() {
                     <Task task={task} index={i + 1} />
                 ))}
             </div>
-            <CreateTask active={taskActive} activationLetter={activationLetter} />
+            <CreateTask active={taskActive} activationLetter={activationLetter}/>
             <SearchTask active={searchActive} activationNumber={activationNumber} tasks={data.tasks} />
         </div>
     )

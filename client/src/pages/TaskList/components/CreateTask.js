@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { addTask, getTasks } from '../../../components/queries';
+import { addTask, getFriends, getPerson, getTasks } from '../../../components/queries';
 import { printIntrospectionSchema } from 'graphql';
 
 import style from './../taskList.module.css'
@@ -12,6 +12,10 @@ function CreateTask(props) {
     const [newTask, setNewTask] = useState(false);
 
     //Queries and mutations
+    const { loading:loadingF, error:errorF, data:dataF } = useQuery(getPerson, {
+        variables: { id: localStorage.getItem("personId") }
+    });
+
     const [AddTask, { error }] = useMutation(addTask, {
         variables: { name }
     })
@@ -60,7 +64,8 @@ function CreateTask(props) {
     };
 
     //DOM
-    if (newTask) {
+    if(dataF) console.log(dataF)
+    if (newTask && dataF) {
         return (
             <div className={style.CTWrapper} onKeyDown={handleKeyDown}>
                 <input className="inputNoBorder" autoFocus={true} value={name} placeholder={"name..."} onChange={e => { setName(String(e.target.value)); }}></input>

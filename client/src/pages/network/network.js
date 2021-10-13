@@ -6,10 +6,13 @@ import style from './network.module.css';
 
 function Network() {
 
-    return(
+    return (
         <div className={style.wrapper}>
-            <FriendRequestForm />
-            <FriendRequestList />
+            <div className={style.innerWrapper}>
+                <h1>Network</h1>
+                <FriendRequestForm />
+                <FriendRequestList />
+            </div>
         </div>
     )
 }

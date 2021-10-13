@@ -161,7 +161,7 @@ const RootQuery = new GraphQLObjectType({
         person: {
             type: PersonType,
             args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
+            resolve(parent, args, context) {
                 return Person.findById(args.id);
             }
         },
@@ -199,7 +199,13 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(PersonType),
             async resolve(parent, args, context) {
                 const person = await Person.findOne({ id: context.personId });
+                if (person === null || person === undefined) {
+                    throw new Error('Failed to find person in database');
+                }
+                console.log("name: ")
+                console.log("name: " + person.fname)
                 return Person.find({ id: {$in:person.friendIds} });
+                
             }
         },
         /*searchFriends: {
