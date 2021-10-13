@@ -8,10 +8,13 @@ function Network() {
 
     return (
         <div className={style.wrapper}>
-            <div className={style.innerWrapper}>
+            <div className={style.rightWrapper}>
                 <h1>Network</h1>
                 <FriendRequestForm />
                 <FriendRequestList />
+            </div>
+            <div>
+                
             </div>
         </div>
     )
