@@ -31,7 +31,7 @@ function FriendPreview(props) {
                 <p className="p">{"Co-Founder & COO @ Favn Software"}</p>
             </div>
             <div>
-                <input type={"submit"} value="Accept" onClick={e => { }}></input>
+                <input className="button" type={"submit"} value="Accept" onClick={e => { }}></input>
             </div>
         </div>
     )

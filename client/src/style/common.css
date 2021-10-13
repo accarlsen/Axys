@@ -14,20 +14,28 @@
     background-color: var(--background);
     color: var(--text-off);
     cursor: pointer;
-    transition: 0.3s, smooth;
+    border: solid 1px var(--shadow);
+    transition: smooth, 0.2s;
 }
 
 .red{ border: solid 2px var(--red); }
 .green{ border: solid 2px var(--green) }
-.grey{ border: solid 2px var(--grey-dark) }
-
-.button:hover, .button:focus{
-    transform: scale(1.03);
+.grey{ 
     background-color: var(--grey);
 }
 
-.title2{
-    font-size: 1.5rem;
+.button:hover{  background-color: var(--greyer) }
+.button:focus{  border: solid 1px var(--shadow); }
+
+/*
+.button:hover, .button:focus{
+    transform: scale(1.03);
+    background-color: var(--grey);
+}*/
+
+.p{
+    font-size: 14px;
+    margin: 0.3rem 0 0.3rem 0;
 }
 
 .input{
