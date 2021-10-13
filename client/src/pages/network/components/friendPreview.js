@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
-import { answerFriendRequest, removeFriend } from '../../../components/queries';
+import { answerFriendRequest, getFriends, removeFriend } from '../../../components/queries';
 
 import style from './../network.module.css';
 
@@ -15,7 +15,8 @@ function FriendPreview(props) {
         RemoveFriend({
             variables: { 
                 friendId: props.friend.id
-            }
+            },
+            refetchQueries: [{ query: getFriends }]
         });
     }
 

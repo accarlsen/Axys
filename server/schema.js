@@ -118,6 +118,7 @@ const FriendRequestType = new GraphQLObjectType({
         senderId: { type: GraphQLString },
         recieverId: { type: GraphQLString },
         answer: { type: GraphQLBoolean },
+        valid: {type: GraphQLBoolean},
         sender: {
             type: PersonType,
             resolve(parent, args) {
@@ -394,7 +395,8 @@ const Mutation = new GraphQLObjectType({
                 //Check if request already sent to recipient
                 const similarRequests = await FriendRequest.findOne({
                     senderId: context.personId,
-                    recieverId: reciever.id
+                    recieverId: reciever.id,
+                    valid: true
                 })
                 console.log(similarRequests)
                 if (similarRequests !== undefined && similarRequests !== null) {
@@ -405,7 +407,8 @@ const Mutation = new GraphQLObjectType({
                 let friendRequest = new FriendRequest({
                     senderId: context.personId,
                     recieverId: reciever.id,
-                    answer: false
+                    answer: false,
+                    valid: true,
                 })
                 return friendRequest.save();
             }
@@ -516,7 +519,17 @@ const Mutation = new GraphQLObjectType({
 
                 //Remove shared tasks?
 
-                //Remove or invalidate saved friend requests (cannot send a new friend request atm.)
+                //Invalidate saved friend requests (cannot send a new friend request atm.)
+                await FriendRequest.updateOne( // remover -> removee
+                    {
+                        $or: [
+                            {senderId: context.personId, recieverId: args.friendId, valid: true},
+                            {senderId: args.friendId, recieverId: context.personId, valid: true},
+                        ]
+                    },
+                    {valid: false},
+                    {}
+                )
 
                 //Remove the removing party from the other party's network
                 await Person.findByIdAndUpdate(
