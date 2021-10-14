@@ -16,7 +16,6 @@ function FriendsList() {
     if(data && data.friends.length > 0) return (
         <div className={style.FRListWrapper}>
             {console.log(data.friends)}
-            {/*<h3>Friends: </h3>*/}
             {data.friends.map((friend) => (
                 <FriendPreview friend={friend} />
             ))}
@@ -25,12 +24,11 @@ function FriendsList() {
     else if (data) return(
         <div>
             {console.log("no friends")}
-            <h3>Friends: </h3>
             <p className="p">{"Add friends to get started ->"}</p>
         </div>
     )
     return(
-        <div><h3>Friends: </h3></div>
+        <div></div>
     )
 }
 

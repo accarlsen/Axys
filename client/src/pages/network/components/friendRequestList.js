@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React, { useState } from 'react';
+import React from 'react';
 import { getFriendRequests } from '../../../components/queries';
 
 import style from './../network.module.css';
@@ -7,11 +7,10 @@ import FriendRequestPreview from './friendRequestPreview';
 
 function FriendRequestList() {
 
-    //Variables
-    const [email, setEmail] = useState("");
-
     //Queries and muattions
     const { loading, error, data } = useQuery(getFriendRequests)
+
+    //Render
     if(error) console.log(JSON.stringify(error, null, 2));
     if(loading) return(<span>Loading...</span>)
     if(data) return (

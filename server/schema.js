@@ -202,8 +202,6 @@ const RootQuery = new GraphQLObjectType({
                 if (person === null || person === undefined) {
                     throw new Error('Failed to find person in database');
                 }
-                console.log(person.friendIds[0])
-                console.log(person.friendIds[1])
                 return Person.find({ '_id': { $in: person.friendIds } }); //Does'nt work with id, must be '_id' since string-array
 
             }
@@ -230,7 +228,6 @@ const RootQuery = new GraphQLObjectType({
                 password: { type: GraphQLString }
             },
             async resolve(parent, args) {
-                console.log(args.email)
                 const person = await Person.findOne({ email: args.email });
                 if (!person) {
                     throw new Error('User does not exist');
@@ -398,7 +395,6 @@ const Mutation = new GraphQLObjectType({
                     recieverId: reciever.id,
                     valid: true
                 })
-                console.log(similarRequests)
                 if (similarRequests !== undefined && similarRequests !== null) {
                     throw new Error('Cannot send multiple requests to the same person');
                 }
@@ -526,9 +522,9 @@ const Mutation = new GraphQLObjectType({
                 //TODO: Remove shared tasks?
 
                 //Invalidate saved friend requests (cannot send a new friend request atm.)
-                await FriendRequest.updateOne( // remover -> removee
+                await FriendRequest.updateOne(
                     {
-                        $or: [
+                        $or: [ //Check for both possible combinations of senders and recipients
                             { senderId: context.personId, recieverId: args.friendId, valid: true },
                             { senderId: args.friendId, recieverId: context.personId, valid: true },
                         ]

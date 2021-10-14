@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
-import { answerFriendRequest, getFriends, removeFriend } from '../../../components/queries';
+import { getFriends, removeFriend } from '../../../components/queries';
 
 import style from './../network.module.css';
 
@@ -20,6 +20,7 @@ function FriendPreview(props) {
         });
     }
 
+    //Render
     if(error) console.log(JSON.stringify(error, null, 2));
     return (
         <div className={style.FPreviewWrapper}>

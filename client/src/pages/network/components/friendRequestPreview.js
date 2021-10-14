@@ -22,6 +22,7 @@ function FriendRequestPreview(props) {
         });
     }
 
+    //Render
     if (error) console.log(JSON.stringify(error, null, 2));
     return (
         <div className={style.FRPreviewWrapper}>

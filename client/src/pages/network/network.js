@@ -7,6 +7,7 @@ import style from './network.module.css';
 
 function Network() {
 
+    //Render
     return (
         <div className={style.wrapper}>
             <div className={`${style.center}`}>
