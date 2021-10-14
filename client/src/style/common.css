@@ -24,8 +24,25 @@
     background-color: var(--grey);
 }
 
-.button:hover{  background-color: var(--greyer) }
-.button:focus{  border: solid 1px var(--shadow); }
+.button-small{
+    width: fit-content;
+    font-family: 'Roboto', 'Arial';
+    font-style: normal;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 12px;
+    padding: 4px 10px 4px 10px;
+    background-color: var(--background);
+    color: var(--text-off);
+    cursor: pointer;
+    border: solid 1px var(--shadow);
+    transition: smooth, 0.2s;
+}
+
+.button:hover, .button-small:hover{  background-color: var(--greyer) }
+.button:focus, .button-small:focus{  border: solid 1px var(--shadow); }
+
+
 
 /*
 .button:hover, .button:focus{

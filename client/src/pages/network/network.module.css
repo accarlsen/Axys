@@ -3,17 +3,17 @@
     width: 100%;
     min-height: 100%;
     display: grid;
-    grid-template-columns: auto 13rem;
+    grid-template-columns: auto 15rem;
 }
 
 .rightWrapper{
-    width: 12rem;
+    width: 14rem;
     padding: 1rem;
     border-left: 1px solid var(--shadow);
 }
 
 .center{
-    margin-left: 13rem;
+    margin-left: 15rem;
     padding: 1rem;
 }
 
@@ -44,10 +44,40 @@
     width: 4rem;
     height: 4rem;
     object-fit: cover;
-    border-radius: 2.5rem;
+    border-radius: 50%;
 }
 
 .FPreviewName{
     font-size: 16px;
     font-weight: 500;
+}
+
+/* FRPreview */
+.FRPreviewWrapper{
+    display: grid;
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--shadow);
+}
+
+.FRPreviewTopGrid{
+    display: grid;
+    grid-template-columns: 3rem auto;
+    column-gap: 0.5rem;
+}
+
+.FRPreviewBottomGrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0.3rem;
+    width: fit-content;
+}
+
+.FRPreviewPicture{
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: 50%;
 }

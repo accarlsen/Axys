@@ -14,7 +14,7 @@ function FriendRequestList() {
     const { loading, error, data } = useQuery(getFriendRequests)
     if(error) console.log(JSON.stringify(error, null, 2));
     if(loading) return(<span>Loading...</span>)
-    if(data && data.friendRequests.length > 0) return (
+    if(data) return (
         <div className={style.FRListWrapper}>
             <h3>Friend requests: </h3>
             {data.friendRequests.map((friendReq) => (

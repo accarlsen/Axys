@@ -60,7 +60,7 @@ const TaskType = new GraphQLObjectType({
         weight: { type: GraphQLInt },
         parentId: { type: GraphQLID },
         authorId: { type: GraphQLString },
-        assigneeId: { type: GraphQLString},
+        assigneeId: { type: GraphQLString },
         date: { type: GraphQLString },
         time: { type: GraphQLString },
         dateDone: { type: GraphQLString },
@@ -95,7 +95,7 @@ const PersonType = new GraphQLObjectType({
         email: { type: GraphQLString },
         admin: { type: GraphQLBoolean },
         password: { type: GraphQLString },
-        friendIds: {type: GraphQLList( GraphQLString )},
+        friendIds: { type: GraphQLList(GraphQLString) },
         tasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {
@@ -105,7 +105,7 @@ const PersonType = new GraphQLObjectType({
         friends: {
             type: new GraphQLList(PersonType),
             resolve(parent, args) {
-                return Person.find({ id: {$in:parent.friendIds} });
+                return Person.find({ id: { $in: parent.friendIds } });
             }
         }
     })
@@ -118,7 +118,7 @@ const FriendRequestType = new GraphQLObjectType({
         senderId: { type: GraphQLString },
         recieverId: { type: GraphQLString },
         answer: { type: GraphQLBoolean },
-        valid: {type: GraphQLBoolean},
+        valid: { type: GraphQLBoolean },
         sender: {
             type: PersonType,
             resolve(parent, args) {
@@ -192,7 +192,7 @@ const RootQuery = new GraphQLObjectType({
         friendRequests: {
             type: new GraphQLList(FriendRequestType),
             resolve(parent, args, context) {
-                return FriendRequest.find({ recieverId: context.personId, answer: false })
+                return FriendRequest.find({ recieverId: context.personId, answer: false, valid: true })
             }
         },
         friends: {
@@ -204,8 +204,8 @@ const RootQuery = new GraphQLObjectType({
                 }
                 console.log(person.friendIds[0])
                 console.log(person.friendIds[1])
-                return Person.find({ '_id': {$in:person.friendIds} }); //Does'nt work with id, must be '_id' since string-array
-                
+                return Person.find({ '_id': { $in: person.friendIds } }); //Does'nt work with id, must be '_id' since string-array
+
             }
         },
         /*searchFriends: {
@@ -480,10 +480,10 @@ const Mutation = new GraphQLObjectType({
         },*/
         answerFriendRequest: {
             type: FriendRequestType,
-            args: { 
-                id: {type: GraphQLString},
-                answer: {type: GraphQLBoolean},
-                senderId: {type: GraphQLString}
+            args: {
+                id: { type: GraphQLString },
+                answer: { type: GraphQLBoolean },
+                senderId: { type: GraphQLString }
             },
             async resolve(parent, args, context) {
                 //Validate friend request
@@ -492,53 +492,59 @@ const Mutation = new GraphQLObjectType({
                     throw new Error('Failed to find friend-request in database');
                 }
 
-                //Add sender to recipient's friend list
-                await Person.findByIdAndUpdate(
-                    context.personId, { $push: { friendIds: friendRequest.senderId } }, { new: true }
-                );
+                if (args.answer) { //If accepted
+                    //Add sender to recipient's friend list
+                    await Person.findByIdAndUpdate(
+                        context.personId, { $push: { friendIds: friendRequest.senderId } }, { new: true }
+                    );
 
-                //Add reciever to sender's friend list
-                await Person.findByIdAndUpdate(
-                    friendRequest.senderId, { $push: { friendIds: context.personId } }, { new: true }
-                );
+                    //Add reciever to sender's friend list
+                    await Person.findByIdAndUpdate(
+                        friendRequest.senderId, { $push: { friendIds: context.personId } }, { new: true }
+                    );
 
-                //Modify friend request with given answer
-                return FriendRequest.findByIdAndUpdate(
-                    args.id, { answer: true }, { new: true }
+                    //Modify friend request with given answer
+
+                    return FriendRequest.findByIdAndUpdate(
+                        args.id, { answer: true }, { new: true }
+                    );
+                }
+                return FriendRequest.findByIdAndUpdate( //If rejected
+                    args.id, { valid: false }, { new: true }
                 );
             }
         },
         removeFriend: {
             type: PersonType,
             args: {
-                friendId: {type: GraphQLID}
+                friendId: { type: GraphQLID }
             },
-            async resolve(parent, args, context){
+            async resolve(parent, args, context) {
                 //Validation of recipient unecessary, 
                 //will only remove the specific person if already in network
 
-                //Remove shared tasks?
+                //TODO: Remove shared tasks?
 
                 //Invalidate saved friend requests (cannot send a new friend request atm.)
                 await FriendRequest.updateOne( // remover -> removee
                     {
                         $or: [
-                            {senderId: context.personId, recieverId: args.friendId, valid: true},
-                            {senderId: args.friendId, recieverId: context.personId, valid: true},
+                            { senderId: context.personId, recieverId: args.friendId, valid: true },
+                            { senderId: args.friendId, recieverId: context.personId, valid: true },
                         ]
                     },
-                    {valid: false},
+                    { valid: false },
                     {}
                 )
 
                 //Remove the removing party from the other party's network
                 await Person.findByIdAndUpdate(
-                    args.friendId, { $pull: {friendIds: context.personId} }, {new: true}
+                    args.friendId, { $pull: { friendIds: context.personId } }, { new: true }
                 )
 
                 //Remove the other party form the remover's network
                 return Person.findByIdAndUpdate(
-                    context.personId, { $pull: {friendIds: args.friendId} }, {new: true}
+                    context.personId, { $pull: { friendIds: args.friendId } }, { new: true }
                 )
             }
         },
