@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getFriends, removeFriend } from '../../../components/queries';
 
 import style from './../network.module.css';
@@ -7,13 +8,13 @@ import style from './../network.module.css';
 function FriendPreview(props) {
 
     //Queries and muattions
-    const [RemoveFriend, { error}] = useMutation(removeFriend);
+    const [RemoveFriend, { error }] = useMutation(removeFriend);
 
     //Methods
     const removeFriendQuery = (event) => {
         event.preventDefault(); //Enable custom behaviour
         RemoveFriend({
-            variables: { 
+            variables: {
                 friendId: props.friend.id
             },
             refetchQueries: [{ query: getFriends }]
@@ -21,12 +22,16 @@ function FriendPreview(props) {
     }
 
     //Render
-    if(error) console.log(JSON.stringify(error, null, 2));
+    if (error) console.log(JSON.stringify(error, null, 2));
     return (
         <div className={style.FPreviewWrapper}>
-            <img className={style.FPreviewPicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
+            <Link to={"/profile/" + props.friend.id}>
+                <img className={style.FPreviewPicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
+            </Link>
             <div>
-                <p className={` p ${style.FPreviewName}`}>{props.friend.fname + " " + props.friend.lname}</p>
+                <Link to={"/profile/" + props.friend.id}>
+                    <p className={` p ${style.FPreviewName}`}>{props.friend.fname + " " + props.friend.lname}</p>
+                </Link>
                 <p className="p">{"Co-Founder & COO @ Favn Software"}</p>
             </div>
             <div>

@@ -1,11 +1,16 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
 
 const getProfile = gql`
-  query { 
-    profile {
+  query ($id: ID){ 
+    profile(id: $id) {
       id
       fname
       lname
+      friends{
+        id
+        fname
+        lname
+      }
     }
   }
 `;

@@ -18,7 +18,10 @@ function NavBar() {
         setState({ ...state, [event.target.name]: event.target.checked });
     };
 
-    const { loading, error, data } = useQuery(getProfile);
+    const userId = localStorage.getItem("personId")
+    const { loading, error, data } = useQuery(getProfile, {
+        variables: { id: userId }
+    });
 
     useEffect(
         () => {
@@ -31,8 +34,6 @@ function NavBar() {
     const routeChange = () => {
         history.push("/login")
     }
-
-    if(error) console.log(JSON.stringify(error, null, 2));
 
     return (
         <animated.div className="navbar" style={props}>
@@ -52,7 +53,7 @@ function NavBar() {
                 }}>Log out</a></li>}
                 {!localStorage.getItem('token') && <li><Link to="/login">Login</Link></li>}
                 {!localStorage.getItem('token') && <li><Link to="/signup">Create user</Link></li>}
-                {data && localStorage.getItem('token') && <li><Link to="/profile">{data.profile.fname}</Link></li>}
+                {data && localStorage.getItem('token') && <li><Link to={"/profile/" + userId}>{data.profile.fname}</Link></li>}
             </div>
         </animated.div>
     )

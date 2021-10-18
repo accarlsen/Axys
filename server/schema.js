@@ -162,9 +162,18 @@ const RootQuery = new GraphQLObjectType({
             type: PersonType,
             args: { id: { type: GraphQLID } },
             async resolve(parent, args, context) {
+                //Check if self
+                if(args.id === context.personId) return Person.findOne({'_id': context.personId});
 
+                //Check if friend
+                const target = await Person.findOne({'_id': args.id});
+                if(target.friendIds.includes(context.personId)) return target
 
-                return Person.findOne({'_id': context.personId});
+                //Check if person is sender of friend request
+                const targetFriendReq = await FriendRequest.findOne({senderId: args.id, recieverId: context.personId})
+                if(targetFriendReq.senderId === args.id) return target
+
+                return null
             }
         },
         projects: {

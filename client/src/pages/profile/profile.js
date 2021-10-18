@@ -1,13 +1,18 @@
 import { useQuery } from '@apollo/client';
-import React from 'react';
+import React, { useState } from 'react';
 import { getProfile } from '../../components/queries';
 
 import style from './profile.module.css';
 
 function Profile() {
 
+    const id = window.location.href.split("/")[window.location.href.split("/").length -1]
+    console.log(id)
+    
     //Queries
-    const {loading, error, data} = useQuery(getProfile)
+    const { loading, error, data } = useQuery(getProfile, {
+        variables: { id: id }
+    });
 
     //Render
     if(data) return (

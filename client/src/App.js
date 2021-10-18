@@ -34,7 +34,7 @@ function App() {
             <NavBar />
             <Network />
           </Route>
-          <Route exact path="/profile">
+          <Route path="/profile/">
             <NavBar />
             <Profile />
           </Route>
