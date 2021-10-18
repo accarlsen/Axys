@@ -9,6 +9,7 @@ import NavBar from './components/NavBar';
 import {AuthContext} from './context/auth-context';
 import TaskList from './pages/TaskList/taskList';
 import Network from './pages/network/network';
+import Profile from './pages/profile/profile';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -32,6 +33,10 @@ function App() {
           <Route exact path="/network">
             <NavBar />
             <Network />
+          </Route>
+          <Route exact path="/profile">
+            <NavBar />
+            <Profile />
           </Route>
           <Route path="/">
             <NavBar />

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './../style/navbar.css';
 import { Link, useHistory } from "react-router-dom";
 import { useSpring, animated } from 'react-spring'
-import { getPerson } from './queries';
+import { getProfile } from './queries';
 import { useQuery } from '@apollo/client';
 
 function NavBar() {
@@ -18,9 +18,7 @@ function NavBar() {
         setState({ ...state, [event.target.name]: event.target.checked });
     };
 
-    const { loading, error, data } = useQuery(getPerson, {
-        variables: { id: localStorage.getItem("personId") }
-    });
+    const { loading, error, data } = useQuery(getProfile);
 
     useEffect(
         () => {
@@ -33,6 +31,8 @@ function NavBar() {
     const routeChange = () => {
         history.push("/login")
     }
+
+    if(error) console.log(JSON.stringify(error, null, 2));
 
     return (
         <animated.div className="navbar" style={props}>
@@ -52,7 +52,7 @@ function NavBar() {
                 }}>Log out</a></li>}
                 {!localStorage.getItem('token') && <li><Link to="/login">Login</Link></li>}
                 {!localStorage.getItem('token') && <li><Link to="/signup">Create user</Link></li>}
-                {data && localStorage.getItem('token') && <li><Link to="/profile">{data.person.fname}</Link></li>}
+                {data && localStorage.getItem('token') && <li><Link to="/profile">{data.profile.fname}</Link></li>}
             </div>
         </animated.div>
     )

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { addTask, getFriends, getPerson, getTasks } from '../../../components/queries';
+import { addTask, getProfile, getTasks } from '../../../components/queries';
 import { printIntrospectionSchema } from 'graphql';
 
 import style from './../taskList.module.css'
@@ -12,9 +12,7 @@ function CreateTask(props) {
     const [newTask, setNewTask] = useState(false);
 
     //Queries and mutations
-    const { loading:loadingF, error:errorF, data:dataF } = useQuery(getPerson, {
-        variables: { id: localStorage.getItem("personId") }
-    });
+    const { loading:loadingF, error:errorF, data:dataF } = useQuery(getProfile);
 
     const [AddTask, { error }] = useMutation(addTask, {
         variables: { name }

@@ -1,16 +1,11 @@
 import { gql, useQuery, useMutation } from '@apollo/client';
 
-const getPerson = gql`
-  query ($id: ID){ 
-    person(id: $id) {
+const getProfile = gql`
+  query { 
+    profile {
       id
       fname
       lname
-      friends{
-        id
-        fname
-        lname
-      }
     }
   }
 `;
@@ -192,7 +187,7 @@ const login = gql`
 
 
 export {
-  getPerson,
+  getProfile,
   getProjects,
   getTasks,
   getFriendRequests,

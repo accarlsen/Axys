@@ -1,0 +1,37 @@
+.wrapper{
+    margin-top: 10rem;
+    width: 100%;
+    max-height: calc(100vh - 8rem);
+}
+
+.cardWrapper{
+    position: relative;
+    max-width: 30rem;
+    height: fit-content;
+    margin: auto;
+}
+
+.profilePicture{
+    position: absolute;
+    top: -3.5rem;
+    left: calc(50% - 3.5rem);
+
+    object-fit: cover;
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+}
+
+.card{
+    border: 1px solid var(--shadow);
+    background-color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 0.5rem;
+}
+
+.profileTitle{
+    font-size: x-large;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}

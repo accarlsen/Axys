@@ -158,11 +158,13 @@ const RootQuery = new GraphQLObjectType({
                 return Task.findById(args.id);
             }
         },
-        person: {
+        profile: {
             type: PersonType,
             args: { id: { type: GraphQLID } },
-            resolve(parent, args, context) {
-                return Person.findById(args.id);
+            async resolve(parent, args, context) {
+
+
+                return Person.findOne({'_id': context.personId});
             }
         },
         projects: {
@@ -281,7 +283,7 @@ const Mutation = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                const person = await Person.findById(context.personId);
+                const person = await Person.findOne({ '_id': context.personId });
                 if (!person.admin) {
                     throw new Error('Unauthorized user');
                 }
