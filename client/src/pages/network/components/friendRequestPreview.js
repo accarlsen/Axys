@@ -7,7 +7,7 @@ import style from './../network.module.css';
 
 function FriendRequestPreview(props) {
 
-    //Queries and muattions
+    //Queries and mutations
     const [AnswerFriendRequest, { error }] = useMutation(answerFriendRequest)
 
     //Methods
