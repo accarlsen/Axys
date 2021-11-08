@@ -348,6 +348,55 @@ const Mutation = new GraphQLObjectType({
                     });
             }
         },
+        editProfile: {
+            type: PersonType,
+            args: {
+                curPassword: {type: GraphQLString},
+                newFName: {type: GraphQLString},
+                newLName: {type: GraphQLString},
+                newEmail: {type: GraphQLString},
+                newPassword: {type: GraphQLString}
+            },
+            async resolve(parent, args, context){
+                
+                if (!context.isAuth) { //Auth
+                    throw new Error('Unauthenticated user');
+                }
+
+                const person = await Person.findOne({ '_id': context.personId });
+                const isEqual = await bcrypt.compare(args.curPassword, person.password);
+                if (!isEqual) {
+                    throw new Error('Wrong password'); //Change to invalid input after testing
+                }
+
+                let newPasswordHashed;
+                if(args.newPassword.split("").length === 0){
+                    newPasswordHashed = person.password;
+                } else{
+                    newPasswordHashed = await bcrypt.hash(args.password, 12);
+                }
+                console.log(args.curPassword)
+
+                console.log(args.newFName)
+                console.log(args.newLName)
+                console.log(args.newEmail)
+                console.log(args.newPassword)
+                console.log(newPasswordHashed)
+                /*
+                return Person.findByIdAndUpdate(
+                    context.personId, 
+                    {   
+                        fname: args.newFName,
+                        lname: args.newLName,
+                        email: args.newEmail,
+                        password: args.newPassword 
+                    }, 
+                    { new: true }
+                );*/
+                return person;
+
+            }
+        },
         addTask: {
             type: TaskType,
             args: {

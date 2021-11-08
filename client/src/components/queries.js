@@ -181,6 +181,26 @@ const addPerson = gql`
   }
 `;
 
+const editProfile = gql`
+  mutation EditProfile(
+    $curPassword: String, 
+    $newFName: String, 
+    $newLName: String, 
+    $newEmail: String, 
+    $newPassword: String
+    ){
+    editProfile(
+      curPassword: $curPassword, 
+      newFName: $newFName, 
+      newLName: $newLName, 
+      newEmail: $newEmail, 
+      newPassword: $newPassword
+    ){
+      fname
+    }
+  }
+`;
+
 const login = gql`
   query Login($email: String, $password: String){
     login(email: $email, password: $password){
@@ -207,6 +227,7 @@ export {
   taskDone,
   deleteTask,
   addPerson,
+  editProfile,
   addProject,
   login
 };

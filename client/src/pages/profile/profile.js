@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { getProfile } from '../../components/queries';
+import { editProfile, getProfile } from '../../components/queries';
 
 import style from './profile.module.css';
 
@@ -35,13 +35,34 @@ function ProfileRenderer(props) {
     const [lname, setLName] = useState(data.profile.lname);
     const [email, setEmail] = useState(data.profile.email);
     const [password, setPassword] = useState("");
+    const [curPassword, setCurPassword] = useState("");
 
     //Mutations
+    const [EditProfile, { error }] = useMutation(editProfile, {
+        variables: { fname, lname, email, password }
+    })
 
-    //if(error){()=> history.pushState("/profile/" + id) }
+    //Methods
+    const editProfileQuery = (event) => {
+        event.preventDefault(); //Enable custom behaviour
+        EditProfile({
+            variables: {
+                curPassword: "Adonde",
+                newFName: fname,
+                newLName: lname,
+                newEmail: email,
+                newPassword: password,
+            }
+        });
+        setCurPassword("")
+        setPassword("")
+        setEdit(false)
+    }
+
+    if(error) console.log(error.message)
 
     //Render
-    if (data && !edit) return (
+    if (!edit) return (
         <div className={style.wrapper}>
             <div className={style.cardWrapper}>
                 <img className={style.profilePicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
@@ -58,7 +79,7 @@ function ProfileRenderer(props) {
         </div>
     )
 
-    if (data && edit) {
+    if (edit) {
         return (
             <div className={style.wrapper}>
                 <div className={style.cardWrapper}>
@@ -87,17 +108,13 @@ function ProfileRenderer(props) {
 
                         <div className={style.editSubmitGrid}>
                             <button className="button" onClick={() => setEdit(false)}>Cancel</button>
-                            <button className="button green">Save</button>
+                            <button className="button green" onClick={(e) => editProfileQuery(e)}>Save</button>
                         </div>
                     </div>
                 </div>
             </div>
         )
     }
-
-    return (
-        <div></div>
-    )
 }
 
 export default Profile;
