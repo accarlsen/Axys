@@ -50,11 +50,11 @@ function ProfileRenderer(props) {
         event.preventDefault(); //Enable custom behaviour
         EditProfile({
             variables: {
-                curPassword: "Adonde",
+                curPassword: curPassword,
                 newFName: fname,
                 newLName: lname,
                 newEmail: email,
-                newPassword: password,
+                newPassword: passwordConf,
             },
             refetchQueries: [{ query: getProfile, variables: { id: id }} ]
         });
@@ -127,14 +127,14 @@ function ProfileRenderer(props) {
 
                         <div className={style.editSubmitGrid}>
                             <button className="button" onClick={() => { setEdit(false); resetStates();} }>Cancel</button>
-                            <button className="button green" onClick={(e) => editProfileQuery(e)}>Save</button>
+                            <button className="button green" onClick={() => setConfirm(true)}>Save</button>
                         </div>
                     </div>
                 </div>
             </div>
         )
     }
-    else if (edit && !confirm) { //Confirm password view
+    else if (edit && confirm) { //Confirm password view
         return(
             <div className={style.wrapper}>
                 <div className={style.cardWrapper}>
@@ -143,41 +143,20 @@ function ProfileRenderer(props) {
 
                     <div className={style.card}>
                         <div className={style.editWrapper}>
-                            {fname === data.profile.fname && <p>{"Changed first name from " + data.profile.fname + " to " + fname + "."}</p>}
-                            {lname === data.profile.lname && <p>{"Changed last name from " + data.profile.lname + " to " + lname + "."}</p>}
-                            {email === data.profile.email && <p>{"Changed email from " + data.profile.email + " to " + email + "."}</p>}
-                            {password === data.profile.password && <p>{"Changed password."}</p>}
+                            {fname !== data.profile.fname && <p>{"Changed first name from " + data.profile.fname + " to " + fname + "."}</p>}
+                            {lname !== data.profile.lname && <p>{"Changed last name from " + data.profile.lname + " to " + lname + "."}</p>}
+                            {email !== data.profile.email && <p>{"Changed email from " + data.profile.email + " to " + email + "."}</p>}
+                            {password !== data.profile.password && password !== "" && <p>{"Changed password."}</p>}
 
                             <div className={style.editFormGrid}>
-                                <label>First Name</label>
-                                <input className="input" value={fname} onChange={e => { setFName(String(e.target.value)); }} ></input>
-                            </div>
-                            <div className={style.editFormGrid}>
-                                <label>Last Name</label>
-                                <input className="input" onChange={e => { setLName(String(e.target.value)); }} value={lname}></input>
-                            </div>
-                            <div className={style.editFormGrid}>
-                                <label>Email</label>
-                                <input className="input" onChange={e => { setEmail(String(e.target.value)); }} value={email}></input>
-                            </div>
-                            <div className={style.editFormGrid}>
-                                <label>Password</label>
-                                {editPassword? 
-                                    <div>
-                                        <input className="input" type="password" placeholder="New password" onChange={e => { setPassword(String(e.target.value)); }} value={password}></input>
-                                        <input className="input mt-1" type="password" placeholder="Confirm password" onChange={e => { setPasswordConf(String(e.target.value)); }} value={passwordConf}></input>
-
-                                    </div>
-                                    :
-                                    <button className="button" onClick={() => setEditPassword(true)}>Change password</button>
-                                }
-
+                                <label>Current password:</label>
+                                <input className="input" autoFocus={true} type="password" placeholder="New password" onChange={e => { setCurPassword(String(e.target.value)); }} value={curPassword}></input>
                             </div>
                         </div>
 
                         <div className={style.editSubmitGrid}>
-                            <button className="button" onClick={() => { setEdit(false); resetStates();} }>Cancel</button>
-                            <button className="button green" onClick={(e) => editProfileQuery(e)}>Save</button>
+                            <button className="button" onClick={() => { setConfirm(false);} }>Cancel</button>
+                            <button className={curPassword.length > 0 ? "button green" : "buttonInacitve"} onClick={(e) => { if(curPassword.length > 0) editProfileQuery(e); setConfirm(false); setEdit(false);}}>Confirm Changes</button>
                         </div>
                     </div>
                 </div>
