@@ -28,7 +28,8 @@ function ProfileRenderer(props) {
     const [editPassword, setEditPassword] = useState(false);
     const [confirm, setConfirm] = useState(false);
 
-    //
+    //Log/Validity-states
+    const [reqConf, setReqConf] = useState(false);
 
     //Input-states
     const [fname, setFName] = useState(data.profile.fname);
@@ -60,6 +61,8 @@ function ProfileRenderer(props) {
         });
         resetStates()
         setEdit(false)
+        setConfirm(false)
+        setEditPassword(false)
     }
 
     const resetStates = () => {
@@ -69,6 +72,21 @@ function ProfileRenderer(props) {
         setFName(data.profile.fname)
         setLName(data.profile.lname)
         setEmail(data.profile.email)
+    }
+
+    const checkForChanges = () => {
+        let changed = false;
+        if(data.profile.fname !== fname) changed = true;
+        if(data.profile.lname !== lname) changed = true;
+        if(data.profile.email !== email) changed = true;
+        if(password !== "") changed = true; 
+        
+        if(editPassword){
+            if(password === passwordConf && passwordConf !== "") changed = true;
+            else changed = false
+        }
+
+        return changed
     }
 
     if(error) console.log(error.message)
@@ -126,8 +144,8 @@ function ProfileRenderer(props) {
                         </div>
 
                         <div className={style.editSubmitGrid}>
-                            <button className="button" onClick={() => { setEdit(false); resetStates();} }>Cancel</button>
-                            <button className="button green" onClick={() => setConfirm(true)}>Save</button>
+                            <button className="button" onClick={() => { setEdit(false); editPassword(false); resetStates();} }>Cancel</button>
+                            <button className={checkForChanges() ? "button green" : "buttonInactive"} onClick={() => { if(checkForChanges()) setConfirm(true)}}>Save</button>
                         </div>
                     </div>
                 </div>
@@ -156,7 +174,7 @@ function ProfileRenderer(props) {
 
                         <div className={style.editSubmitGrid}>
                             <button className="button" onClick={() => { setConfirm(false);} }>Cancel</button>
-                            <button className={curPassword.length > 0 ? "button green" : "buttonInacitve"} onClick={(e) => { if(curPassword.length > 0) editProfileQuery(e); setConfirm(false); setEdit(false);}}>Confirm Changes</button>
+                            <button className={curPassword.length > 0 ? "button green" : "buttonInactive"} onClick={(e) => { if(curPassword.length > 0) editProfileQuery(e); }}>Confirm Changes</button>
                         </div>
                     </div>
                 </div>

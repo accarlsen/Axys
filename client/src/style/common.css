@@ -42,7 +42,7 @@
 .button:hover, .button-small:hover{  background-color: var(--greyer) }
 .button:focus, .button-small:focus{  border: solid 1px var(--shadow); }
 
-.buttonInacitve{
+.buttonInactive{
     width: fit-content;
     font-family: 'Roboto', 'Arial';
     font-style: normal;
