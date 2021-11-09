@@ -363,38 +363,32 @@ const Mutation = new GraphQLObjectType({
                     throw new Error('Unauthenticated user');
                 }
 
+                //Validate current password
                 const person = await Person.findOne({ '_id': context.personId });
                 const isEqual = await bcrypt.compare(args.curPassword, person.password);
                 if (!isEqual) {
                     throw new Error('Wrong password'); //Change to invalid input after testing
                 }
 
+                //Check wether the password should be changed or not
                 let newPasswordHashed;
                 if(args.newPassword.split("").length === 0){
                     newPasswordHashed = person.password;
                 } else{
                     newPasswordHashed = await bcrypt.hash(args.password, 12);
                 }
-                console.log(args.curPassword)
-
-                console.log(args.newFName)
-                console.log(args.newLName)
-                console.log(args.newEmail)
-                console.log(args.newPassword)
-                console.log(newPasswordHashed)
-                /*
+                
+                //Update db and return updated person-document
                 return Person.findByIdAndUpdate(
                     context.personId, 
                     {   
                         fname: args.newFName,
                         lname: args.newLName,
                         email: args.newEmail,
-                        password: args.newPassword 
+                        password: newPasswordHashed 
                     }, 
                     { new: true }
-                );*/
-                return person;
-
+                );
             }
         },
         addTask: {

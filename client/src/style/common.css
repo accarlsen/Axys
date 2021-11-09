@@ -198,3 +198,5 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
   }
+
+.mt-1{ margin-top: 0.5rem;}
