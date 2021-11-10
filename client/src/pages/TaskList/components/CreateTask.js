@@ -5,16 +5,17 @@ import { addTask, getProfile, getTasks } from '../../../components/queries';
 import style from './../taskList.module.css'
 
 function CreateTask(props) {
-    
+
     //Variables
     const [name, setName] = useState("");
     const [newTask, setNewTask] = useState(false);
+    const [searchFriends, setSearchFriends] = useState(false);
 
     const id = localStorage.getItem("personId");
 
     //Queries and mutations
-    const { loading:loadingF, error:errorF, data:dataF } = useQuery(getProfile, {
-        variables: {id: id}
+    const { loading: loadingF, error: errorF, data: dataF } = useQuery(getProfile, {
+        variables: { id: id }
     });
 
     const [AddTask, { error }] = useMutation(addTask, {
@@ -39,24 +40,34 @@ function CreateTask(props) {
         setNewTask(false);
         setName("");
     }
-   
+
     //UseEffect, runs when component activation status is updated
     useEffect(() => {
         if (!newTask) {
             setNewTask(props.active)
             setName(props.activationLetter)
-        } else{
+        } else {
             setNewTask(props.active)
         }
     }, [props.active]);
 
     //Keyboard input handler
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter' && (String(name.replace(/\s/g, '')).length >= 1)) {
+        if (!searchFriends && event.key === 'Enter' && (String(name.replace(/\s/g, '')).length >= 1)) {
             addTaskQuery(event);
         }
-        else if (event.key === 'Escape') {
+        if (searchFriends && event.key === 'Enter') {
+            setSearchFriends(false)
+        }
+        if (event.key === '@') {
+            console.log("@")
+            setSearchFriends(true)
+        }
+        else if (!searchFriends && event.key === 'Escape') {
             cancel();
+        }
+        else if (searchFriends && event.key === 'Escape') {
+            setSearchFriends(false)
         }
     }
 
@@ -65,13 +76,22 @@ function CreateTask(props) {
     };
 
     //DOM
-    if(dataF) console.log(dataF)
     if (newTask && dataF) {
         return (
             <div className={style.CTWrapper} onKeyDown={handleKeyDown}>
-                <input className="inputNoBorder" autoFocus={true} value={name} placeholder={"name..."} onChange={e => { setName(String(e.target.value)); }}></input>
-                <span className="button grey" onClick={() => { cancel() }}>Cancel</span>
-                <span className="button green" onClick={e => { addTaskQuery(e) } }>Create</span>
+                <div className={style.CTInnerWrapper}>
+                    {searchFriends && <div className={style.CTFriendListWapper}>
+                        {dataF.profile.friends.map((friend) => (
+                            <div>
+                                <p>{friend.fname + " " + friend.lname}</p>
+                            </div>
+                        ))}
+                    </div>}
+
+                    <input className="inputNoBorder" autoFocus={true} value={name} placeholder={"name..."} onChange={e => { if( e.target.value !== '@' ) setName(String(e.target.value)); }}></input>
+                    <span className="button grey" onClick={() => { cancel() }}>Cancel</span>
+                    <span className="button green" onClick={e => { addTaskQuery(e) }}>Create</span>
+                </div>
             </div>
         )
     }

@@ -25,7 +25,7 @@ function TaskList() {
     useEffect(() => {
         const handleDown = (event) => {
 
-            if (event.keyCode >= 48 && event.keyCode <= 57) {
+            if (event.keyCode >= 48 && event.keyCode <= 57 && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey && !event.altGraphKey && event.key !== '@') {
                 //Number
                 if (!searchActive && !taskActive) {
                     setActivationNumber(String.fromCharCode(event.keyCode));
