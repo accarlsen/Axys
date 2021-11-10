@@ -105,7 +105,7 @@ const PersonType = new GraphQLObjectType({
         friends: {
             type: new GraphQLList(PersonType),
             resolve(parent, args) {
-                return Person.find({ id: { $in: parent.friendIds } });
+                return Person.find({ '_id': { $in: parent.friendIds } });
             }
         }
     })

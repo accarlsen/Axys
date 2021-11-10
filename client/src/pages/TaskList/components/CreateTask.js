@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
 import { addTask, getProfile, getTasks } from '../../../components/queries';
-import { printIntrospectionSchema } from 'graphql';
 
 import style from './../taskList.module.css'
 
@@ -11,8 +10,12 @@ function CreateTask(props) {
     const [name, setName] = useState("");
     const [newTask, setNewTask] = useState(false);
 
+    const id = localStorage.getItem("personId");
+
     //Queries and mutations
-    const { loading:loadingF, error:errorF, data:dataF } = useQuery(getProfile);
+    const { loading:loadingF, error:errorF, data:dataF } = useQuery(getProfile, {
+        variables: {id: id}
+    });
 
     const [AddTask, { error }] = useMutation(addTask, {
         variables: { name }
@@ -24,7 +27,7 @@ function CreateTask(props) {
         AddTask({
             variables: {
                 name: name,
-                assigneeId: localStorage.getItem("personId"),
+                assigneeId: id,
             },
             refetchQueries: [{ query: getTasks }]
         });
@@ -37,7 +40,7 @@ function CreateTask(props) {
         setName("");
     }
    
-    //USeeffect, runs when component activation status is updated
+    //UseEffect, runs when component activation status is updated
     useEffect(() => {
         if (!newTask) {
             setNewTask(props.active)
