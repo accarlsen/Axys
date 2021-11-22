@@ -3,9 +3,12 @@ import mongoose from 'mongoose';
 import { ApolloServer, gql } from 'apollo-server-express';
 import isAuth from './middleware/is-auth.js';
 const graphqlHTTP = require('express-graphql').graphqlHTTP;
-const schema = require('./schema.js')
-const cors = require('cors')
-const isAuthMiddleWare = require('./middleware/is-auth')
+const schema = require('./schema.js');
+const cors = require('cors');
+const isAuthMiddleWare = require('./middleware/is-auth');
+require('dotenv').config();
+
+const api_key = process.env.API_KEY;
 
 const server = async () => {
   const app = express();
@@ -22,7 +25,7 @@ const server = async () => {
   //app.use(isAuthMiddleWare);
   server.applyMiddleware({ app })
   try {
-    await mongoose.connect("mongodb+srv://testUser:XCphx5dG1usNDhmp@cluster0.flezh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    await mongoose.connect(`mongodb+srv://testUser:${api_key}@cluster0.flezh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
     { 
       useNewUrlParser: true,
       useUnifiedTopology: true 
