@@ -144,7 +144,7 @@ function ProfileRenderer(props) {
                         </div>
 
                         <div className={style.editSubmitGrid}>
-                            <button className="button" onClick={() => { setEdit(false); editPassword(false); resetStates();} }>Cancel</button>
+                            <button className="button" onClick={() => { setEdit(false); setEditPassword(false); resetStates();} }>Cancel</button>
                             <button className={checkForChanges() ? "button green" : "buttonInactive"} onClick={() => { if(checkForChanges()) setConfirm(true)}}>Save</button>
                         </div>
                     </div>

@@ -7,11 +7,12 @@ import style from './../taskList.module.css'
 function CreateTask(props) {
 
     //Variables
+    const id = localStorage.getItem("personId");
+
     const [name, setName] = useState("");
     const [newTask, setNewTask] = useState(false);
     const [searchFriends, setSearchFriends] = useState(false);
-
-    const id = localStorage.getItem("personId");
+    const [assigneeId, setAssigneeId] = useState(id)
 
     //Queries and mutations
     const { loading: loadingF, error: errorF, data: dataF } = useQuery(getProfile, {
@@ -28,7 +29,7 @@ function CreateTask(props) {
         AddTask({
             variables: {
                 name: name,
-                assigneeId: id,
+                assigneeId: assigneeId,
             },
             refetchQueries: [{ query: getTasks }]
         });
@@ -66,7 +67,7 @@ function CreateTask(props) {
         else if (!searchFriends && event.key === 'Escape') {
             cancel();
         }
-        else if (searchFriends && event.key === 'Escape') {
+        else if (searchFriends && (event.key === 'Escape' || event.key === " ") ) {
             setSearchFriends(false)
         }
     }
@@ -82,13 +83,13 @@ function CreateTask(props) {
                 <div className={style.CTInnerWrapper}>
                     {searchFriends && <div className={style.CTFriendListWapper}>
                         {dataF.profile.friends.map((friend) => (
-                            <div>
-                                <p>{friend.fname + " " + friend.lname}</p>
-                            </div>
+                            <button onClick={e => {setAssigneeId(friend.id); setSearchFriends(false);}}>
+                                {friend.fname + " " + friend.lname}
+                            </button>
                         ))}
                     </div>}
 
-                    <input className="inputNoBorder" autoFocus={true} value={name} placeholder={"name..."} onChange={e => { if( e.target.value !== '@' ) setName(String(e.target.value)); }}></input>
+                    <input className="inputNoBorder" autoFocus={true} value={name} placeholder={"name..."} onChange={e => { setName(String(e.target.value)); }}></input>
                     <span className="button grey" onClick={() => { cancel() }}>Cancel</span>
                     <span className="button green" onClick={e => { addTaskQuery(e) }}>Create</span>
                 </div>

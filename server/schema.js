@@ -71,6 +71,12 @@ const TaskType = new GraphQLObjectType({
                 return Person.findById(parent.authorId);
             }
         },
+        assignee: {
+            type: PersonType,
+            resolve(parent, args) {
+                return Person.findById(parent.assigneeId);
+            }
+        },
         subtasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {

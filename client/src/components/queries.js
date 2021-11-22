@@ -37,7 +37,13 @@ const getTasks = gql`
       date
       time
       authorId
+      assigneeId
       parentId
+      assignee{
+        id
+        fname
+        lname
+      }
     }
   }
 `;
