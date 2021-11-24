@@ -60,7 +60,6 @@ function SearchTask(props) {
             setActive(props.active)
         }
 
-        console.log(props.tasks[0])
         if (search.length > 0 && search - 1 < props.tasks.length) {
             setTask(props.tasks[parseInt(search, 10) - 1]);
             setId(props.tasks[parseInt(search, 10) - 1].id)

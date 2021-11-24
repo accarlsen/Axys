@@ -28,9 +28,9 @@ function Task(props) {
             <p className={style.taskNum}>{props.index}</p>
             <p className={style.taskName}>{props.task.name}</p>
             <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
-            {id !== props.task.authorId && <Link to={"/profile/" + props.task.assignee.id}>
-                <p>{props.task.assignee.fname + " " + props.task.assignee.lname}</p>
-            </Link>}
+            {id !== props.task.authorId && <div><span className="p">From: </span><Link to={"/profile/" + props.task.assignee.id}>
+                <span className="p">{props.task.assignee.fname + " " + props.task.assignee.lname}</span>
+            </Link></div>}
         </div>
     )
 }

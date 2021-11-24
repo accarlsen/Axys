@@ -98,6 +98,7 @@ const PersonType = new GraphQLObjectType({
         id: { type: GraphQLID },
         fname: { type: GraphQLString },
         lname: { type: GraphQLString },
+        name: { type: GraphQLString },
         email: { type: GraphQLString },
         admin: { type: GraphQLBoolean },
         password: { type: GraphQLString },
@@ -339,6 +340,7 @@ const Mutation = new GraphQLObjectType({
                         let person = new Person({
                             fname: args.fname,
                             lname: args.lname,
+                            name: args.fname + " " + args.lname,
                             email: args.email,
                             password: hashedPassword,
                             admin: false,
@@ -390,6 +392,7 @@ const Mutation = new GraphQLObjectType({
                     {   
                         fname: args.newFName,
                         lname: args.newLName,
+                        name: args.newFName + " " + args.newLName,
                         email: args.newEmail,
                         password: newPasswordHashed 
                     }, 

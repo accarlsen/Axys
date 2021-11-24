@@ -6,11 +6,13 @@ const getProfile = gql`
       id
       fname
       lname
+      name
       email
       friends{
         id
         fname
         lname
+        name
         email
       }
     }
@@ -43,6 +45,7 @@ const getTasks = gql`
         id
         fname
         lname
+        name
       }
     }
   }
