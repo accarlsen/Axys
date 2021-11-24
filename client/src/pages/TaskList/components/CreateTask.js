@@ -9,13 +9,15 @@ function CreateTask(props) {
     //Variables
     const id = localStorage.getItem("personId");
 
-    const input = useRef(null)
+    const input = useRef(null);
 
     const [name, setName] = useState("");
     const [newTask, setNewTask] = useState(false);
     const [searchFriends, setSearchFriends] = useState(false);
-    const [assigneeId, setAssigneeId] = useState(id)
+    const [assigneeId, setAssigneeId] = useState(id);
     const [searchName, setSearchName] = useState("");
+
+    let searchNameFirst = null;
 
 
     //Queries and mutations
@@ -45,21 +47,25 @@ function CreateTask(props) {
         setNewTask(false);
         setSearchFriends(false)
         setSearchName("")
+        searchNameFirst = null
         setName("");
     }
 
     const selectAssignee = (friend) => {
-        setName(name + friend.fname + " ");
+        setName(name + friend.name + " ");
         setAssigneeId(friend.id); 
         setSearchFriends(false);
         setSearchName("")
+        searchNameFirst = null
         input.current.focus();
     }
 
     const searchNames = (searchWord, friends) => {
-        return friends.filter((i) => {
+        const sortedFriends = friends.filter((i) => {
             return i.name.toLowerCase().indexOf(searchWord.toLowerCase()) !== -1
-        })
+        });
+        console.log(sortedFriends[0]);
+        return sortedFriends;
     }
 
     //UseEffect, runs when component activation status is updated
@@ -80,6 +86,12 @@ function CreateTask(props) {
         if (searchFriends && event.key === 'Enter') {
             setSearchFriends(false)
             setSearchName("")
+            if(searchNameFirst !== null){
+                setAssigneeId(searchNameFirst.id);
+                setName(name + searchNameFirst.name + " ");
+            }
+            searchNameFirst = null
+            input.current.focus();
         }
         if (event.key === '@') {
             console.log("@")
@@ -97,6 +109,7 @@ function CreateTask(props) {
 
     //DOM
     if (newTask && dataF) {
+        searchNameFirst = dataF.profile.friends[0];
         return (
             <div className={style.CTWrapper} onKeyDown={handleKeyDown}>
                 <div className={style.CTInnerWrapper}>
