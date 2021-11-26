@@ -12,7 +12,6 @@ function CreateTask(props) {
     const input = useRef(null);
 
     const [name, setName] = useState("");
-    const [newTask, setNewTask] = useState(false);
     const [searchFriends, setSearchFriends] = useState(false);
     const [assigneeId, setAssigneeId] = useState(id);
     const [searchName, setSearchName] = useState("");
@@ -39,12 +38,12 @@ function CreateTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        setNewTask(false);
+        props.setTaskActive(false);
         setName("");
     }
 
     const cancel = () => {
-        setNewTask(false);
+        props.setTaskActive(false);
         setSearchFriends(false)
         setSearchName("")
         searchNameFirst = null
@@ -67,16 +66,6 @@ function CreateTask(props) {
         console.log(sortedFriends[0]);
         return sortedFriends;
     }
-
-    //UseEffect, runs when component activation status is updated
-    useEffect(() => {
-        if (!newTask) {
-            setNewTask(props.active)
-            setName(props.activationLetter)
-        } else {
-            setNewTask(props.active)
-        }
-    }, [props.active]);
 
     //Keyboard input handler
     const handleKeyDown = (event) => {
@@ -108,7 +97,7 @@ function CreateTask(props) {
     };
 
     //DOM
-    if (newTask && dataF) {
+    if (props.taskActive && dataF) {
         searchNameFirst = dataF.profile.friends[0];
         return (
             <div className={style.CTWrapper} onKeyDown={handleKeyDown}>
@@ -136,7 +125,7 @@ function CreateTask(props) {
         )
     }
     return (
-        <div className={style.CTPreview} onClick={() => setNewTask(true)}>
+        <div className={style.CTPreview} onClick={() => props.setTaskActive(true)}>
             <span className={style.taskNum} >+ New Task</span>
         </div>
     )

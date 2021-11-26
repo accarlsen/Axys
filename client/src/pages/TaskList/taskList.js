@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { getTasks } from '../../components/queries';
 import CreateTask from './components/CreateTask';
@@ -17,6 +17,9 @@ function TaskList() {
     const [activationLetter, setActivationLetter] = useState("");
     const [activationNumber, setActivationNumber] = useState("");
     const history = useHistory();
+
+    const CTRef = useRef(null)
+    const STRef = useRef(null)
 
     //Queries
     const { loading, error, data } = useQuery(getTasks);
@@ -39,13 +42,9 @@ function TaskList() {
                     setTaskActive(true);
                 }
             }
-            else if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'Delete') {
+            /*else if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'Delete') {
                 //Reset states
-                setTaskActive(false);
-                setActivationLetter("");
-                setSearchActive(false);
-                setActivationNumber("");
-            }
+            }*/
         }
 
         const handleUp = (event) => {
@@ -85,8 +84,8 @@ function TaskList() {
                     <Task task={task} index={i + 1} />
                 ))}
             </div>
-            <CreateTask active={taskActive} activationLetter={activationLetter}/>
-            <SearchTask active={searchActive} activationNumber={activationNumber} tasks={data.tasks} />
+            <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter}/>
+            <SearchTask ref={STRef} searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
         </div>
     )
 

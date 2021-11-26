@@ -10,7 +10,6 @@ function SearchTask(props) {
     const [search, setSearch] = useState("");
     const [id, setId] = useState("");
     const [task, setTask] = useState();
-    const [active, setActive] = useState(false);
 
     //Queries & mutations
     const [TaskDone, { error }] = useMutation(taskDone, {
@@ -32,7 +31,7 @@ function SearchTask(props) {
             refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
-        setActive(false);
+        props.setSearchActive(false);
     }
 
     const deleteTaskQuery = (event) => {
@@ -44,22 +43,15 @@ function SearchTask(props) {
             refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
-        setActive(false);
+        props.setSearchActive(false);
     }
 
     const cancel = () => {
-        setActive(false); setSearch(""); setTask(); setId("")
+        props.setSearchActive(false); setSearch(""); setTask(); setId("")
     }
 
     //UseEffect, runs upon update of component activation status or of selected states
     useEffect(() => {
-        if (!active) {
-            setActive(props.active)
-            setSearch(props.activationNumber)
-        } else {
-            setActive(props.active)
-        }
-
         if (search.length > 0 && search - 1 < props.tasks.length) {
             setTask(props.tasks[parseInt(search, 10) - 1]);
             setId(props.tasks[parseInt(search, 10) - 1].id)
@@ -68,7 +60,7 @@ function SearchTask(props) {
             setId("");
         }
 
-    }, [props.active, search, id]);
+    }, [search, id]);
 
     //Keyboard input handler
     const handleKeyDown = (event) => {
@@ -92,7 +84,7 @@ function SearchTask(props) {
     };
 
     //DOM
-    if (active) {
+    if (props.searchActive) {
         return (
             <div className={style.STWrapper} onKeyDown={handleKeyDown}>
                 <div className={style.STInner}>
@@ -110,7 +102,7 @@ function SearchTask(props) {
         )
     }
     return (
-        <div className={style.STPreview} onClick={() => setActive(true)}>
+        <div className={style.STPreview} onClick={() => props.setSearchActive(true)}>
             <span className={style.taskNum} >Search Tasks</span>
         </div>
     )
