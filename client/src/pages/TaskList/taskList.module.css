@@ -22,11 +22,6 @@
 }
 
 .taskWrapper{
-    display: grid;
-    grid-template-columns: 1rem auto 4rem;
-    column-gap: 1.5rem;
-
-    padding-left: 0.5rem;
     width: 25rem;
     border-bottom: 1px solid var(--background);
     cursor: default;
@@ -38,6 +33,28 @@
 
 .taskWrapper:hover > .removeTask{
     color: var(--grey-dark);
+}
+
+.taskContent{
+    display: grid;
+    grid-template-columns: 1rem auto 4rem;
+    column-gap: 1.5rem;
+
+    width: 100%;
+    padding-left: 0.5rem;
+}
+
+.authorDisplay{
+    margin-bottom: 0.5rem;
+}
+
+.authorDisplayPlaceholder{
+    margin-bottom: 0.9rem;
+}
+
+.link{
+    color: var(--blue-link);
+    text-decoration: none;
 }
 
 .taskNum{
@@ -66,6 +83,7 @@
     font-weight: var(--p-weight);
     font-size: 16px;
     color: var(--text-off);
+    margin-bottom: 0.3rem;
 }
 
 .removeTask{

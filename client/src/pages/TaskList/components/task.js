@@ -25,12 +25,17 @@ function Task(props) {
 
     return (
         <div key={props.index} className={style.taskWrapper}>
-            <p className={style.taskNum}>{props.index}</p>
-            <p className={style.taskName}>{props.task.name}</p>
-            <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
-            {id !== props.task.authorId && <div><span className="p">From: </span><Link to={"/profile/" + props.task.assignee.id}>
-                <span className="p">{props.task.assignee.fname + " " + props.task.assignee.lname}</span>
-            </Link></div>}
+            <div className={style.taskContent}>
+                <p className={style.taskNum}>{props.index}</p>
+                <div>
+                    <p className={style.taskName}>{props.task.name}</p>
+                    {id !== props.task.authorId ? <div className={style.authorDisplay}><Link className={`p ${style.link}`} to={"/profile/" + props.task.assignee.id}>
+                        {props.task.assignee.fname + " " + props.task.assignee.lname}
+                    </Link></div> : <div className={style.authorDisplayPlaceholder}></div>}
+                </div>
+                <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
+            </div>
+
         </div>
     )
 }
