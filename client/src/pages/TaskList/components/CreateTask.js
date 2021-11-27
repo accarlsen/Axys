@@ -76,7 +76,7 @@ function CreateTask(props) {
         if (!searchFriends && event.key === 'Enter' && (String(name.replace(/\s/g, '')).length >= 1)) {
             addTaskQuery(event);
         }
-        if (searchFriends && event.key === 'Enter') {
+        else if (searchFriends && event.key === 'Enter') {
             setSearchFriends(false)
             setSearchName("")
             if(searchNameFirst !== null){
@@ -86,12 +86,18 @@ function CreateTask(props) {
             searchNameFirst = null
             input.current.focus();
         }
-        if (event.key === '@') {
+        else if (event.key === '@') {
             console.log("@")
             setName(name + "@")
             setSearchFriends(true)
         }
-        else if (event.key === 'Escape') {
+        else if (searchFriends && event.key === 'Escape') {
+            setSearchFriends(false)
+            setSearchName("")
+            searchNameFirst = null
+            input.current.focus();
+        }
+        else if (!searchFriends && event.key === 'Escape') {
             cancel();
         }
     }
