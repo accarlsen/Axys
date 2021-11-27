@@ -28,6 +28,10 @@ function CreateTask(props) {
         variables: { name }
     })
 
+    useEffect(() => {
+        
+    }, [searchName])
+
     //Methods
     const addTaskQuery = (event) => {
         event.preventDefault(); //Enable custom behaviour
@@ -107,15 +111,15 @@ function CreateTask(props) {
                     <span className="button green" onClick={e => { addTaskQuery(e) }}>Create</span>
                 
                     {searchFriends && <div className={style.CTFriendListWapper}>
-                        <input className="inputNoBorder" autoFocus={true} value={searchName} onChange={(e) => { if(e.target.value !== '@') setSearchName(e.target.value);}} />
-                        {searchName === "" ? dataF.profile.friends.map((friend) => (
-                            <button className={style.CTFriendListItem} onClick={e => {selectAssignee(friend)}}>
+                        <input className={` ${style.CTfriendSearch} inputNoBorder`} autoFocus={true} value={searchName} onChange={(e) => { if(e.target.value !== '@') setSearchName(e.target.value);}} />
+                        {searchName === "" ? dataF.profile.friends.map((friend, i) => (
+                            <button className={i === 0 ? style.CTFriendListItemTop : style.CTFriendListItem} onClick={e => {selectAssignee(friend)}}>
                                 {friend.fname + " " + friend.lname}
                             </button>
                         ))
                         : 
-                        searchNames(searchName, dataF.profile.friends).map((friend) => (
-                            <button className={style.CTFriendListItem} onClick={e => {selectAssignee(friend)}}>
+                        searchNames(searchName, dataF.profile.friends).map((friend, i) => (
+                            <button className={i === 0 ? style.CTFriendListItemTop : style.CTFriendListItem} onClick={e => {selectAssignee(friend)}}>
                                 {friend.name}
                             </button>
                         ))}

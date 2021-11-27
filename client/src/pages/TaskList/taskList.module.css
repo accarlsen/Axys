@@ -3,7 +3,7 @@
     width: 100%;
     overflow: hidden;
     align-items: center;
-    /*background-image: url('../../assets/Pattern3.png');*/
+    background-image: url('../../assets/Pattern3.png');
 }
 
 .taskListWrapper{
@@ -34,7 +34,6 @@
 
 .taskWrapper:hover{
     background-color: var(--grey);
-    border-bottom: 1px solid var(--grey);
 }
 
 .taskWrapper:hover > .removeTask{
@@ -130,10 +129,27 @@
     font-weight: var(--p-weight);
     background-color: var(--background2);
     color: var(--text-off);
+    text-align: left;
+}
+
+.CTFriendListItemTop{
+    border: none;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-family: 'Roboto';
+    font-size: 16px;
+    font-weight: var(--p-weight);
+    background-color: var(--grey);
+    color: var(--text-off);
+    text-align: left;
 }
 
 .CTFriendListItem:hover, .CTFriendListItem:focus {
-    background-color: var(--greyer);
+    background-color: var(--grey);
+}
+
+.CTfriendSearch{
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--grey);
 }
 
 
@@ -223,4 +239,9 @@
     width: 100%;
     overflow: hidden;
     text-overflow:ellipsis;
+}
+
+.friendSearch{
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--grey);
 }
