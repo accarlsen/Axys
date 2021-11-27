@@ -31,7 +31,7 @@
     background-color: var(--grey);
 }
 
-.taskWrapper:hover > .removeTask{
+.taskContent:hover > .removeTask{
     color: var(--grey-dark);
 }
 
@@ -89,7 +89,7 @@
 .removeTask{
     width: fit-content;
     height: fit-content;
-    font-family: 'Arial';
+    font-family: 'Roboto';
     font-style: normal;
     font-weight: var(--p-weight);
     font-size: 16px;
@@ -257,6 +257,9 @@
     width: 100%;
     overflow: hidden;
     text-overflow:ellipsis;
+    color: var(--text-off);
+    font: 'Roboto';
+    font-weight: var(--p-weight);
 }
 
 .friendSearch{
