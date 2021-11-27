@@ -45,7 +45,8 @@ function Login() {
     return (
         <div className="login-wrapper">
             <a.div className="login-card card" style={props}>
-                <span className="title2">Login</span>
+                <h1 className="h2 login-title">Login</h1>
+                <span></span>
                 <input
                     onChange={e => {
                         setEmail(e.target.value);
@@ -70,7 +71,7 @@ function Login() {
                     maxlength="32"
                     minlength="8" />
 
-                <a.input className="button" type="submit" value="Log in" onClick={e => {
+                <input className="button" type="submit" value="Log in" onClick={e => {
                     e.preventDefault();
                     loginFunc({
                         variables: {
@@ -89,7 +90,7 @@ function Login() {
                     setPassword("");
                     
 
-                }}></a.input>
+                }}></input>
             </a.div>
         </div>
     );

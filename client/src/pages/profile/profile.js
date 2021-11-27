@@ -100,11 +100,11 @@ function ProfileRenderer(props) {
                 {id === localStorage.getItem("personId") && <button className={style.editButton} onClick={() => setEdit(true)}>E</button>}
 
                 <div className={style.card}>
-                    <h1 className={style.profileTitle}>{data.profile.fname + " " + data.profile.lname}</h1>
-                    <p>Location: Palm Springs, Toronto</p>
-                    <p className="mt-2">Status: Champagne Socialist</p>
-                    <p className="mt-2">"A citizen gets eaten, unless an animal is beaten"</p>
-                    <p>{data.profile.email}</p>
+                    <h1 className={` h2 ${style.profileTitle}`}>{data.profile.fname + " " + data.profile.lname}</h1>
+                    <p className="p">Location: Palm Springs, Toronto</p>
+                    <p className="mt-2 p">Status: Champagne Socialist</p>
+                    <p className="mt-2 p">"A citizen gets eaten, unless an animal is beaten"</p>
+                    <p className="p">{data.profile.email}</p>
                 </div>
             </div>
         </div>
@@ -119,19 +119,19 @@ function ProfileRenderer(props) {
                     <div className={style.card}>
                         <div className={style.editWrapper}>
                             <div className={style.editFormGrid}>
-                                <label>First Name</label>
+                                <label className="p">First Name</label>
                                 <input className="input" value={fname} onChange={e => { setFName(String(e.target.value)); }} ></input>
                             </div>
                             <div className={style.editFormGrid}>
-                                <label>Last Name</label>
+                                <label className="p">Last Name</label>
                                 <input className="input" onChange={e => { setLName(String(e.target.value)); }} value={lname}></input>
                             </div>
                             <div className={style.editFormGrid}>
-                                <label>Email</label>
+                                <label className="p">Email</label>
                                 <input className="input" onChange={e => { setEmail(String(e.target.value)); }} value={email}></input>
                             </div>
                             <div className={style.editFormGrid}>
-                                <label>Password</label>
+                                <label className="p">Password</label>
                                 {editPassword? 
                                     <div>
                                         <input className="input" type="password" placeholder="New password" onChange={e => { setPassword(String(e.target.value)); }} value={password}></input>
@@ -161,13 +161,13 @@ function ProfileRenderer(props) {
 
                     <div className={style.card}>
                         <div className={style.editWrapper}>
-                            {fname !== data.profile.fname && <p>{"Changed first name from " + data.profile.fname + " to " + fname + "."}</p>}
-                            {lname !== data.profile.lname && <p>{"Changed last name from " + data.profile.lname + " to " + lname + "."}</p>}
-                            {email !== data.profile.email && <p>{"Changed email from " + data.profile.email + " to " + email + "."}</p>}
-                            {password !== data.profile.password && password !== "" && <p>{"Changed password."}</p>}
+                            {fname !== data.profile.fname && <p className="p">{"Changed first name from " + data.profile.fname + " to " + fname + "."}</p>}
+                            {lname !== data.profile.lname && <p className="p">{"Changed last name from " + data.profile.lname + " to " + lname + "."}</p>}
+                            {email !== data.profile.email && <p className="p">{"Changed email from " + data.profile.email + " to " + email + "."}</p>}
+                            {password !== data.profile.password && password !== "" && <p className="p">{"Changed password."}</p>}
 
                             <div className={style.editFormGrid}>
-                                <label>Current password:</label>
+                                <label className="p">Current password:</label>
                                 <input className="input" autoFocus={true} type="password" placeholder="New password" onChange={e => { setCurPassword(String(e.target.value)); }} value={curPassword}></input>
                             </div>
                         </div>

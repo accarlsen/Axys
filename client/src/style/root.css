@@ -1,6 +1,30 @@
 :root{
     --primary: #eb912a;
     --secondary: #d17c1c;
+    --background: #1b1b1b;
+    --background2: #222;
+    --background3: #1d1d1d;
+
+    --shadow: #b8b8b800;
+    --shadow-highlight: #96969600;
+    --text: #FFF;
+    --text-off: #e0e0e0;
+    --text-inverted: #000;
+    --grey: rgb(49, 49, 49);
+    --greyer: rgb(90, 90, 90);
+    --grey-dark: rgb(153, 153, 153);
+
+    --green: #4ff4a2;
+    --greenlight: #22cf79;
+    --red: #f7532b;
+    --red-light: rgb(206, 76, 44);
+
+    --p-weight: 300;
+
+
+    /*
+    --primary: #eb912a;
+    --secondary: #d17c1c;
     --background: #f9f9f9;
     --background2: #FFF;
 
@@ -16,4 +40,5 @@
     --green: #4ff4a2;
     --greenlight: #4ff4a2;
     --red: #f7532b;
+    */
 }

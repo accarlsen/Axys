@@ -1,5 +1,6 @@
 .card{
-    box-shadow: 0px 0px 8px 1px #b8b8b8;
+    box-shadow: 0px 0px 8px 1px var(--shadow);
+    background-color: var(--background2);
     border-radius: 5px;
 }
 
@@ -8,21 +9,19 @@
     font-family: 'Roboto', 'Arial';
     font-style: normal;
     border-radius: 3px;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 14px;
     padding: 6px 20px 6px 20px;
-    background-color: var(--background);
     color: var(--text-off);
+    background-color: var(--grey);
     cursor: pointer;
     border: solid 1px var(--shadow);
     transition: smooth, 0.2s;
 }
 
-.red{ border: solid 2px var(--red); }
-.green{ border: solid 2px var(--green) }
-.grey{ 
-    background-color: var(--grey);
-}
+.red{ background-color: var(--red); color: var(--text-inverted); font-weight: 500;}
+.green{ background: var(--green); color: var(--text-inverted); font-weight: 500;}
+.grey{ background-color: var(--grey); }
 
 .button-small{
     width: fit-content;
@@ -32,7 +31,7 @@
     font-weight: 500;
     font-size: 12px;
     padding: 4px 10px 4px 10px;
-    background-color: var(--background);
+    background-color: var(--grey);
     color: var(--text-off);
     cursor: pointer;
     border: solid 1px var(--shadow);
@@ -41,6 +40,9 @@
 
 .button:hover, .button-small:hover{  background-color: var(--greyer) }
 .button:focus, .button-small:focus{  border: solid 1px var(--shadow); }
+
+.green:hover, .green:focus{ background-color: var(--greenlight);}
+.red:hover, .red:focus{ background-color: var(--red-light);}
 
 .buttonInactive{
     width: fit-content;
@@ -53,7 +55,7 @@
     background-color: var(--background);
     color: var(--grey-dark);
     cursor: default;
-    border: solid 1px var(--shadow);
+    border: solid 1px var(--grey);
 }
 
 /*
@@ -64,7 +66,27 @@
 
 .p{
     font-size: 14px;
+    font-weight: var(--p-weight);
     margin: 0.3rem 0 0.3rem 0;
+    color: var(--text-off);
+}
+
+.h1{
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+}
+
+.h2{
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text);
+}
+
+.h3{
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text);
 }
 
 .input{
@@ -75,7 +97,9 @@
     border: none;
     margin: 0px;
 
-    border: solid #b8b8b8 1px;
+    color: var(--text);
+    background-color: #00000000;
+    border: solid var(--grey) 1px;
     border-radius: 5px;
     outline: none;
     padding: 5px;
@@ -88,7 +112,7 @@
 }
 
 .input:focus{
-    border: solid #666 1px;
+    border: solid var(--greyer) 1px;
 }
 
 .input-signup{
@@ -96,6 +120,9 @@
     width: 95%;
     min-width: 150px;
     height:2rem;
+
+    background-color: var(--background2);
+    color: var(--text);
     
     border: none;
     margin: 0.2rem;
@@ -112,7 +139,7 @@
 }
 
 .input-signup-wrapper{
-    border: solid #b8b8b8 1px;
+    border: solid var(--grey) 1px;
     border-radius: 5px;
     height: 2.4rem;
 
@@ -125,11 +152,11 @@
 }
 
 .input-signup-wrapper:active{
-    border: solid #474747 1px;
+    border: solid var(--grey-dark) 1px;
 }
 
 .input-signup-wrapper-password{
-    border: solid #b8b8b8 1px;
+    border: solid var(--grey) 1px;
     border-radius: 5px;
     height: 2.4rem;
 

@@ -4,14 +4,15 @@
     max-height: calc(100vh - 3rem);
     overflow: hidden;
     display: grid;
-    grid-template-columns: auto 15rem;
+    grid-template-columns: auto 16rem;
 }
 
 .rightWrapper{
     width: 14rem;
     height: calc(100vh - 3rem);
     padding: 1rem;
-    border-left: 1px solid var(--shadow);
+    border-left: 1px solid var(--grey);
+    background-color: var(--background3);
 }
 
 .center{
@@ -34,7 +35,7 @@
 
     border-radius: 0.5rem;
     border: solid 1px var(--shadow);
-    background-color: white;
+    background-color: var(--background2);
 
     display: grid;
     grid-template-columns: 4rem 20rem auto;
@@ -52,6 +53,7 @@
 .FPreviewName{
     font-size: 16px;
     font-weight: 500;
+    color: var(--text);
 }
 
 /* FRPreview */

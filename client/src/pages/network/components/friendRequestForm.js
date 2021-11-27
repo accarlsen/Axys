@@ -26,11 +26,11 @@ function FriendRequestForm() {
     if (error) console.log(JSON.stringify(error, null, 2));
     return (
         <div>
-            <h3>Add friends</h3>
+            <h1 className="h2">Add friends</h1>
             <div>
-                <p>Email: </p>
-                <input type={"text"} placeholer={"email..."} value={email} onChange={(e) => setEmail(String(e.target.value))}></input>
-                <input type={"submit"} value="Send" onClick={e => { sendFriendRequestQuery(e) }}></input>
+                <p className="p">Email: </p>
+                <input className="input" type={"text"} placeholer={"email..."} value={email} onChange={(e) => setEmail(String(e.target.value))}></input>
+                <input className="button" type={"submit"} value="Send" onClick={e => { sendFriendRequestQuery(e) }}></input>
             </div>
         </div>
     )

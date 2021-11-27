@@ -15,7 +15,7 @@ function FriendRequestList() {
     if(loading) return(<span>Loading...</span>)
     if(data) return (
         <div className={style.FRListWrapper}>
-            <h3>Friend requests: </h3>
+            <h3 className="h3">Friend requests: </h3>
             {data.friendRequests.map((friendReq) => (
                 <FriendRequestPreview friendRequest={friendReq} />
             ))}

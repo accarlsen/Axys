@@ -11,7 +11,7 @@ function Network() {
     return (
         <div className={style.wrapper}>
             <div className={`${style.center}`}>
-                <h1>Network</h1>
+                <h1 className="h1">Network</h1>
                 <FriendsList />
             </div>
             <div className={style.rightWrapper}>

@@ -43,7 +43,7 @@
 
 .taskNum{
     font-family: 'Roboto';
-    font-weight: 400;
+    font-weight: var(--p-weight);
     font-size: 14px;
     color: var(--text-off);
     height: fit-content;
@@ -64,9 +64,9 @@
 
 .taskName{
     font-family: 'Roboto';
-    font-weight: 400;
+    font-weight: var(--p-weight);
     font-size: 16px;
-    color: var(--text);
+    color: var(--text-off);
 }
 
 .removeTask{
@@ -74,7 +74,7 @@
     height: fit-content;
     font-family: 'Arial';
     font-style: normal;
-    font-weight: 400;
+    font-weight: var(--p-weight);
     font-size: 16px;
     padding: 10px 15px 10px 15px;
     margin: auto;
@@ -127,7 +127,9 @@
     padding: 0.5rem 1rem 0.5rem 1rem;
     font-family: 'Roboto';
     font-size: 16px;
+    font-weight: var(--p-weight);
     background-color: var(--background2);
+    color: var(--text-off);
 }
 
 .CTFriendListItem:hover, .CTFriendListItem:focus {

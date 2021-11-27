@@ -69,7 +69,7 @@ function Signup() {
     return (
         <div className="signup-wrapper">
             <a.div className="signup-card card" style={props}>
-                <span className="title2">Create a new user</span>
+                <h1 className="h2">Create a new user</h1>
                 {/*<InputCheck id="signup-input-lname" type="lname" inputType="lname" placeholder="lname..."
                     autoComplete="on" maxLength="64" minLength="0" />
                 <InputCheck id="signup-input-email" type="name" inputType="text" placeholder="first name..."
