@@ -32,6 +32,7 @@ function AssignmentList() {
     //DOM
     if (data) return (
         <div className={style.wrapper}>
+            <h1 className={`h3 ${style.topTitle}`}>Created assignments</h1>
             <div className={style.taskListWrapper}>
                 {data.createdAssignments.map((task, i) => (
                     <Task task={task} isAssignment={true} index={i + 1} />

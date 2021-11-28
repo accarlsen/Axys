@@ -266,3 +266,13 @@
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-bottom: 1px solid var(--grey);
 }
+
+.topTitle{
+    position: absolute;
+    top: 0rem;
+    text-align: center;
+
+    width: 12rem;
+    left: calc( 50% - 6rem );
+    z-index: 11200;
+}

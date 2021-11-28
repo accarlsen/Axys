@@ -47,6 +47,10 @@ const getTasks = gql`
         lname
         name
       }
+      author{
+        id
+        name
+      }
     }
   }
 `;
@@ -67,6 +71,10 @@ const getCreatedAssignments = gql`
         id
         fname
         lname
+        name
+      }
+      author{
+        id
         name
       }
     }
