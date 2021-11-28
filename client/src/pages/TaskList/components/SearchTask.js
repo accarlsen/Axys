@@ -52,10 +52,10 @@ function SearchTask(props) {
 
     //UseEffect, runs upon update of component activation status or of selected states
     useEffect(() => {
-        if (search.length > 0 && search - 1 < props.tasks.length) {
+        if (search.length > 0 && search > 0 && search - 1 < props.tasks.length) {
             setTask(props.tasks[parseInt(search, 10) - 1]);
             setId(props.tasks[parseInt(search, 10) - 1].id)
-        } else if (search - 1 > props.tasks.length || search - 1 < 0) {
+        } else if (search - 1 > props.tasks.length || search - 1 < 1) {
             setTask();
             setId("");
         }
