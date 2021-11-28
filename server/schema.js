@@ -201,6 +201,15 @@ const RootQuery = new GraphQLObjectType({
                 return Task.find({ assigneeId: context.personId, done: false });
             }
         },
+        createdAssignments: {
+            type: new GraphQLList(TaskType),
+            resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+                return Task.find({ authorId: context.personId, assigneeId: { $ne: context.personId }, done: false });
+            }
+        },
         /*persons: {
             type: new GraphQLList(PersonType),
             resolve(parent, args) {

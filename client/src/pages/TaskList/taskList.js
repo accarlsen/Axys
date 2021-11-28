@@ -81,7 +81,7 @@ function TaskList() {
         <div className={style.wrapper}>
             <div className={style.taskListWrapper}>
                 {data.tasks.map((task, i) => (
-                    <Task task={task} index={i + 1} />
+                    <Task task={task} isAssignment={false} index={i + 1} />
                 ))}
             </div>
             <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter}/>

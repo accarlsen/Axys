@@ -51,6 +51,28 @@ const getTasks = gql`
   }
 `;
 
+const getCreatedAssignments = gql`
+  query {
+    createdAssignments {
+      id
+      name
+      progress
+      weight
+      date
+      time
+      authorId
+      assigneeId
+      parentId
+      assignee{
+        id
+        fname
+        lname
+        name
+      }
+    }
+  }
+`;
+
 const getFriendRequests = gql`
   query {
     friendRequests {
@@ -226,6 +248,7 @@ export {
   getProfile,
   getProjects,
   getTasks,
+  getCreatedAssignments,
   getFriendRequests,
   getFriends,
   getSubTasks,

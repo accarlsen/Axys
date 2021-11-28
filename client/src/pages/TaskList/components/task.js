@@ -32,6 +32,9 @@ function Task(props) {
                     {id !== props.task.authorId ? <div className={style.authorDisplay}><Link className={`p ${style.link}`} to={"/profile/" + props.task.assignee.id}>
                         {props.task.assignee.fname + " " + props.task.assignee.lname}
                     </Link></div> : <div className={style.authorDisplayPlaceholder}></div>}
+                    {props.isAssignment && <div className={style.authorDisplay}><span className="p">Assigned to: </span><Link className={`p ${style.link}`} to={"/profile/" + props.task.assignee.id}>
+                        {props.task.assignee.name}
+                    </Link></div>}
                 </div>
                 <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
             </div>
