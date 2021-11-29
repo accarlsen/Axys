@@ -55,7 +55,6 @@ const TaskType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
-        done: { type: GraphQLBoolean },
         progress: { type: GraphQLInt },
         weight: { type: GraphQLInt },
         parentId: { type: GraphQLID },
@@ -63,8 +62,22 @@ const TaskType = new GraphQLObjectType({
         assigneeId: { type: GraphQLString },
         date: { type: GraphQLString },
         time: { type: GraphQLString },
+
+        done: { type: GraphQLBoolean },
+        timestampDone: { type: GraphQLInt },
         dateDone: { type: GraphQLString },
         timeDone: { type: GraphQLString },
+
+        accepted: { type: GraphQLBoolean },
+        timestampAccepted: { type: GraphQLInt },
+        dateAccepted: { type: GraphQLString },
+        timeAccepted: { type: GraphQLString },
+
+        ignored: { type: GraphQLBoolean },
+        timestampIgnored: { type: GraphQLInt },
+        dateIgnored: { type: GraphQLString },
+        timeIgnored: { type: GraphQLString },
+
         author: {
             type: PersonType,
             resolve(parent, args) {
@@ -151,7 +164,7 @@ const AuthType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        project: {
+        /*project: {
             type: ProjectType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
@@ -164,7 +177,7 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 return Task.findById(args.id);
             }
-        },
+        },*/
         profile: {
             type: PersonType,
             args: { id: { type: GraphQLID } },
@@ -181,15 +194,6 @@ const RootQuery = new GraphQLObjectType({
                 if(targetFriendReq.senderId === args.id) return target
 
                 return null
-            }
-        },
-        projects: {
-            type: new GraphQLList(ProjectType),
-            resolve(parent, args, context) {
-                if (!context.isAuth) {
-                    throw new Error('Unauthenticated user');
-                }
-                return Project.find();
             }
         },
         tasks: {
@@ -233,21 +237,6 @@ const RootQuery = new GraphQLObjectType({
 
             }
         },
-        /*searchFriends: {
-            type: new GraphQLList(PersonType),
-            args: { searchText: { type: GraphQLString}},
-            resolve(parent, args, context) {
-                //Get sender
-                const person = await Person.findOne({ id: context.personId });
-
-                //Go through each name, compare searchText and their full name
-                for (let i = 0; i < person.friends.id; i++) {
-
-                }
-                //Check if search term is within their names
-                return Person.find({ id: {$in:person.friendIds} });
-            }
-        }*/
         login: {
             type: AuthType,
             args: {
@@ -267,28 +256,6 @@ const RootQuery = new GraphQLObjectType({
                     expiresIn: '2h'
                 });
                 return { personId: person.id, token: token, tokenExpiration: 1, admin: person.admin }
-                /*
-                return Person.findOne({email: args.email})
-                .then(person => {
-                    if(!person){
-                        throw new Error('User does not exist');
-                    }
-                    return bcrypt.compare(args.password, person.password);
-                })
-                .then(isEqual => {
-                    if (!isEqual){
-                        throw new Error('Wrong password'); //Change to invalid input after testing
-                    }
-                    const token = jwt.sign({personId: person.id, email: person.email}, 'somesupersecretkey', {
-                        expiresIn: '1h'
-                    });
-                    return { personId: person.id, token: token, tokenExpiration: 1}
-                })
-                .catch(err => {
-                    throw err
-                });
-                    */
-
             }
         }
     }
@@ -329,40 +296,32 @@ const Mutation = new GraphQLObjectType({
                 password: { type: GraphQLString }
             },
             async resolve(parent, args, context) {
-                /*if (!context.isAuth) { //Check if auth
-                    throw new Error('Unauthenticated user');
-                }
-                const person1 = await Person.findById(context.personId); //Check if admin
-                if (!person1.admin) {
-                    throw new Error('Unauthorized user');
-                }*/
-
                 return Person.findOne({ email: args.email })
 
-                    .then(person => {
-                        if (person) {
-                            throw new Error('User already exists.');
-                        }
-                        return bcrypt.hash(args.password, 12)
-                    })
-                    .then(hashedPassword => {
-                        let person = new Person({
-                            fname: args.fname,
-                            lname: args.lname,
-                            name: args.fname + " " + args.lname,
-                            email: args.email,
-                            password: hashedPassword,
-                            admin: false,
-                            friendIds: [],
-                        });
-                        return person.save();
-                    })
-                    .then(result => {
-                        return { ...result._doc, _id: result.id }
-                    })
-                    .catch(err => {
-                        throw err;
+                .then(person => {
+                    if (person) {
+                        throw new Error('User already exists.');
+                    }
+                    return bcrypt.hash(args.password, 12)
+                })
+                .then(hashedPassword => {
+                    let person = new Person({
+                        fname: args.fname,
+                        lname: args.lname,
+                        name: args.fname + " " + args.lname,
+                        email: args.email,
+                        password: hashedPassword,
+                        admin: false,
+                        friendIds: [],
                     });
+                    return person.save();
+                })
+                .then(result => {
+                    return { ...result._doc, _id: result.id }
+                })
+                .catch(err => {
+                    throw err;
+                });
             }
         },
         editProfile: {
@@ -422,23 +381,35 @@ const Mutation = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
+
+                //TODO Check if assigning friend
+
                 //Date & time
                 let today = new Date();
 
                 let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
+                //Check if assignment or task
+                let accepted = false;
+                if(context.personId === args.assigneeId) {
+                    accepted = true;
+                }
+
                 //New Task
                 let task = new Task({
                     name: args.name,
-                    done: false,
                     weight: 1,
                     progress: 1,
                     assigneeId: args.assigneeId,
                     authorId: context.personId,
                     parentId: args.parentId,
                     date: date,
-                    time: time
+                    time: time,
+
+                    done: false,
+                    accepted: accepted,
+                    ignored: false,
                 });
                 return task.save();
             }
@@ -622,7 +593,10 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLID },
                 done: { type: GraphQLBoolean }
             },
-            resolve(parent, args) {
+            resolve(parent, args, context) {
+
+                //TODO auth that modified task is assigned to modifier
+                
                 //Date & time
                 var today = new Date();
 
@@ -633,8 +607,36 @@ const Mutation = new GraphQLObjectType({
                     args.id,
                     {
                         done: args.done,
+                        timestampDone: today.getTime(),
                         dateDone: date,
                         timeDone: time
+                    },
+                    { new: true }
+                );
+            }
+        },
+        taskAccepted: {
+            type: TaskType,
+            args: {
+                id: { type: GraphQLID },
+            },
+            resolve(parent, args, context) {
+
+                //TODO auth that modified task is assigned to modifier
+
+                //Date & time
+                var today = new Date();
+
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                return Task.findByIdAndUpdate(
+                    args.id,
+                    {
+                        accepted: true,
+                        timestampAccepted: today.getTime(),
+                        dateAccepted: date,
+                        timeAccepted: time
                     },
                     { new: true }
                 );

@@ -59,7 +59,6 @@ function SearchTask(props) {
             setTask();
             setId("");
         }
-
     }, [search, id]);
 
     //Keyboard input handler

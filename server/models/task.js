@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
     name: String,
-    done: Boolean,
     progress: Number,
     weight: Number,
     authorId: String,
@@ -11,7 +10,20 @@ const taskSchema = new Schema({
     parentId: String,
     date: String,
     time: String,
+
+    done: Boolean,
+    timestampDone: Number,
     dateDone: String,
     timeDone: String,
+
+    accepted: Boolean,
+    timestampAccepted: Number,
+    dateAccepted: String,
+    timeAccepted: String,
+
+    ignored: Boolean,
+    timestampIgnored: Number,
+    dateIgnored: String,
+    timeIgnored: String,
 });
 module.exports = mongoose.model('Task', taskSchema);

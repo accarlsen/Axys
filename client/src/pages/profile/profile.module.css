@@ -36,6 +36,20 @@
     margin-bottom: 1.5rem;
 }
 
+.buttonGrid{
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.5rem;
+
+    width: fit-content;
+    margin: auto;
+    margin-top: 3rem;
+}
+
+.linkWidth{
+    width: fit-content;
+}
+
 .editFormGrid{
     display: grid;
     grid-template-rows: fit-content fit-content;

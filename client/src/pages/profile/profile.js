@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { editProfile, getProfile } from '../../components/queries';
 
 import style from './profile.module.css';
@@ -12,8 +13,8 @@ function Profile() {
         variables: { id: id }
     });
 
-    if(data) return( <ProfileRenderer profile={data} id={id} /> )
-    return( <div></div> )
+    if (data) return (<ProfileRenderer profile={data} id={id} />)
+    return (<div></div>)
 }
 
 function ProfileRenderer(props) {
@@ -57,7 +58,7 @@ function ProfileRenderer(props) {
                 newEmail: email,
                 newPassword: passwordConf,
             },
-            refetchQueries: [{ query: getProfile, variables: { id: id }} ]
+            refetchQueries: [{ query: getProfile, variables: { id: id } }]
         });
         resetStates()
         setEdit(false)
@@ -76,20 +77,20 @@ function ProfileRenderer(props) {
 
     const checkForChanges = () => {
         let changed = false;
-        if(data.profile.fname !== fname) changed = true;
-        if(data.profile.lname !== lname) changed = true;
-        if(data.profile.email !== email) changed = true;
-        if(password !== "") changed = true; 
-        
-        if(editPassword){
-            if(password === passwordConf && passwordConf !== "") changed = true;
+        if (data.profile.fname !== fname) changed = true;
+        if (data.profile.lname !== lname) changed = true;
+        if (data.profile.email !== email) changed = true;
+        if (password !== "") changed = true;
+
+        if (editPassword) {
+            if (password === passwordConf && passwordConf !== "") changed = true;
             else changed = false
         }
 
         return changed
     }
 
-    if(error) console.log(error.message)
+    if (error) console.log(error.message)
 
     //____________________
     //Render
@@ -97,7 +98,6 @@ function ProfileRenderer(props) {
         <div className={style.wrapper}>
             <div className={style.cardWrapper}>
                 <img className={style.profilePicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
-                {id === localStorage.getItem("personId") && <button className={style.editButton} onClick={() => setEdit(true)}>E</button>}
 
                 <div className={style.card}>
                     <h1 className={` h2 ${style.profileTitle}`}>{data.profile.fname + " " + data.profile.lname}</h1>
@@ -105,6 +105,14 @@ function ProfileRenderer(props) {
                     <p className="mt-2 p">Status: Champagne Socialist</p>
                     <p className="mt-2 p">"A citizen gets eaten, unless an animal is beaten"</p>
                     <p className="p">{data.profile.email}</p>
+                    <div className={style.buttonGrid}>
+                        <Link className={style.linkWidth} to={"/customization"}>
+                            <button className="button">
+                                Customization
+                            </button>
+                        </Link>
+                        {id === localStorage.getItem("personId") && <button className="button" onClick={() => setEdit(true)}>Edit Profile</button>}
+                    </div>
                 </div>
             </div>
         </div>
@@ -114,7 +122,6 @@ function ProfileRenderer(props) {
             <div className={style.wrapper}>
                 <div className={style.cardWrapper}>
                     <img className={style.profilePicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
-                    <button className={style.editButton} onClick={() => setEdit(true)}>X</button>
 
                     <div className={style.card}>
                         <div className={style.editWrapper}>
@@ -132,7 +139,7 @@ function ProfileRenderer(props) {
                             </div>
                             <div className={style.editFormGrid}>
                                 <label className="p">Password</label>
-                                {editPassword? 
+                                {editPassword ?
                                     <div>
                                         <input className="input" type="password" placeholder="New password" onChange={e => { setPassword(String(e.target.value)); }} value={password}></input>
                                         <input className="input mt-1" type="password" placeholder="Confirm password" onChange={e => { setPasswordConf(String(e.target.value)); }} value={passwordConf}></input>
@@ -144,8 +151,8 @@ function ProfileRenderer(props) {
                         </div>
 
                         <div className={style.editSubmitGrid}>
-                            <button className="button" onClick={() => { setEdit(false); setEditPassword(false); resetStates();} }>Cancel</button>
-                            <button className={checkForChanges() ? "button green" : "buttonInactive"} onClick={() => { if(checkForChanges()) setConfirm(true)}}>Save</button>
+                            <button className="button" onClick={() => { setEdit(false); setEditPassword(false); resetStates(); }}>Cancel</button>
+                            <button className={checkForChanges() ? "button green" : "buttonInactive"} onClick={() => { if (checkForChanges()) setConfirm(true) }}>Save</button>
                         </div>
                     </div>
                 </div>
@@ -153,11 +160,10 @@ function ProfileRenderer(props) {
         )
     }
     else if (edit && confirm) { //Confirm password view
-        return(
+        return (
             <div className={style.wrapper}>
                 <div className={style.cardWrapper}>
                     <img className={style.profilePicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
-                    <button className={style.editButton} onClick={() => setEdit(true)}>X</button>
 
                     <div className={style.card}>
                         <div className={style.editWrapper}>
@@ -173,8 +179,8 @@ function ProfileRenderer(props) {
                         </div>
 
                         <div className={style.editSubmitGrid}>
-                            <button className="button" onClick={() => { setConfirm(false);} }>Cancel</button>
-                            <button className={curPassword.length > 0 ? "button green" : "buttonInactive"} onClick={(e) => { if(curPassword.length > 0) editProfileQuery(e); }}>Confirm Changes</button>
+                            <button className="button" onClick={() => { setConfirm(false); }}>Cancel</button>
+                            <button className={curPassword.length > 0 ? "button green" : "buttonInactive"} onClick={(e) => { if (curPassword.length > 0) editProfileQuery(e); }}>Confirm Changes</button>
                         </div>
                     </div>
                 </div>
