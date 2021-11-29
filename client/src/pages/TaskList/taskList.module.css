@@ -24,7 +24,16 @@
 .taskWrapper{
     width: 25rem;
     border-bottom: 1px solid var(--background);
-    cursor: default;
+    cursor: default;   
+}
+
+.goldenShine{
+    /*box-shadow: inset 0 0 10px #979797; */
+    background-image: var(--greyGradient);
+}
+
+.goldenShine:hover{
+    background-image: var(--greyerGradient);
 }
 
 .taskWrapper:hover{

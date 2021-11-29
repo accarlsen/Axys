@@ -77,17 +77,26 @@ function TaskList() {
     }
 
     //DOM
-    if (data) return (
-        <div className={style.wrapper}>
-            <div className={style.taskListWrapper}>
-                {data.tasks.map((task, i) => (
-                    <Task task={task} isAssignment={false} index={i + 1} />
-                ))}
+    if (data) {
+        let sortedData = [...data.tasks];
+        console.log(sortedData)
+        sortedData.sort(function (x, y) {
+            // false values first
+            return (x.accepted === y.accepted) ? 0 : x ? -1 : 1;
+        });
+
+        return (
+            <div className={style.wrapper}>
+                <div className={style.taskListWrapper}>
+                    {sortedData.map((task, i) => (
+                        <Task task={task} isAssignment={false} index={i + 1} />
+                    ))}
+                </div>
+                <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
+                <SearchTask ref={STRef} searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
             </div>
-            <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter}/>
-            <SearchTask ref={STRef} searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
-        </div>
-    )
+        )
+    }
 
     return <div></div>
 }

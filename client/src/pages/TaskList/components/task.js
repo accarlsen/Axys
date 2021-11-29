@@ -24,15 +24,15 @@ function Task(props) {
     }
 
     return (
-        <div key={props.index} className={style.taskWrapper}>
+        <div key={props.index} className={` ${style.taskWrapper} ${props.task.accepted === false ? style.goldenShine : ""}`}>
             <div className={style.taskContent}>
                 <p className={style.taskNum}>{props.index}</p>
                 <div>
                     <p className={style.taskName}>{props.task.name}</p>
-                    {id !== props.task.authorId ? <div className={style.authorDisplay}><Link className={`p ${style.link}`} to={"/profile/" + props.task.author.id}>
+                    {id !== props.task.authorId ? <div className={style.authorDisplay}><span className="ps">{props.task.accepted ? "From " : "Suggested by "}</span><Link className={`ps ${style.link}`} to={"/profile/" + props.task.author.id}>
                         {props.task.author.name}
                     </Link></div> : <div className={style.authorDisplayPlaceholder}></div>}
-                    {props.isAssignment && <div className={style.authorDisplay}><span className="p">Assigned to: </span><Link className={`p ${style.link}`} to={"/profile/" + props.task.assignee.id}>
+                    {props.isAssignment && <div className={style.authorDisplay}><span className="ps">Assigned to </span><Link className={`ps ${style.link}`} to={"/profile/" + props.task.assignee.id}>
                         {props.task.assignee.name}
                     </Link></div>}
                 </div>
