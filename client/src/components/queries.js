@@ -41,6 +41,7 @@ const getTasks = gql`
       authorId
       assigneeId
       parentId
+      accepted
       assignee{
         id
         fname
@@ -203,6 +204,22 @@ const taskDone = gql`
   }
 `;
 
+const taskAccepted = gql`
+  mutation TaskDone($id: ID){
+    taskAccepted(id: $id){
+      id
+    }
+  }
+`;
+
+const taskIgnored = gql`
+  mutation TaskDone($id: ID){
+    taskIgnored(id: $id){
+      id
+    }
+  }
+`;
+
 const deleteTask = gql`
   mutation DeleteTask($id: ID){
     deleteTask(id: $id){
@@ -265,6 +282,8 @@ export {
   answerFriendRequest,
   removeFriend,
   taskDone,
+  taskAccepted,
+  taskIgnored,
   deleteTask,
   addPerson,
   editProfile,

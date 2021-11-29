@@ -202,7 +202,7 @@ const RootQuery = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                return Task.find({ assigneeId: context.personId, done: false });
+                return Task.find({ assigneeId: context.personId, done: false, ignored: {$ne: true} });
             }
         },
         createdAssignments: {
@@ -596,7 +596,7 @@ const Mutation = new GraphQLObjectType({
             resolve(parent, args, context) {
 
                 //TODO auth that modified task is assigned to modifier
-                
+
                 //Date & time
                 var today = new Date();
 
@@ -637,6 +637,33 @@ const Mutation = new GraphQLObjectType({
                         timestampAccepted: today.getTime(),
                         dateAccepted: date,
                         timeAccepted: time
+                    },
+                    { new: true }
+                );
+            }
+        },
+        taskIgnored: {
+            type: TaskType,
+            args: {
+                id: { type: GraphQLID },
+            },
+            resolve(parent, args, context) {
+
+                //TODO auth that modified task is assigned to modifier
+
+                //Date & time
+                var today = new Date();
+
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                return Task.findByIdAndUpdate(
+                    args.id,
+                    {
+                        ignored: true,
+                        timestampIgnored: today.getTime(),
+                        dateIgnored: date,
+                        timeIgnored: time
                     },
                     { new: true }
                 );
