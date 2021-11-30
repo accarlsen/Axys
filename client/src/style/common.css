@@ -66,7 +66,7 @@
 
 .p{
     font-family: 'Roboto';
-    font-size: 14px;
+    font-size: 13px;
     font-weight: var(--p-weight);
     margin: 0.3rem 0 0.3rem 0;
     color: var(--text-off);
@@ -74,7 +74,7 @@
 
 .ps{
     font-family: 'Roboto';
-    font-size: 12px;
+    font-size: 11px;
     font-weight: var(--p-weight);
     margin: 0.3rem 0 0.3rem 0;
     color: var(--text-off2);

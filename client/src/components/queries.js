@@ -42,6 +42,7 @@ const getTasks = gql`
       assigneeId
       parentId
       accepted
+      ignored
       assignee{
         id
         fname
@@ -68,6 +69,8 @@ const getCreatedAssignments = gql`
       authorId
       assigneeId
       parentId
+      accepted
+      ignored
       assignee{
         id
         fname
