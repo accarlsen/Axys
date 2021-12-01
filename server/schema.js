@@ -458,6 +458,36 @@ const Mutation = new GraphQLObjectType({
                 return task.save();
             }
         },
+        addComment: {
+            type: CommentType,
+            args: {
+                text: { type: GraphQLString },
+                taskId: { type: GraphQLString },
+            },
+            resolve(parent, args, context) {
+                
+                if (!context.isAuth) { //Auth
+                    throw new Error('Unauthenticated user');
+                }
+
+                //Date & time
+                let today = new Date();
+                let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                //New Task
+                let comment = new Comment({
+                    text: args.text,
+                    taskId: args.taskId,
+                    authorId: context.personId,
+
+                    date: date,
+                    time: time,
+                    timestamp: today.getTime(),
+                });
+                return comment.save();
+            }
+        },
         sendFriendRequest: {
             type: FriendRequestType,
             args: { email: { type: GraphQLString } },

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored } from '../../../components/queries';
+import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment } from '../../../components/queries';
 
 import style from './../taskList.module.css'
 
@@ -10,6 +10,7 @@ function SearchTask(props) {
     const [search, setSearch] = useState("");
     const [id, setId] = useState("");
     const [task, setTask] = useState();
+    const [comment, setComment] = useState("Very interesting comment");
 
     //Queries & mutations
     const [TaskDone, { error }] = useMutation(taskDone, {
@@ -26,6 +27,10 @@ function SearchTask(props) {
 
     const [TaskIgnored, { errorI }] = useMutation(taskIgnored, {
         variables: { id: id }
+    })
+
+    const [AddComment, {errorC}] = useMutation(addComment, {
+        variables: {text: comment, taskId: id}
     })
 
     //Methods
@@ -75,6 +80,20 @@ function SearchTask(props) {
             refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
+        props.setSearchActive(false);
+    }
+
+    const addCommentQuery = (event) => {
+        event.preventDefault();
+        AddComment({
+            variables: {
+                text: comment,
+                taskId: id
+            },
+            refetchQueries: [{ query: getTasks }]
+        });
+        setSearch("");
+        setComment("");
         props.setSearchActive(false);
     }
 
@@ -139,7 +158,7 @@ function SearchTask(props) {
                         {task.accepted ? <div className={style.STResults}>
                             <span className={style.STResText}>{task.name}</span>
                             <button className="button red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
-                            <button className="button green" onClick={e => { updateStatusQuery(e); }}>Done</button>
+                            <button className="button green" onClick={e => { addCommentQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>
                         </div>
                         :
                         <div className={style.STResults}>

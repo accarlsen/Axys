@@ -155,6 +155,20 @@ const addTask = gql`
   }
 `;
 
+const addComment = gql`
+  mutation AddComment(
+    $text: String,
+    $taskId: String,
+  ){
+    addComment(
+      text: $text,
+      taskId: $taskId,
+    ){
+      id
+    }
+  }
+`;
+
 const addProject = gql`
   mutation AddProject(
     $name: String,
@@ -281,6 +295,7 @@ export {
   getFriends,
   getSubTasks,
   addTask,
+  addComment,
   sendFriendRequest,
   answerFriendRequest,
   removeFriend,
