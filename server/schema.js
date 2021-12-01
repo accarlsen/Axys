@@ -4,6 +4,7 @@ const FriendRequest = require('./models/friendRequest');
 const Person = require('./models/person');
 const _ = require('lodash');
 const Project = require('./models/project')
+const Comment = require('./models/comment')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
@@ -90,10 +91,43 @@ const TaskType = new GraphQLObjectType({
                 return Person.findById(parent.assigneeId);
             }
         },
+        comments: {
+            type: new GraphQLList(CommentType),
+            resolve(parent, args) {
+                return Comment.find({ taskId: parent.id });
+            }
+        },
         subtasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {
                 return Task.find({ parentId: parent.id });
+            }
+        },
+        parent: {
+            type: TaskType,
+            resolve(parent, args) {
+                return Task.findById(parent.parentId);
+            }
+        }
+    })
+});
+
+const CommentType = new GraphQLObjectType({
+    name: 'Comment',
+    fields: () => ({
+        id: { type: GraphQLID },
+        text: { type: GraphQLString },
+        authorId: { type: GraphQLString },
+        taskId: { type: GraphQLString },
+
+        date: { type: GraphQLString },
+        time: { type: GraphQLString },
+        timestamp: { type: GraphQLInt },
+
+        author: {
+            type: PersonType,
+            resolve(parent, args) {
+                return Person.findById(parent.authorId);
             }
         },
         parent: {
@@ -212,6 +246,16 @@ const RootQuery = new GraphQLObjectType({
                     throw new Error('Unauthenticated user');
                 }
                 return Task.find({ authorId: context.personId, assigneeId: { $ne: context.personId }, done: false });
+            }
+        },
+        comments: {
+            type: new GraphQLList(CommentType),
+            args: { taskId: { type: GraphQLID } },
+            resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+                return Comment.find({ '_id': args.taskId });
             }
         },
         /*persons: {
