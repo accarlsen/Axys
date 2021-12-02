@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import style from './../taskList.module.css'
 import { deleteTask, getTasks } from '../../../components/queries';
 import { Link } from 'react-router-dom';
+import CommentList from './commentList';
 
 function Task(props) {
 
     const id = localStorage.getItem("personId");
+    const [showComments, setShowComments] = useState(false)
 
     //Queries & mutations
     const [DeleteTask, { errorD }] = useMutation(deleteTask)
@@ -43,9 +45,16 @@ function Task(props) {
                         </div>
                     </div>
                 </div>
+                {props.task.comments.length > 0 ?
+                    <button className={style.removeTask} onClick={() => {showComments ? setShowComments(false) : setShowComments(true)}}>C</button>
+                    :
+                    <button className={style.removeTask} onClick={() => {showComments ? setShowComments(false) : setShowComments(true)}}>+C</button>
+                }
                 <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
             </div>
-
+            <div className={style.commentListWrapper}>
+                <CommentList task={props.task} showComments={showComments} />
+            </div>
         </div>
     )
 }

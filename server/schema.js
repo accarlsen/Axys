@@ -255,7 +255,7 @@ const RootQuery = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                return Comment.find({ '_id': args.taskId });
+                return Comment.find({ taskId: args.taskId });
             }
         },
         /*persons: {

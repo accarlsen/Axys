@@ -29,10 +29,6 @@ function SearchTask(props) {
         variables: { id: id }
     })
 
-    const [AddComment, {errorC}] = useMutation(addComment, {
-        variables: {text: comment, taskId: id}
-    })
-
     //Methods
     const updateStatusQuery = (event) => {
         event.preventDefault(); //Enable custom behaviour
@@ -80,20 +76,6 @@ function SearchTask(props) {
             refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
-        props.setSearchActive(false);
-    }
-
-    const addCommentQuery = (event) => {
-        event.preventDefault();
-        AddComment({
-            variables: {
-                text: comment,
-                taskId: id
-            },
-            refetchQueries: [{ query: getTasks }]
-        });
-        setSearch("");
-        setComment("");
         props.setSearchActive(false);
     }
 
@@ -158,7 +140,7 @@ function SearchTask(props) {
                         {task.accepted ? <div className={style.STResults}>
                             <span className={style.STResText}>{task.name}</span>
                             <button className="button red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
-                            <button className="button green" onClick={e => { addCommentQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>
+                            <button className="button green" onClick={e => { updateStatusQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>
                         </div>
                         :
                         <div className={style.STResults}>
@@ -179,3 +161,30 @@ function SearchTask(props) {
 }
 
 export default SearchTask;
+
+function STCreateComment(props) {
+
+    /*const [AddComment, {errorC}] = useMutation(addComment, {
+        variables: {text: comment, taskId: id}
+    })
+
+    const addCommentQuery = (event) => {
+        event.preventDefault();
+        AddComment({
+            variables: {
+                text: comment,
+                taskId: id
+            },
+            refetchQueries: [{ query: getTasks }]
+        });
+        setSearch("");
+        setComment("");
+        props.setSearchActive(false);
+    }*/
+
+    return(
+        <div className={style.STCCWrapper}>
+
+        </div>
+    )
+}

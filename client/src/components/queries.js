@@ -53,9 +53,23 @@ const getTasks = gql`
         id
         name
       }
+      comments{
+        id
+      }
     }
   }
 `;
+
+const getComments = gql `
+  query ($taskId: ID) {
+    comments(taskId: $taskId){
+      id
+      text 
+      authorId
+      
+    }
+  }
+`
 
 const getCreatedAssignments = gql`
   query {
@@ -290,6 +304,7 @@ export {
   getProfile,
   getProjects,
   getTasks,
+  getComments,
   getCreatedAssignments,
   getFriendRequests,
   getFriends,
