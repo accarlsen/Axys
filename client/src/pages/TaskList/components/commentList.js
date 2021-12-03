@@ -24,13 +24,13 @@ function CommentList(props) {
                             <p className="ps">{comment.text}</p>
                         </div>
                     ))}
-                    <AddComment task={props.task} />
+                    <AddComment task={props.task} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
                 </div>
             )
         } else {
             return (
                 <div className={` `}>
-                    <AddComment task={props.task} />
+                    <AddComment task={props.task}  isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment}/>
                 </div>
             )
         }

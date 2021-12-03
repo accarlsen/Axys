@@ -26,9 +26,12 @@ function AddComment(props) {
         setText("")
     }
 
+    const onFocus = () => props.setIsWritingComment(true)
+    const onBlur = () => props.setIsWritingComment(false)
+
     return (
         <div className={style.wrapper}>
-            <input className="inputNoBorder-small" autoFocus={true} value={text} placeholder={"Add Comment..."} onChange={e => { setText(String(e.target.value)); }}></input>
+            <input className="inputNoBorder-small" autoFocus={true} onFocus={() => onFocus()} onBlur={() => onBlur()} value={text} placeholder={"Add Comment..."} onChange={e => { setText(String(e.target.value)); }}></input>
             <button className="button-small green" onClick={(e) => addCommentQuery(e)}>Add</button>
         </div>
     )

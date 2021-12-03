@@ -16,6 +16,7 @@ function TaskList() {
     const [searchActive, setSearchActive] = useState(false);
     const [activationLetter, setActivationLetter] = useState("");
     const [activationNumber, setActivationNumber] = useState("");
+    const [isWritingComment, setIsWritingComment] = useState(false)
     const history = useHistory();
 
     const CTRef = useRef(null)
@@ -28,14 +29,14 @@ function TaskList() {
     useEffect(() => {
         const handleDown = (event) => {
 
-            if (event.keyCode >= 48 && event.keyCode <= 57 && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey && !event.altGraphKey && event.key !== '@') {
+            if (!isWritingComment && event.keyCode >= 48 && event.keyCode <= 57 && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey && !event.altGraphKey && event.key !== '@') {
                 //Number
                 if (!searchActive && !taskActive) {
                     setActivationNumber(String.fromCharCode(event.keyCode));
                     setSearchActive(true);
                 }
             }
-            else if ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
+            else if ((!isWritingComment && event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
                 //Higher and lower case letters
                 if (!taskActive && !searchActive) {
                     setActivationLetter(String.fromCharCode(event.keyCode));
@@ -89,7 +90,7 @@ function TaskList() {
             <div className={style.wrapper}>
                 <div className={style.taskListWrapper}>
                     {sortedData.map((task, i) => (
-                        <Task task={task} isAssignment={false} index={i + 1} />
+                        <Task task={task} isAssignment={false} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
                     ))}
                 </div>
                 <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />

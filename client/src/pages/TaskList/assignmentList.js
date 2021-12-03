@@ -10,6 +10,7 @@ function AssignmentList() {
 
     //Variables
     const history = useHistory();
+    const [isWritingComment, setIsWritingComment] = useState(false)
 
     //Queries
     const { loading, error, data } = useQuery(getCreatedAssignments);
@@ -35,7 +36,7 @@ function AssignmentList() {
             <h1 className={`h3 ${style.topTitle}`}>Created assignments</h1>
             <div className={style.taskListWrapper}>
                 {data.createdAssignments.map((task, i) => (
-                    <Task task={task} isAssignment={true} index={i + 1} />
+                    <Task task={task} isAssignment={true} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
                 ))}
             </div>
         </div>

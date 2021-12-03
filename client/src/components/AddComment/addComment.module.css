@@ -4,11 +4,15 @@
     column-gap: 0.5rem;
 
     padding: 0.2rem;
-    margin-top: 0.3rem;
+    margin-top: 0.5rem;
     margin-bottom: 0.3rem;
     margin-left: 5rem;
 }
 
 .wrapper > input{
     border-bottom: 1px solid var(--grey);
+}
+
+.wrapper > input:focus {
+    border-bottom: 1px solid var(--greyer);
 }

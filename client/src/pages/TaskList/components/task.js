@@ -53,7 +53,7 @@ function Task(props) {
                 <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
             </div>
             <div className={style.commentListWrapper}>
-                <CommentList task={props.task} showComments={showComments} />
+                <CommentList task={props.task} showComments={showComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment}/>
             </div>
         </div>
     )
