@@ -6,6 +6,9 @@
     padding: 0.2rem;
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
+    margin-left: 5rem;
+}
 
-    background-color: var(--background2);
+.wrapper > input{
+    border-bottom: 1px solid var(--grey);
 }

@@ -33,7 +33,7 @@ function CreateTask(props) {
     }, [searchName])
 
     //Methods
-    const addTaskQuery = (event) => {
+    const addTaskQuery = (event) => { 
         event.preventDefault(); //Enable custom behaviour
         AddTask({
             variables: {

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import style from './addComment.module.css'
-import { addComment, deleteTask, getComments, getTasks } from '../../../components/queries';
-import { Link } from 'react-router-dom';
+import { addComment, getComments } from '../queries';
 
 function AddComment(props) {
 
@@ -11,7 +10,7 @@ function AddComment(props) {
 
     //Queries & mutations
     const [AddComment, { errorC }] = useMutation(addComment, {
-        variables: { text: "comment", taskId: props.task.id }
+        variables: { text: text, taskId: props.task.id }
     })
 
     //Methods
@@ -19,19 +18,20 @@ function AddComment(props) {
         event.preventDefault();
         AddComment({
             variables: {
-                text: "comment",
+                text: text,
                 taskId: props.task.id
             },
-            refetchQueries: [{ query: getTasks }]
+            refetchQueries: [{ query: getComments, variables: {taskId: props.task.id} }]
         });
+        setText("")
     }
 
     return (
         <div className={style.wrapper}>
-            <input className="inputNoBorder" autoFocus={true} value={text} placeholder={"Add Comment..."} onChange={e => { setText(String(e.target.value)); }}></input>
+            <input className="inputNoBorder-small" autoFocus={true} value={text} placeholder={"Add Comment..."} onChange={e => { setText(String(e.target.value)); }}></input>
             <button className="button-small green" onClick={(e) => addCommentQuery(e)}>Add</button>
         </div>
     )
 }
 
-export default CommentList;
+export default AddComment;

@@ -31,8 +31,6 @@
     font-weight: 500;
     font-size: 12px;
     padding: 4px 10px 4px 10px;
-    background-color: var(--grey);
-    color: var(--text-off);
     cursor: pointer;
     border: solid 1px var(--shadow);
     transition: smooth, 0.2s;
@@ -226,7 +224,23 @@
     border: none;
     outline: none;
     font-family: 'Roboto';
-    font-size: 15px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text);
+    background-color: #00000000;
+
+    width: 100%;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.inputNoBorder-small{
+    border: none;
+    outline: none;
+    font-family: 'Roboto';
+    font-size: 12px;
     font-weight: 400;
     color: var(--text);
     background-color: #00000000;
@@ -237,6 +251,7 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
