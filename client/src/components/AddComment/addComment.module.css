@@ -1,0 +1,11 @@
+.wrapper{
+    display: grid;
+    grid-template-columns: 11.5rem 4rem;
+    column-gap: 0.5rem;
+
+    padding: 0.2rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+
+    background-color: var(--background2);
+}

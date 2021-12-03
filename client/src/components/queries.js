@@ -66,7 +66,13 @@ const getComments = gql `
       id
       text 
       authorId
-      
+      author{
+        id
+        fname
+        lname
+        name
+        email
+      }
     }
   }
 `
@@ -94,6 +100,9 @@ const getCreatedAssignments = gql`
       author{
         id
         name
+      }
+      comments{
+        id
       }
     }
   }
