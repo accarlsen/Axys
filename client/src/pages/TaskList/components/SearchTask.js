@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { getTasks, taskDone, deleteTask } from '../../../components/queries';
+import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment } from '../../../components/queries';
 
 import style from './../taskList.module.css'
 
@@ -10,9 +10,7 @@ function SearchTask(props) {
     const [search, setSearch] = useState("");
     const [id, setId] = useState("");
     const [task, setTask] = useState();
-    const [active, setActive] = useState(false);
-
-    const authorId = localStorage.getItem("personId");
+    const [comment, setComment] = useState("Very interesting comment");
 
     //Queries & mutations
     const [TaskDone, { error }] = useMutation(taskDone, {
@@ -20,6 +18,14 @@ function SearchTask(props) {
     })
 
     const [DeleteTask, { errorD }] = useMutation(deleteTask, {
+        variables: { id: id }
+    })
+
+    const [TaskAccepted, { errorA }] = useMutation(taskAccepted, {
+        variables: { id: id }
+    })
+
+    const [TaskIgnored, { errorI }] = useMutation(taskIgnored, {
         variables: { id: id }
     })
 
@@ -31,10 +37,10 @@ function SearchTask(props) {
                 id: id,
                 done: true,
             },
-            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+            refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
-        setActive(false);
+        props.setSearchActive(false);
     }
 
     const deleteTaskQuery = (event) => {
@@ -43,45 +49,72 @@ function SearchTask(props) {
             variables: {
                 id: id
             },
-            refetchQueries: [{ query: getTasks, variables: { authorId: authorId } }]
+            refetchQueries: [{ query: getTasks }]
         });
         setSearch("");
-        setActive(false);
+        props.setSearchActive(false);
+    }
+
+    const acceptTaskQuery = (event) => {
+        event.preventDefault();
+        TaskAccepted({
+            variables: {
+                id: id
+            },
+            refetchQueries: [{ query: getTasks }]
+        });
+        setSearch("");
+        props.setSearchActive(false);
+    }
+
+    const ignoreTaskQuery = (event) => {
+        event.preventDefault();
+        TaskIgnored({
+            variables: {
+                id: id
+            },
+            refetchQueries: [{ query: getTasks }]
+        });
+        setSearch("");
+        props.setSearchActive(false);
     }
 
     const cancel = () => {
-        setActive(false); setSearch(""); setTask(); setId("")
+        props.setSearchActive(false); setSearch(""); setTask(); setId("")
     }
 
     //UseEffect, runs upon update of component activation status or of selected states
     useEffect(() => {
-        if (!active) {
-            setActive(props.active)
-            setSearch(props.activationNumber)
-        } else {
-            setActive(props.active)
-        }
-
-        console.log(props.tasks[0])
-        if (search.length > 0 && search - 1 < props.tasks.length) {
+        if (search.length > 0 && search > 0 && search - 1 < props.tasks.length) {
             setTask(props.tasks[parseInt(search, 10) - 1]);
             setId(props.tasks[parseInt(search, 10) - 1].id)
-        } else if (search - 1 > props.tasks.length || search - 1 < 0) {
+        } else if (search - 1 > props.tasks.length || search - 1 < 1) {
             setTask();
             setId("");
         }
-
-    }, [props.active, search, id]);
+    }, [search, id]);
 
     //Keyboard input handler
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            updateStatusQuery(event);
+        if(task !== null && task !== undefined){
+            if(task.accepted){
+                if (event.key === 'Enter') {
+                    updateStatusQuery(event);
+                }
+                else if (event.key === 'Delete') {
+                    deleteTaskQuery(event);
+                }
+            } else{
+                if (event.key === 'Enter') {
+                    acceptTaskQuery(event);
+                }
+                else if (event.key === 'Delete') {
+                    ignoreTaskQuery(event);
+                }
+            }
+            
         }
-        else if (event.key === 'Delete') {
-            deleteTaskQuery(event);
-        }
-        else if (event.key === 'Escape') {
+        if (event.key === 'Escape') {
             cancel();
         }
     }
@@ -95,7 +128,7 @@ function SearchTask(props) {
     };
 
     //DOM
-    if (active) {
+    if (props.searchActive) {
         return (
             <div className={style.STWrapper} onKeyDown={handleKeyDown}>
                 <div className={style.STInner}>
@@ -103,20 +136,55 @@ function SearchTask(props) {
                         <input type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={"search tasks..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
                         <button className={style.removeTask} >x</button>
                     </div>
-                    {search.length > 0 && task !== null && task !== undefined && <div className={style.STResults}>
-                        <span className={style.STResText}>{task.name}</span>
-                        <button className="button red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
-                        <button className="button green" onClick={e => { updateStatusQuery(e); }}>Done</button>
+                    {search.length > 0 && task !== null && task !== undefined && <div>
+                        {task.accepted ? <div className={style.STResults}>
+                            <span className={style.STResText}>{task.name}</span>
+                            <button className="button red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
+                            <button className="button green" onClick={e => { updateStatusQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>
+                        </div>
+                        :
+                        <div className={style.STResults}>
+                            <span className={style.STResText}>{task.name}</span>
+                            <button className="button" onClick={(e) => { ignoreTaskQuery(e) }}>Ignore</button>
+                            <button className="button green" onClick={e => { acceptTaskQuery(e); }}>Accept</button>
+                        </div>}
                     </div>}
                 </div>
             </div>
         )
     }
     return (
-        <div className={style.STPreview} onClick={() => setActive(true)}>
+        <div className={style.STPreview} onClick={() => props.setSearchActive(true)}>
             <span className={style.taskNum} >Search Tasks</span>
         </div>
     )
 }
 
 export default SearchTask;
+
+function STCreateComment(props) {
+
+    /*const [AddComment, {errorC}] = useMutation(addComment, {
+        variables: {text: comment, taskId: id}
+    })
+
+    const addCommentQuery = (event) => {
+        event.preventDefault();
+        AddComment({
+            variables: {
+                text: comment,
+                taskId: id
+            },
+            refetchQueries: [{ query: getTasks }]
+        });
+        setSearch("");
+        setComment("");
+        props.setSearchActive(false);
+    }*/
+
+    return(
+        <div className={style.STCCWrapper}>
+
+        </div>
+    )
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { getTasks } from '../../components/queries';
 import CreateTask from './components/CreateTask';
@@ -16,38 +16,36 @@ function TaskList() {
     const [searchActive, setSearchActive] = useState(false);
     const [activationLetter, setActivationLetter] = useState("");
     const [activationNumber, setActivationNumber] = useState("");
+    const [isWritingComment, setIsWritingComment] = useState(false)
     const history = useHistory();
 
+    const CTRef = useRef(null)
+    const STRef = useRef(null)
+
     //Queries
-    const { loading, error, data } = useQuery(getTasks, {
-        variables: { authorId: localStorage.getItem("personId") }
-    });
+    const { loading, error, data } = useQuery(getTasks);
 
     //UseEffect, runs upon any update to component
     useEffect(() => {
         const handleDown = (event) => {
 
-            if (event.keyCode >= 48 && event.keyCode <= 57) {
+            if (!isWritingComment && event.keyCode >= 48 && event.keyCode <= 57 && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey && !event.altGraphKey && event.key !== '@') {
                 //Number
                 if (!searchActive && !taskActive) {
                     setActivationNumber(String.fromCharCode(event.keyCode));
                     setSearchActive(true);
                 }
             }
-            else if ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
+            else if ((!isWritingComment && event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
                 //Higher and lower case letters
                 if (!taskActive && !searchActive) {
                     setActivationLetter(String.fromCharCode(event.keyCode));
                     setTaskActive(true);
                 }
             }
-            else if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'Delete') {
+            /*else if (event.key === 'Enter' || event.key === 'Escape' || event.key === 'Delete') {
                 //Reset states
-                setTaskActive(false);
-                setActivationLetter("");
-                setSearchActive(false);
-                setActivationNumber("");
-            }
+            }*/
         }
 
         const handleUp = (event) => {
@@ -80,17 +78,26 @@ function TaskList() {
     }
 
     //DOM
-    if (data) return (
-        <div className={style.wrapper}>
-            <div className={style.taskListWrapper}>
-                {data.tasks.map((task, i) => (
-                    <Task task={task} index={i + 1} />
-                ))}
+    if (data) {
+        let sortedData = [...data.tasks];
+        console.log(sortedData)
+        sortedData.sort(function (x, y) {
+            // false values first
+            return (x.accepted === y.accepted) ? 0 : x ? -1 : 1;
+        });
+
+        return (
+            <div className={style.wrapper}>
+                <div className={style.taskListWrapper}>
+                    {sortedData.map((task, i) => (
+                        <Task task={task} isAssignment={false} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
+                    ))}
+                </div>
+                <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
+                <SearchTask ref={STRef} searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
             </div>
-            <CreateTask active={taskActive} activationLetter={activationLetter} />
-            <SearchTask active={searchActive} activationNumber={activationNumber} tasks={data.tasks} />
-        </div>
-    )
+        )
+    }
 
     return <div></div>
 }

@@ -1,14 +1,15 @@
 .navbar{
     overflow: hidden;
-    background-color: white;
+    background-color: var(--background3);
     position: fixed;
     top: 0;
     width: 100%;
+    height: 3rem;
 
     margin: 0;
     padding: 0;
     overflow: hidden;
-    box-shadow: 0px 1px 8px 1px #b8b8b8;
+    box-shadow: 0px 1px 8px 1px var(--shadow);
     list-style-type: none;
     z-index: 1000;
 }
@@ -19,7 +20,7 @@ li {
   
 li a {
     display: block;
-    color: #333;
+    color: var(--text-off);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;

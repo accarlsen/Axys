@@ -1,5 +1,6 @@
 .card{
-    box-shadow: 0px 0px 8px 1px #b8b8b8;
+    box-shadow: 0px 0px 8px 1px var(--shadow);
+    background-color: var(--background2);
     border-radius: 5px;
 }
 
@@ -8,42 +9,109 @@
     font-family: 'Roboto', 'Arial';
     font-style: normal;
     border-radius: 3px;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 6px 20px 6px 20px;
+    color: var(--text-off);
+    background-color: var(--grey);
+    cursor: pointer;
+    border: solid 1px var(--shadow);
+    transition: smooth, 0.2s;
+}
+
+.red{ background-color: var(--red); color: var(--text-inverted); font-weight: 500;}
+.green{ background: var(--green); color: var(--text-inverted); font-weight: 500;}
+.grey{ background-color: var(--grey); }
+
+.button-small{
+    width: fit-content;
+    font-family: 'Roboto', 'Arial';
+    font-style: normal;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 12px;
+    padding: 4px 10px 4px 10px;
+    cursor: pointer;
+    border: solid 1px var(--shadow);
+    transition: smooth, 0.2s;
+}
+
+.button:hover, .button-small:hover{  background-color: var(--greyer) }
+.button:focus, .button-small:focus{  border: solid 1px var(--shadow); }
+
+.green:hover, .green:focus{ background-color: var(--greenlight);}
+.red:hover, .red:focus{ background-color: var(--red-light);}
+
+.buttonInactive{
+    width: fit-content;
+    font-family: 'Roboto', 'Arial';
+    font-style: normal;
+    border-radius: 3px;
     font-weight: 500;
     font-size: 14px;
     padding: 6px 20px 6px 20px;
     background-color: var(--background);
-    color: var(--text-off);
-    cursor: pointer;
-    transition: 0.3s, smooth;
+    color: var(--grey-dark);
+    cursor: default;
+    border: solid 1px var(--grey);
 }
 
-.red{ border: solid 2px var(--red); }
-.green{ border: solid 2px var(--green) }
-.grey{ border: solid 2px var(--grey-dark) }
-
+/*
 .button:hover, .button:focus{
     transform: scale(1.03);
     background-color: var(--grey);
+}*/
+
+.p{
+    font-family: 'Roboto';
+    font-size: 13px;
+    font-weight: var(--p-weight);
+    margin: 0.3rem 0 0.3rem 0;
+    color: var(--text-off);
 }
 
-.title2{
-    font-size: 1.5rem;
+.ps{
+    font-family: 'Roboto';
+    font-size: 11px;
+    font-weight: var(--p-weight);
+    margin: 0.3rem 0 0.3rem 0;
+    color: var(--text-off2);
+}
+
+.h1{
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+}
+
+.h2{
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text);
+}
+
+.h3{
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text);
 }
 
 .input{
     position: relative;
     width: 100%;
     min-width: 150px;
-    height:2rem;
     border: none;
     margin: 0px;
 
-    border: solid #b8b8b8 1px;
+    color: var(--text);
+    background-color: #00000000;
+    border: solid var(--grey) 1px;
     border-radius: 5px;
     outline: none;
     padding: 5px;
 
-    font-size: 1rem;
+    font-size: 13px;
+    font-weight: 300;
 
     -moz-box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
@@ -51,7 +119,7 @@
 }
 
 .input:focus{
-    border: solid #666 1px;
+    border: solid var(--greyer) 1px;
 }
 
 .input-signup{
@@ -59,6 +127,9 @@
     width: 95%;
     min-width: 150px;
     height:2rem;
+
+    background-color: var(--background2);
+    color: var(--text);
     
     border: none;
     margin: 0.2rem;
@@ -67,7 +138,7 @@
     padding: 0px;
     outline: none;
 
-    font-size: 1rem;
+    font-size: 13px;
 
     -moz-box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
@@ -75,7 +146,7 @@
 }
 
 .input-signup-wrapper{
-    border: solid #b8b8b8 1px;
+    border: solid var(--grey) 1px;
     border-radius: 5px;
     height: 2.4rem;
 
@@ -88,11 +159,11 @@
 }
 
 .input-signup-wrapper:active{
-    border: solid #474747 1px;
+    border: solid var(--grey-dark) 1px;
 }
 
 .input-signup-wrapper-password{
-    border: solid #b8b8b8 1px;
+    border: solid var(--grey) 1px;
     border-radius: 5px;
     height: 2.4rem;
 
@@ -153,8 +224,8 @@
     border: none;
     outline: none;
     font-family: 'Roboto';
-    font-size: 15px;
-    font-weight: 400;
+    font-size: 13px;
+    font-weight: 300;
     color: var(--text);
     background-color: #00000000;
 
@@ -165,6 +236,23 @@
     box-sizing: border-box;
 }
 
+.inputNoBorder-small{
+    border: none;
+    outline: none;
+    font-family: 'Roboto';
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--text);
+    background-color: #00000000;
+
+    width: 100%;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -173,3 +261,5 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
   }
+
+.mt-1{ margin-top: 0.5rem;}

@@ -23,17 +23,17 @@ code {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--grey);
+  background: var(--background);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--shadow);
+  background: var(--grey);
   border-radius: 5px;
-  border: 1px solid var(--grey);
+  border: 1px solid var(--background2);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--shadow-highlight);
+  background: var(--greyer);
 }

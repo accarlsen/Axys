@@ -8,6 +8,9 @@ import Signup from './pages/Signup';
 import NavBar from './components/NavBar';
 import {AuthContext} from './context/auth-context';
 import TaskList from './pages/TaskList/taskList';
+import Network from './pages/network/network';
+import Profile from './pages/profile/profile';
+import AssignmentList from './pages/TaskList/assignmentList';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -27,6 +30,18 @@ function App() {
           <Route exact path="/signup">
             <NavBar />
             <Signup />
+          </Route>
+          <Route exact path="/network">
+            <NavBar />
+            <Network />
+          </Route>
+          <Route exact path="/assignments">
+            <NavBar />
+            <AssignmentList />
+          </Route>
+          <Route path="/profile/">
+            <NavBar />
+            <Profile />
           </Route>
           <Route path="/">
             <NavBar />

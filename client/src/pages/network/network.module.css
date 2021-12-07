@@ -1,0 +1,92 @@
+.wrapper{
+    margin-top: 3rem;
+    width: 100%;
+    max-height: calc(100vh - 3rem);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto 16rem;
+}
+
+.rightWrapper{
+    width: 14rem;
+    height: calc(100vh - 3rem);
+    padding: 1rem;
+    border-left: 1px solid var(--grey);
+    background-color: var(--background3);
+}
+
+.center{
+    margin-left: 15rem;
+    padding: 1rem;
+}
+
+.center > h1{ text-align: center;}
+
+/* FPreview */
+.FRListWrapper{
+    max-width: 40rem;
+    margin: auto;
+}
+.FPreviewWrapper{
+    width: 90%;
+    height: auto;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    margin-top: 5px;
+
+    border-radius: 0.5rem;
+    border: solid 1px var(--shadow);
+    background-color: var(--background2);
+
+    display: grid;
+    grid-template-columns: 4rem 20rem auto;
+    column-gap: 1rem;
+    align-items: center;
+}
+
+.FPreviewPicture{
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.FPreviewName{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+/* FRPreview */
+.FRPreviewWrapper{
+    display: grid;
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--shadow);
+}
+
+.FRPreviewTopGrid{
+    display: grid;
+    grid-template-columns: 3rem auto;
+    column-gap: 0.5rem;
+}
+
+.FRPreviewBottomGrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0.3rem;
+    width: fit-content;
+}
+
+.FRPreviewPicture{
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.FRListWrapper{
+    height: 100%;
+    overflow-y: scroll;
+}

@@ -3,7 +3,7 @@
     width: 100%;
     overflow: hidden;
     align-items: center;
-    /*background-image: url('../../assets/Pattern3.png');*/
+    background-image: url('../../assets/Pattern3.png');
 }
 
 .taskListWrapper{
@@ -11,40 +11,109 @@
     overflow-y: auto;
 
     border-radius: 0.5rem;
-    width: 25rem;
+    width: 28rem;
     max-height: 75%;
 
     box-shadow: 0px 1px 8px 2px var(--shadow);
-    background-color: white;
+    background-color: var(--background2);
 
     margin: auto;
     margin-top: 5rem;
 }
 
 .taskWrapper{
-    display: grid;
-    grid-template-columns: 1rem auto 4rem;
-    column-gap: 1.5rem;
-
-    padding-left: 0.5rem;
-    width: 25rem;
+    width: 29rem;
     border-bottom: 1px solid var(--background);
-    cursor: default;
+    cursor: default;   
+}
+
+.goldenShine{
+    /*box-shadow: inset 0 0 10px #979797; */
+    background-image: var(--greyGradient);
+}
+
+.goldenShine:hover{
+    background-image: var(--greyerGradient);
 }
 
 .taskWrapper:hover{
     background-color: var(--grey);
-    border-bottom: 1px solid var(--grey);
 }
 
-.taskWrapper:hover > .removeTask{
+.taskContent:hover > .removeTask, .taskContent:hover .commentIconWrapper{
     color: var(--grey-dark);
+}
+
+.commentIcon{
+    display: none;
+    width: 0.9rem;
+    height: auto;
+    margin-top: 0.1rem;
+}
+
+.taskContent:hover .commentIcon{
+    display: block;
+}
+
+.commentIconWrapperLen > .commentIcon{
+    display: block;
+}
+
+.taskContent{
+    display: grid;
+    grid-template-columns: 1rem 19rem 4rem 2rem;
+
+    width: 100%;
+    margin-left: 0.5rem;
+}
+
+.commentListWrapper{
+    width: 100%;
+}
+
+.commentWrapper{
+    margin: 0.2rem;
+    margin-left: 5rem;
+    
+    padding: 0.3rem 0.5rem 0.3rem 1rem;
+    width: fit-content;
+
+    display: grid;
+    grid-template-columns: 1rem auto auto;
+    column-gap: 0.7rem;
+
+    background-color: var(--background);
+}
+
+.commentWrapper > p{
+    color: rgb(212, 212, 212);
+}
+
+.profilePicture{
+    object-fit: cover;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.authorDisplay{
+    margin-bottom: 0.3rem;
+}
+
+.authorDisplayPlaceholder{
+    margin-bottom: 0.5rem;
+}
+
+.link{
+    color: var(--blue-link);
+    text-decoration: none;
 }
 
 .taskNum{
     font-family: 'Roboto';
-    font-weight: 400;
-    font-size: 14px;
+    font-weight: var(--p-weight);
+    font-size: 11px;
     color: var(--text-off);
     height: fit-content;
     margin: auto;
@@ -64,17 +133,19 @@
 
 .taskName{
     font-family: 'Roboto';
-    font-weight: 400;
-    font-size: 16px;
-    color: var(--text);
+    font-weight: var(--p-weight);
+    font-size: 13px;
+    color: var(--text-off);
+    margin-bottom: 0.3rem;
+    margin-left: 1rem;
 }
 
 .removeTask{
     width: fit-content;
     height: fit-content;
-    font-family: 'Arial';
+    font-family: 'Roboto';
     font-style: normal;
-    font-weight: 400;
+    font-weight: var(--p-weight);
     font-size: 16px;
     padding: 10px 15px 10px 15px;
     margin: auto;
@@ -82,28 +153,195 @@
     border: none;
     color: #FFFFFF00;
     cursor: pointer;
-}
-
-.CTWrapper{
-    display: grid;
-    grid-template-columns: auto 5rem 5.3rem;
-    column-gap: 1rem;
-
-    position: absolute;
-    bottom: 1rem;
-    left: calc(50% - 15rem);
-
-    background-color: white;
-    padding: 7px 5px 7px 5px;
-    box-shadow: 0px 1px 8px 2px var(--shadow);
-    border-radius: 5px;
-    width: 30rem;
-    overflow: hidden;
 
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.commentIconWrapper{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 12px;
+    padding: 10px 10px 10px 10px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: #FFFFFF00;
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.commentIconWrapperLen{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    padding: 10px 10px 10px 10px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: var(--grey-dark);
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.taskUnderText{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.likeWrapper{
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    padding: 5px 5px 5px 5px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: var(--grey-dark);
+    cursor: pointer;
+
+    border-radius: 1rem;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.likeIcon{
+    width: 0.9rem;
+    height: auto;
+}
+
+.likeWrapper:hover > .likersList{
+    opacity: 1;   
+    transition-delay:0.5s;
+}
+
+.likersList{
+    position: absolute;
+    left: 2.4rem;
+    top: -1rem;
+    
+    opacity: 0;
+    transition: 0s opacity;
+
+    width: auto;
+    max-width: 10rem;
+    min-width: 8rem;
+    text-align: left;
+    padding: 0.5rem;
+    background-color: var(--background2);
+    border: solid 1px var(--grey);
+    border-radius: 5px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    color: var(--text-off2);
+}
+
+.statusCompleted{ color: var(--green); }
+.statusAccepted{ color: var(--green-dark); }
+.statusIgnored{ color: var(--red); }
+.CTWrapper{
+    position: absolute;
+    bottom: 1rem;
+    left: calc(50% - 15rem);
+
+    background-color: var(--background2);
+    padding: 7px 5px 7px 5px;
+    box-shadow: 0px 1px 8px 2px var(--shadow);
+    border-radius: 5px;
+    width: 30rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.CTInnerWrapper{
+    position: relative;
+
+    display: grid;
+    grid-template-columns: auto 5rem 5.3rem;
+    column-gap: 1rem;
+}
+
+.CTFriendListWapper{
+    position: absolute;
+    margin: auto;
+    bottom: calc(100%);
+    max-width: 12rem;
+    max-height: 20rem;
+    overflow-y: scroll;
+    background-color: var(--background2);
+    border: solid 1px var(--grey-dark);
+
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+.CTFriendListItem{
+    border: none;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-family: 'Roboto';
+    font-size: 16px;
+    font-weight: var(--p-weight);
+    background-color: var(--background2);
+    color: var(--text-off);
+    text-align: left;
+}
+
+.CTFriendListItemTop{
+    border: none;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-family: 'Roboto';
+    font-size: 16px;
+    font-weight: var(--p-weight);
+    background-color: var(--grey);
+    color: var(--text-off);
+    text-align: left;
+}
+
+.CTFriendListItem:hover, .CTFriendListItem:focus {
+    background-color: var(--grey);
+}
+
+.CTfriendSearch{
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--grey);
+}
+
 
 .CTPreview{
     position: absolute;
@@ -115,7 +353,7 @@
     border-radius: 5px;
     width: 15rem;
     overflow: hidden;
-    background-color: white;
+    background-color: var(--background2);
     text-align: center;
     cursor: pointer;
 
@@ -137,7 +375,7 @@
     grid-template-columns: auto 5rem 5.3rem;
     column-gap: 1rem;
 
-    background-color: white;
+    background-color: var(--background2);
     padding: 7px 5px 7px 5px;
     box-shadow: 0px 1px 8px 2px var(--shadow);
     border-radius: 5px;
@@ -160,7 +398,7 @@
     border-radius: 5px;
     width: 15rem;
     overflow: hidden;
-    background-color: white;
+    background-color: var(--background2);
     text-align: center;
     cursor: pointer;
 
@@ -191,4 +429,22 @@
     width: 100%;
     overflow: hidden;
     text-overflow:ellipsis;
+    color: var(--text-off);
+    font: 'Roboto';
+    font-weight: var(--p-weight);
+}
+
+.friendSearch{
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--grey);
+}
+
+.topTitle{
+    position: absolute;
+    top: 0rem;
+    text-align: center;
+
+    width: 12rem;
+    left: calc( 50% - 6rem );
+    z-index: 11200;
 }
