@@ -31,6 +31,7 @@
     --greyGradient: linear-gradient(to right, rgb(48, 48, 48), var(--background2));
     --greyerGradient: linear-gradient(to right, rgb(59, 59, 59), var(--grey));
 
+    --gey: #929292;
     /*
     --primary: #eb912a;
     --secondary: #d17c1c;

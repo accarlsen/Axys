@@ -40,8 +40,23 @@
     background-color: var(--grey);
 }
 
-.taskContent:hover > .removeTask{
+.taskContent:hover > .removeTask, .taskContent:hover .commentIconWrapper{
     color: var(--grey-dark);
+}
+
+.commentIcon{
+    display: none;
+    width: 0.9rem;
+    height: auto;
+    margin-top: 0.1rem;
+}
+
+.taskContent:hover .commentIcon{
+    display: block;
+}
+
+.commentIconWrapperLen > .commentIcon{
+    display: block;
 }
 
 .taskContent{
@@ -138,6 +153,44 @@
     border: none;
     color: #FFFFFF00;
     cursor: pointer;
+}
+
+.commentIconWrapper{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 12px;
+    padding: 10px 15px 10px 15px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: #FFFFFF00;
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+}
+
+.commentIconWrapperLen{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    padding: 10px 15px 10px 15px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: var(--grey-dark);
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
 }
 
 .taskUnderText{
