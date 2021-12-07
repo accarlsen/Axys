@@ -18,7 +18,7 @@ function CommentList(props) {
         variables: { taskId: props.task.id }
     });
 
-    const [CommentLiked, { errorC }] = useMutation(commentLiked )
+    const [CommentLiked, { errorC }] = useMutation(commentLiked)
 
     //Methods
     const commentLikedQuery = (event, id) => {
@@ -27,8 +27,23 @@ function CommentList(props) {
             variables: {
                 id: id,
             },
-            refetchQueries: [{ query: getComments, variables: {taskId: props.task.id} }]
+            refetchQueries: [{ query: getComments, variables: { taskId: props.task.id } }]
         });
+    }
+
+    const likesToString = (likesArray) => {
+        let string = ""
+        if (likesArray.length > 2) {
+            for (let i = 0; i < likesArray.length - 1; i++) {
+                string += likesArray[i].name
+                string += ", "
+            }
+        }
+        if (likesArray.length === 2) {
+            string += "& "
+        }
+        string += likesArray[likesArray.length-1].name
+        return string
     }
 
     //Render
@@ -44,16 +59,17 @@ function CommentList(props) {
                                 {comment.likers.length > 0 ?
                                     <button className={style.likeWrapper} onClick={(e) => commentLikedQuery(e, comment.id)}>
                                         <span>{comment.likers.length}</span>
-                                        {comment.likes.includes(id) ? 
+                                        {comment.likes.includes(id) ?
                                             <img className={style.likeIcon} src={LikedIcon} alt={"Un-like"} />
                                             :
                                             <img className={style.likeIcon} src={LikeIcon} alt={"Like"} />
                                         }
+                                        <span className={style.likersList}>{likesToString(comment.likers)}</span>
                                     </button>
                                     :
                                     <button className={style.likeWrapper} onClick={(e) => commentLikedQuery(e, comment.id)}>
                                         <span>{" "}</span>
-                                        {comment.likes.includes(id) ? 
+                                        {comment.likes.includes(id) ?
                                             <img className={style.likeIcon} src={LikedIcon} alt={"Un-like"} />
                                             :
                                             <img className={style.likeIcon} src={LikeIcon} alt={"Like"} />

@@ -211,6 +211,7 @@
 }
 
 .likeWrapper{
+    position: relative;
     width: fit-content;
     height: fit-content;
     font-family: 'Roboto';
@@ -238,6 +239,35 @@
 .likeIcon{
     width: 0.9rem;
     height: auto;
+}
+
+.likeWrapper:hover > .likersList{
+    opacity: 1;   
+    transition-delay:0.5s;
+}
+
+.likersList{
+    position: absolute;
+    left: 2.4rem;
+    top: -1rem;
+    
+    opacity: 0;
+    transition: 0s opacity;
+
+    width: auto;
+    max-width: 10rem;
+    min-width: 8rem;
+    text-align: left;
+    padding: 0.5rem;
+    background-color: var(--background2);
+    border: solid 1px var(--grey);
+    border-radius: 5px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    color: var(--text-off2);
 }
 
 .statusCompleted{ color: var(--green); }
