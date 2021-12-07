@@ -79,7 +79,7 @@
     width: fit-content;
 
     display: grid;
-    grid-template-columns: 1rem auto;
+    grid-template-columns: 1rem auto 1rem;
     column-gap: 0.7rem;
 
     background-color: var(--background);

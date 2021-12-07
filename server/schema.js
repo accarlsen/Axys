@@ -136,6 +136,12 @@ const CommentType = new GraphQLObjectType({
             resolve(parent, args) {
                 return Task.findById(parent.parentId);
             }
+        },
+        likes: {
+            type: new GraphQLList(PersonType),
+            resolve(parent, args) {
+                return Person.find({ '_id': { $in: parent.likes } });
+            }
         }
     })
 });
@@ -481,7 +487,7 @@ const Mutation = new GraphQLObjectType({
                     text: args.text,
                     taskId: args.taskId,
                     authorId: context.personId,
-                    likes: 0,
+                    likes: [],
 
                     date: date,
                     time: time,
@@ -758,7 +764,7 @@ const Mutation = new GraphQLObjectType({
 
                 //TODO consider adding auth that only authorized people can like comment
 
-                if(comment.likes.includes(args.id)){ //Already liked -> un-like
+                if(comment.likes.includes(context.personId)){ //Already liked -> un-like
                     return Comment.findByIdAndUpdate(
                         args.id, { $pull: { likes: context.personId } }, { new: true }
                     )

@@ -73,6 +73,12 @@ const getComments = gql `
         name
         email
       }
+      likes{
+        id
+        fname
+        lname
+        name
+      }
     }
   }
 `
@@ -135,26 +141,26 @@ const getFriends = gql`
 `
 
 const getSubTasks = gql`
-    query {
-        task {
-            id
-            name
-            weight
-            progress
-            done
-            authorId
-            parentId
-            subtasks{
-                id
-                name
-                time
-                weight
-                progress
-                done
-                authorId
-            }
-        }
+  query {
+    task {
+      id
+      name
+      weight
+      progress
+      done
+      authorId
+      parentId
+      subtasks{
+        id
+        name
+        time
+        weight
+        progress
+        done
+        authorId
+      }
     }
+  }
 `;
 
 const addTask = gql`
@@ -268,6 +274,14 @@ const deleteTask = gql`
   }
 `;
 
+const commentLiked = gql`
+  mutation CommentLiked($id: ID){
+    commentLiked(id: $id){
+      id
+    }
+  }
+`;
+
 
 const addPerson = gql`
   mutation AddPerson($fname: String, $lname: String, $email: String, $password: String){
@@ -327,6 +341,7 @@ export {
   taskAccepted,
   taskIgnored,
   deleteTask,
+  commentLiked,
   addPerson,
   editProfile,
   addProject,
