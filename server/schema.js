@@ -119,6 +119,7 @@ const CommentType = new GraphQLObjectType({
         text: { type: GraphQLString },
         authorId: { type: GraphQLString },
         taskId: { type: GraphQLString },
+        likes: { type: GraphQLList(GraphQLString) },
 
         date: { type: GraphQLString },
         time: { type: GraphQLString },
@@ -480,6 +481,7 @@ const Mutation = new GraphQLObjectType({
                     text: args.text,
                     taskId: args.taskId,
                     authorId: context.personId,
+                    likes: 0,
 
                     date: date,
                     time: time,
@@ -741,6 +743,30 @@ const Mutation = new GraphQLObjectType({
                     },
                     { new: true }
                 );
+            }
+        },
+        commentLiked: { //Handles liking and un-liking
+            type: CommentType,
+            args: {
+                id: { type: GraphQLID },
+            },
+            async resolve(parent, args, context) {
+                const comment = await Comment.findById(args.id);
+                if (comment === null || comment === undefined) {
+                    throw new Error('Failed to find friend-request in database');
+                }
+
+                //TODO consider adding auth that only authorized people can like comment
+
+                if(comment.likes.includes(args.id)){ //Already liked -> un-like
+                    return Comment.findByIdAndUpdate(
+                        args.id, { $pull: { likes: context.personId } }, { new: true }
+                    )
+                } else{ //Else -> like
+                    return Comment.findByIdAndUpdate(
+                        args.id, { $push: { likes: context.personId } }, { new: true }
+                    )
+                }
             }
         },
         deleteTask: {
