@@ -6,8 +6,12 @@ import { addComment, commentLiked, deleteTask, getComments, getTasks } from '../
 import { Link } from 'react-router-dom';
 import AddComment from '../../../components/AddComment/AddComment';
 import LikeIcon from './../assets/LikeIcon.svg'
+import LikedIcon from './../assets/LikedIcon.svg'
+
 
 function CommentList(props) {
+
+    const id = localStorage.getItem("personId");
 
     //Queries & mutations
     const { loading, error, data } = useQuery(getComments, {
@@ -37,14 +41,23 @@ function CommentList(props) {
                             <img className={style.profilePicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
                             <p className="ps">{comment.text}</p>
                             <div>
-                                {comment.likes.length > 0 ?
+                                {comment.likers.length > 0 ?
                                     <button className={style.likeWrapper} onClick={(e) => commentLikedQuery(e, comment.id)}>
-                                        <span>{comment.likes.length}</span>
-                                        <img className={style.likeIcon} src={LikeIcon} alt={"Like"} />
+                                        <span>{comment.likers.length}</span>
+                                        {comment.likes.includes(id) ? 
+                                            <img className={style.likeIcon} src={LikedIcon} alt={"Un-like"} />
+                                            :
+                                            <img className={style.likeIcon} src={LikeIcon} alt={"Like"} />
+                                        }
                                     </button>
                                     :
                                     <button className={style.likeWrapper} onClick={(e) => commentLikedQuery(e, comment.id)}>
-                                        <img className={style.likeIcon} src={LikeIcon} alt={"Like"} />
+                                        <span>{" "}</span>
+                                        {comment.likes.includes(id) ? 
+                                            <img className={style.likeIcon} src={LikedIcon} alt={"Un-like"} />
+                                            :
+                                            <img className={style.likeIcon} src={LikeIcon} alt={"Like"} />
+                                        }
                                     </button>
                                 }
                             </div>

@@ -66,6 +66,7 @@ const getComments = gql `
       id
       text 
       authorId
+      likes
       author{
         id
         fname
@@ -73,7 +74,7 @@ const getComments = gql `
         name
         email
       }
-      likes{
+      likers{
         id
         fname
         lname

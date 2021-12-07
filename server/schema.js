@@ -137,7 +137,7 @@ const CommentType = new GraphQLObjectType({
                 return Task.findById(parent.parentId);
             }
         },
-        likes: {
+        likers: {
             type: new GraphQLList(PersonType),
             resolve(parent, args) {
                 return Person.find({ '_id': { $in: parent.likes } });

@@ -79,7 +79,7 @@
     width: fit-content;
 
     display: grid;
-    grid-template-columns: 1rem auto 1rem;
+    grid-template-columns: 1rem auto auto;
     column-gap: 0.7rem;
 
     background-color: var(--background);
@@ -208,6 +208,36 @@
 .taskUnderText{
     display: grid;
     grid-template-columns: auto auto;
+}
+
+.likeWrapper{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    padding: 5px 5px 5px 5px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: var(--grey-dark);
+    cursor: pointer;
+
+    border-radius: 1rem;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.likeIcon{
+    width: 0.9rem;
+    height: auto;
 }
 
 .statusCompleted{ color: var(--green); }
