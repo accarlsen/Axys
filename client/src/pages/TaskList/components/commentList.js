@@ -2,7 +2,7 @@ import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import style from './../taskList.module.css'
-import { addComment, commentLiked, deleteTask, getComments, getTasks } from '../../../components/queries';
+import { addComment, commentLiked, deleteComment, deleteTask, getComments, getTasks } from '../../../components/queries';
 import { Link } from 'react-router-dom';
 import AddComment from '../../../components/AddComment/AddComment';
 import LikeIcon from './../assets/LikeIcon.svg'
@@ -20,6 +20,8 @@ function CommentList(props) {
 
     const [CommentLiked, { errorC }] = useMutation(commentLiked)
 
+    const [DeleteComment, { errorD }] = useMutation(deleteComment)
+
     //Methods
     const commentLikedQuery = (event, id) => {
         event.preventDefault();
@@ -31,16 +33,28 @@ function CommentList(props) {
         });
     }
 
+    const deleteCommentQuery = (event, id) => {
+        event.preventDefault();
+        DeleteComment({
+            variables: {
+                id: id,
+            },
+            refetchQueries: [{ query: getComments, variables: { taskId: props.task.id } }]
+        })
+    }
+
     const likesToString = (likesArray) => {
         let string = ""
-        if (likesArray.length > 2) {
+        if (likesArray.length > 1) {
             for (let i = 0; i < likesArray.length - 1; i++) {
                 string += likesArray[i].name
-                string += ", "
+                if(likesArray.length > 2 && i < likesArray.length - 2){
+                    string += ", "
+                }
+                if(i === likesArray.length - 2){
+                    string += " & "
+                }
             }
-        }
-        if (likesArray.length === 2) {
-            string += "& "
         }
         string += likesArray[likesArray.length-1].name
         return string
@@ -77,6 +91,7 @@ function CommentList(props) {
                                     </button>
                                 }
                             </div>
+                            {comment.authorId === id ? <button className={style.removeComment} onClick={(e) => deleteCommentQuery(e, comment.id)}>X</button> : <span></span>}
                         </div>
                     ))}
                     <AddComment task={props.task} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />

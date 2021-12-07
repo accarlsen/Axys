@@ -3,7 +3,7 @@
     width: 100%;
     overflow: hidden;
     align-items: center;
-    background-image: url('../../assets/Pattern3.png');
+    /*background-image: url('../../assets/Pattern3.png');*/
 }
 
 .taskListWrapper{
@@ -79,7 +79,7 @@
     width: fit-content;
 
     display: grid;
-    grid-template-columns: 1rem auto auto;
+    grid-template-columns: 1rem auto auto auto;
     column-gap: 0.7rem;
 
     background-color: var(--background);
@@ -152,6 +152,25 @@
     background-color: #FFFFFF00;
     border: none;
     color: #FFFFFF00;
+    cursor: pointer;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.removeComment{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 13px;
+    padding: 5px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: var(--text-off2);
     cursor: pointer;
 
     -moz-box-sizing: border-box;

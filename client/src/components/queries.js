@@ -283,6 +283,14 @@ const commentLiked = gql`
   }
 `;
 
+const deleteComment = gql`
+  mutation DeleteComment($id: ID){
+    deleteComment(id: $id){
+      id
+    }
+  }
+`;
+
 
 const addPerson = gql`
   mutation AddPerson($fname: String, $lname: String, $email: String, $password: String){
@@ -343,6 +351,7 @@ export {
   taskIgnored,
   deleteTask,
   commentLiked,
+  deleteComment,
   addPerson,
   editProfile,
   addProject,

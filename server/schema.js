@@ -751,6 +751,15 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
+        deleteTask: {
+            type: TaskType,
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve(parent, args) {
+                return Task.findByIdAndDelete(args.id, { useFindAndModify: false });
+            }
+        },
         commentLiked: { //Handles liking and un-liking
             type: CommentType,
             args: {
@@ -775,15 +784,16 @@ const Mutation = new GraphQLObjectType({
                 }
             }
         },
-        deleteTask: {
-            type: TaskType,
+        deleteComment: {
+            type: CommentType,
             args: {
-                id: { type: GraphQLID }
+                id: { type: GraphQLID},
             },
-            resolve(parent, args) {
-                return Task.findByIdAndDelete(args.id, { useFindAndModify: false });
+            resolve(parent, args, context) {
+                return Comment.findByIdAndDelete(args.id, { useFindAndModify: false });
             }
         }
+        
     }
 });
 
