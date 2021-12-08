@@ -57,7 +57,7 @@ function Task(props) {
                         <img className={style.commentIcon} src={CommentIcon} alt={"Comment Icon"} />
                     </button>
                 }
-                <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
+                {props.task.authorId === id ? <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button> : <span></span>}
             </div>
             <div className={style.commentListWrapper}>
                 <CommentList task={props.task} showComments={showComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />

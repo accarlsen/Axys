@@ -675,9 +675,12 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLID },
                 done: { type: GraphQLBoolean }
             },
-            resolve(parent, args, context) {
+            async resolve(parent, args, context) {
 
-                //TODO auth that modified task is assigned to modifier
+                const task = await Task.findById(args.id)
+                if (task.assigneeId !== context.personId) {
+                    throw new Error('Cannot complete task: Unauthorized');
+                }
 
                 //Date & time
                 var today = new Date();
@@ -702,9 +705,12 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLID },
             },
-            resolve(parent, args, context) {
+            async resolve(parent, args, context) {
 
-                //TODO auth that modified task is assigned to modifier
+                const task = await Task.findById(args.id)
+                if (task.assigneeId !== context.personId) {
+                    throw new Error('Cannot accept task: Unauthorized');
+                }
 
                 //Date & time
                 var today = new Date();
@@ -729,9 +735,12 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLID },
             },
-            resolve(parent, args, context) {
+            async resolve(parent, args, context) {
 
-                //TODO auth that modified task is assigned to modifier
+                const task = await Task.findById(args.id)
+                if (task.assigneeId !== context.personId) {
+                    throw new Error('Cannot ignore task: Unauthorized');
+                }
 
                 //Date & time
                 var today = new Date();
@@ -756,7 +765,13 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLID }
             },
-            resolve(parent, args) {
+            async resolve(parent, args, context) {
+
+                const task = await Task.findById(args.id)
+                if (task.authorId !== context.personId) {
+                    throw new Error('Cannot delete task: Unauthorized');
+                }
+
                 return Task.findByIdAndDelete(args.id, { useFindAndModify: false });
             }
         },
