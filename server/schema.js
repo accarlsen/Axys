@@ -426,26 +426,29 @@ const Mutation = new GraphQLObjectType({
                 assigneeId: { type: GraphQLString },
                 parentId: { type: GraphQLString },
             },
-            resolve(parent, args, context) {
+            async resolve(parent, args, context) {
 
                 //Auth
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
 
-                //TODO Check if assigning friend
-
-                //Date & time
-                let today = new Date();
-
-                let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
                 //Check if assignment or task
                 let accepted = false;
                 if(context.personId === args.assigneeId) {
                     accepted = true;
                 }
+                else{ //Check if assigning friend
+                    const person = await Person.findOne({ '_id': context.personId })
+                    if (!person.friendIds.includes(args.assigneeId)) {
+                        throw new Error('Error creating task: Assignee not in users friendslist');
+                    }
+                }
+
+                //Date & time
+                let today = new Date();
+                let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
                 //New Task
                 let task = new Task({
