@@ -10,6 +10,7 @@ const taskSchema = new Schema({
     parentId: String,
     date: String,
     time: String,
+    plannedDate: String,
 
     done: Boolean,
     timestampDone: Number,

@@ -63,6 +63,7 @@ const TaskType = new GraphQLObjectType({
         assigneeId: { type: GraphQLString },
         date: { type: GraphQLString },
         time: { type: GraphQLString },
+        plannedDate: {type: GraphQLString},
 
         done: { type: GraphQLBoolean },
         timestampDone: { type: GraphQLInt },
@@ -199,6 +200,14 @@ const AuthType = new GraphQLObjectType({
     })
 })
 
+const ProgressType = new GraphQLObjectType({
+    name: 'Progress',
+    fields: () => ({
+        amntPlanned: { type: GraphQLInt },
+        amntDone: { type: GraphQLInt }
+    })
+})
+
 
 //Root-Query________________________________________________________
 
@@ -244,6 +253,22 @@ const RootQuery = new GraphQLObjectType({
                     throw new Error('Unauthenticated user');
                 }
                 return Task.find({ assigneeId: context.personId, done: false, ignored: {$ne: true} });
+            }
+        },
+        progress: {
+            // TODO: receive input for a specified date
+            type: ProgressType,
+            async resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+                var today = new Date();
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+                const amntPlanned = await Task.find({$sum:{ assigneeId: context.personId, plannedDate: date, ignored: {$ne: true} }});
+                const amntDone = await Task.find({ $sum:{ assigneeId: context.personId, plannedDate: date, done: true, ignored: {$ne: true} }});
+
+                return { amntPlanned: amntPlanned, amntDone: amntDone };
             }
         },
         createdAssignments: {
@@ -746,6 +771,25 @@ const Mutation = new GraphQLObjectType({
                         timestampIgnored: today.getTime(),
                         dateIgnored: date,
                         timeIgnored: time
+                    },
+                    { new: true }
+                );
+            }
+        },
+        taskPlanned: {
+            type: TaskType,
+            args: {
+                id: { type: GraphQLID },
+            },
+            resolve(parent, args) {
+                //Date & time
+                var today = new Date();
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+                return Task.findByIdAndUpdate(
+                    args.id,
+                    {
+                        plannedDate: date
                     },
                     { new: true }
                 );
