@@ -7,6 +7,7 @@ import style from './taskList.module.css'
 import Task from './components/task';
 import SearchTask from './components/SearchTask';
 import { useHistory } from 'react-router-dom';
+import PlanDay from './components/planDay';
 
 
 function TaskList() {
@@ -19,8 +20,8 @@ function TaskList() {
     const [isWritingComment, setIsWritingComment] = useState(false)
     const history = useHistory();
 
-    const CTRef = useRef(null)
-    const STRef = useRef(null)
+    const [isPlanning, setIsPlanning] = useState(false)
+    const [plannedTasks, setPlannedTasks] = useState([])
 
     //Queries
     const { loading, error, data } = useQuery(getTasks);
@@ -90,11 +91,23 @@ function TaskList() {
             <div className={style.wrapper}>
                 <div className={style.taskListWrapper}>
                     {sortedData.map((task, i) => (
-                        <Task task={task} isAssignment={false} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
+                        <Task 
+                            task={task} 
+                            isAssignment={false} 
+                            index={i + 1} 
+                            isWritingComment={isWritingComment} 
+                            setIsWritingComment={setIsWritingComment} 
+                            
+                            isPlanning={isPlanning} 
+                            setIsPlanning={setIsPlanning} 
+                            plannedTasks={plannedTasks} 
+                            setPlannedTasks={setPlannedTasks}
+                        />
                     ))}
                 </div>
-                <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
-                <SearchTask ref={STRef} searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
+                <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
+                <SearchTask  searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
+                <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} />
             </div>
         )
     }

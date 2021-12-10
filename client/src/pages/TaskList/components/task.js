@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import style from './../taskList.module.css'
@@ -11,9 +11,14 @@ function Task(props) {
 
     const id = localStorage.getItem("personId");
     const [showComments, setShowComments] = useState(false)
+    const [isChecked, setIsChecked] = useState(props.plannedTasks.includes(props.task.id))
 
     //Queries & mutations
     const [DeleteTask, { errorD }] = useMutation(deleteTask)
+
+    useEffect(() => {
+        setIsChecked(props.plannedTasks.includes(props.task.id))
+    }, [props.plannedTasks])
 
     //Methods
     const deleteTaskQuery = (event) => {
@@ -26,10 +31,34 @@ function Task(props) {
         });
     }
 
+    const manipulatePlannedTasks = () => {
+        let array = props.plannedTasks
+
+        if (props.plannedTasks.includes(props.task.id)) {
+            const index = props.plannedTasks.indexOf(props.task.id);
+            if (index > -1) {
+                array.splice(index, 1);
+                props.setPlannedTasks(array)
+            }
+        } else {
+            array.push(props.task.id);
+            props.setPlannedTasks(array)
+        }
+
+        setIsChecked(props.plannedTasks.includes(props.task.id))
+    }
+
     return (
         <div key={props.index} className={` ${style.taskWrapper} ${props.task.accepted === false ? style.goldenShine : ""}`}>
             <div className={style.taskContent}>
-                <p className={style.taskNum}>{props.index}</p>
+                {props.isPlanning ?
+                <input 
+                    type={"checkbox"} 
+                    checked={isChecked} 
+                    onChange={() => manipulatePlannedTasks()}
+                />
+                : 
+                <p className={style.taskNum}>{props.index}</p>}
                 <div>
                     <p className={style.taskName}>{props.task.name}</p>
                     <div className={style.taskUnderText}>
