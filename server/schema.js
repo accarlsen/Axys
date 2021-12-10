@@ -265,10 +265,10 @@ const RootQuery = new GraphQLObjectType({
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-                const amntPlanned = await Task.find({$sum:{ assigneeId: context.personId, plannedDate: date, ignored: {$ne: true} }});
-                const amntDone = await Task.find({ $sum:{ assigneeId: context.personId, plannedDate: date, done: true, ignored: {$ne: true} }});
+                const amntPlanned = await Task.find({ assigneeId: context.personId, plannedDate: date, ignored: {$ne: true} });
+                const amntDone = await Task.find({ assigneeId: context.personId, plannedDate: date, done: true, ignored: {$ne: true} });
 
-                return { amntPlanned: amntPlanned, amntDone: amntDone };
+                return { amntPlanned: amntPlanned.length, amntDone: amntDone.length };
             }
         },
         createdAssignments: {

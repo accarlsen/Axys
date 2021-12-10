@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { editProfile, getProfile } from '../../components/queries';
+import { editProfile, getProfile, getProgress } from '../../components/queries';
 
 import style from './customize.module.css';
 

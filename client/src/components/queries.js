@@ -60,6 +60,15 @@ const getTasks = gql`
   }
 `;
 
+const getProgress = gql`
+  query{ 
+    progress {
+      amntDone
+      amntPlanned
+    }
+  }
+`;
+
 const getComments = gql `
   query ($taskId: ID) {
     comments(taskId: $taskId){
@@ -336,6 +345,7 @@ export {
   getProfile,
   getProjects,
   getTasks,
+  getProgress,
   getComments,
   getCreatedAssignments,
   getFriendRequests,

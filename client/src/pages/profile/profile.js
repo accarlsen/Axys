@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { editProfile, getProfile } from '../../components/queries';
+import { editProfile, getProfile, getProgress } from '../../components/queries';
 
 import style from './profile.module.css';
 
@@ -13,13 +13,16 @@ function Profile() {
         variables: { id: id }
     });
 
-    if (data) return (<ProfileRenderer profile={data} id={id} />)
+    const { loading: loadingP, error: errorP, data: dataP} = useQuery(getProgress)
+
+    if (data && dataP) return (<ProfileRenderer profile={data} id={id} progress={dataP} />)
     return (<div></div>)
 }
 
 function ProfileRenderer(props) {
     const data = props.profile
     const id = props.id
+
 
     //____________________
     //Variables and states
@@ -104,6 +107,7 @@ function ProfileRenderer(props) {
                     <p className="p">Location: Palm Springs, Toronto</p>
                     <p className="mt-2 p">Status: Champagne Socialist</p>
                     <p className="mt-2 p">"A citizen gets eaten, unless an animal is beaten"</p>
+                    <p className="mt-2 p">{props.progress.progress.amntDone + "/" + props.progress.progress.amntPlanned}</p>
                     <p className="p">{data.profile.email}</p>
                     <div className={style.buttonGrid}>
                         <Link className={style.linkWidth} to={"/customization"}>
