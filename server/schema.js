@@ -798,7 +798,7 @@ const Mutation = new GraphQLObjectType({
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-                return Task.update(
+                return Task.updateMany(
                     {'_id': {$in: args.id}},
                     {
                         plannedDate: date

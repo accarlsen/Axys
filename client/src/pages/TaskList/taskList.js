@@ -80,15 +80,45 @@ function TaskList() {
 
     //DOM
     if (data) {
-        let sortedData = [...data.tasks];
-        console.log(sortedData)
+        const today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        
+        const plannedTasksTemp = [...data.tasks];
+        let plannedTasksData = [];
+        let sortedData = [];
+
+        for (let i = 0; i < plannedTasksTemp.length; i++) {
+            if (plannedTasksTemp[i].plannedDate === date){
+                plannedTasksData.push(plannedTasksTemp[i])
+            } else{
+                sortedData.push(plannedTasksTemp[i])
+            }
+        }
+
         sortedData.sort(function (x, y) {
             // false values first
             return (x.accepted === y.accepted) ? 0 : x ? -1 : 1;
         });
 
+        
         return (
             <div className={style.wrapper}>
+                <div className={style.taskListWrapper}>
+                    {plannedTasksData.map((task, i) => (
+                        <Task 
+                            task={task} 
+                            isAssignment={false} 
+                            index={i + 1} 
+                            isWritingComment={isWritingComment} 
+                            setIsWritingComment={setIsWritingComment} 
+                            
+                            isPlanning={isPlanning} 
+                            setIsPlanning={setIsPlanning} 
+                            plannedTasks={plannedTasks} 
+                            setPlannedTasks={setPlannedTasks}
+                        />
+                    ))}
+                </div>
                 <div className={style.taskListWrapper}>
                     {sortedData.map((task, i) => (
                         <Task 
@@ -107,7 +137,7 @@ function TaskList() {
                 </div>
                 <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
                 <SearchTask  searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
-                <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} />
+                <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData}/>
             </div>
         )
     }

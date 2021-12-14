@@ -1,15 +1,18 @@
 import React from 'react';
-import { useMutation } from '@apollo/client';
-import { getTasks, taskPlanned } from '../../../components/queries';
+import { useMutation, useQuery } from '@apollo/client';
+import { getProgress, getTasks, taskPlanned } from '../../../components/queries';
 
 import style from './../taskList.module.css'
 
 function PlanDay(props) {
 
     //Queries
-    const [TaskPlanned, {error}] = useMutation(taskPlanned, {
+    const [TaskPlanned, { error }] = useMutation(taskPlanned, {
         variables: props.plannedTasks
     })
+
+    const { loading: loadingP, error: errorP, data: dataP} = useQuery(getProgress)
+
 
     //Methods
     const cancel = () => {
@@ -27,6 +30,14 @@ function PlanDay(props) {
         cancel();
     }
 
+    const numCompletedPlannedTasks = () => {
+        let numCompleted = 0;
+        props.plannedTasksData.map((task) => {
+            if (task.done) numCompleted++;
+        })
+        return numCompleted
+    }
+
     //DOM
     if (props.isPlanning) {
         return (
@@ -40,11 +51,18 @@ function PlanDay(props) {
             </div>
         )
     }
-    return (
-        <div className={style.PDWrapper} onClick={() => props.setIsPlanning(true)}>
-            <button className="button grey" >{"Plan Day >"}</button>
-        </div>
-    )
+    else {
+        if (dataP && dataP.progress.amntPlanned > 0) return (
+            <div className={style.PDWrapper} onClick={() => props.setIsPlanning(true)}>
+                <button className="button grey" >{"Goal " + dataP.progress.amntDone + "/" + dataP.progress.amntPlanned}</button>
+            </div>
+        )
+        else return (
+            <div className={style.PDWrapper} onClick={() => props.setIsPlanning(true)}>
+                <button className="button grey" >{"Plan Day >"}</button>
+            </div>
+        )
+    }
 }
 
 export default PlanDay;

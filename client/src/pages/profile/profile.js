@@ -105,9 +105,8 @@ function ProfileRenderer(props) {
                 <div className={style.card}>
                     <h1 className={` h2 ${style.profileTitle}`}>{data.profile.fname + " " + data.profile.lname}</h1>
                     <p className="p">Location: Palm Springs, Toronto</p>
-                    <p className="mt-2 p">Status: Champagne Socialist</p>
-                    <p className="mt-2 p">"A citizen gets eaten, unless an animal is beaten"</p>
-                    <p className="mt-2 p">{props.progress.progress.amntDone + "/" + props.progress.progress.amntPlanned}</p>
+                    <p className="mt-2 p">Status: void</p>
+                    {props.progress.progress.amntPlanned > 0 && <p className="mt-2 p">{"Daily goal: " + props.progress.progress.amntDone + "/" + props.progress.progress.amntPlanned}</p>}
                     <p className="p">{data.profile.email}</p>
                     <div className={style.buttonGrid}>
                         <Link className={style.linkWidth} to={"/customization"}>

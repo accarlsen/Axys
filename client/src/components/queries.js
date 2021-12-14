@@ -43,6 +43,7 @@ const getTasks = gql`
       parentId
       accepted
       ignored
+      plannedDate
       assignee{
         id
         fname
