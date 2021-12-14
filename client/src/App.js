@@ -21,14 +21,58 @@ function App() {
   const [theme, setTheme] = useState("darkTheme");
 
   const lightTheme = {
-    "--background": "white",
-    "--background2": "grey",
-    "--background3": "white",
+    "--background": "#f9f9f9",
+    "--background2": "#FFF",
+    "--background3": "#f2f2f2",
+    "--shadow": "#b8b8b8",
+    "--shadow-highlight": "#969696",
+    "--text": "#000",
+    "--text-off": "#272727",
+    "--text-off2": "#2A2A2A",
+    "--text-inverted": "#FFF",
+    "--grey": "rgb(248, 248, 248)",
+    "--greyer": "rgb(230, 230, 230)",
+    "--grey-dark": "rgb(133, 133, 133)",
+
+    "--blue-link": "#e0e0e0",
+    "--green": "#4ff4a2",
+    "--greenlight": "#22cf79",
+    "--green-dark": "#7feeb6",
+    "--red": "#f7532b",
+    "--red-light": "rgb(206, 76, 44)",
+    "--blue": "#52b8e7",
+
+    "--p-weight": "400",
+
+    "--greyGradient": "linear-gradient(to right, rgb(248, 248, 248), var(--background2))",
+    "--greyerGradient": "linear-gradient(to right, rgb(230, 230, 230), var(--grey))",
   };
   const darkTheme = {
     "--background": "#1b1b1b",
     "--background2": "#222",
     "--background3": "#1d1d1d",
+    "--shadow": "#b8b8b800",
+    "--shadow-highlight": "#96969600",
+    "--text": "#FFF",
+    "--text-off": "#e0e0e0",
+    "--text-off2": "#bbbbbb",
+    "--text-inverted": "#000",
+    "--grey": "rgb(49, 49, 49)",
+    "--greyer": "rgb(90, 90, 90)",
+    "--grey-dark": "rgb(153, 153, 153)",
+
+    "--blue-link": "#e0e0e0",
+    "--green": "#4ff4a2",
+    "--greenlight": "#22cf79",
+    "--green-dark": "#7feeb6",
+    "--red": "#f7532b",
+    "--red-light": "rgb(206, 76, 44)",
+    "--blue": "#52b8e7",
+
+    "--p-weight": "300",
+
+    "--greyGradient": "linear-gradient(to right, rgb(48, 48, 48), var(--background2))",
+    "--greyerGradient": "linear-gradient(to right, rgb(59, 59, 59), var(--grey))",
   };
 
   const toggleTheme = () => {
