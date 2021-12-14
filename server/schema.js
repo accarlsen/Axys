@@ -791,15 +791,15 @@ const Mutation = new GraphQLObjectType({
         taskPlanned: {
             type: TaskType,
             args: {
-                id: { type: GraphQLID },
+                id: { type: GraphQLList(GraphQLString) },
             },
             resolve(parent, args) {
                 //Date & time
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.update(
+                    {'_id': {$in: args.id}},
                     {
                         plannedDate: date
                     },

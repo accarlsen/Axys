@@ -284,6 +284,14 @@ const deleteTask = gql`
   }
 `;
 
+const taskPlanned = gql`
+  mutation TaskPlanned($id: [String]){
+    taskPlanned(id: $id){
+      id
+    }
+  }
+`;
+
 const commentLiked = gql`
   mutation CommentLiked($id: ID){
     commentLiked(id: $id){
@@ -360,6 +368,7 @@ export {
   taskAccepted,
   taskIgnored,
   deleteTask,
+  taskPlanned,
   commentLiked,
   deleteComment,
   addPerson,
