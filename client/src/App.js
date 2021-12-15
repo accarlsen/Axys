@@ -47,6 +47,7 @@ function App() {
     "--greyGradient": "linear-gradient(to right, rgb(248, 248, 248), var(--background2))",
     "--greyerGradient": "linear-gradient(to right, rgb(230, 230, 230), var(--grey))",
   };
+  
   const darkTheme = {
     "--background": "#1b1b1b",
     "--background2": "#222",

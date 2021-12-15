@@ -9,6 +9,9 @@ import CommentIcon from './../assets/CommentIcon.svg'
 
 function Task(props) {
 
+    let planned = false;
+    if (props.planned) planned = true;
+
     const id = localStorage.getItem("personId");
     const [showComments, setShowComments] = useState(false)
     const [isChecked, setIsChecked] = useState(props.plannedTasks.includes(props.task.id))
@@ -39,10 +42,12 @@ function Task(props) {
             if (index > -1) {
                 array.splice(index, 1);
                 props.setPlannedTasks(array)
+                setIsChecked(false)
             }
         } else {
             array.push(props.task.id);
             props.setPlannedTasks(array)
+            setIsChecked(true)
         }
 
         setIsChecked(props.plannedTasks.includes(props.task.id))
@@ -51,13 +56,13 @@ function Task(props) {
     return (
         <div key={props.index} className={` ${style.taskWrapper} ${props.task.accepted === false ? style.goldenShine : ""}`}>
             <div className={style.taskContent}>
-                {props.isPlanning ?
-                <input 
-                    type={"checkbox"} 
-                    checked={isChecked} 
-                    onChange={() => manipulatePlannedTasks()}
-                />
-                : 
+                {props.isPlanning && !planned ?
+                <span className={`${style.doneButton}`} onClick={() => manipulatePlannedTasks()}>
+                    {isChecked && <svg className={style.doneCheckmark} viewBox="0 0 289 192" preserveAspectRatio="xMidYMid" width="289" height="192" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="#25D195" strokeWidth="35" d="M10.6066 61.3934L129.116 179.903M108.393 180.458L277.458 11.3934" />
+                    </svg>}
+                </span>
+                :
                 <p className={style.taskNum}>{props.index}</p>}
                 <div>
                     <p className={style.taskName}>{props.task.name}</p>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment } from '../../../components/queries';
+import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment, getProgress } from '../../../components/queries';
 
 import style from './../taskList.module.css'
 
@@ -37,7 +37,7 @@ function SearchTask(props) {
                 id: id,
                 done: true,
             },
-            refetchQueries: [{ query: getTasks }]
+            refetchQueries: [{ query: getTasks }, {query: getProgress}]
         });
         setSearch("");
         props.setSearchActive(false);

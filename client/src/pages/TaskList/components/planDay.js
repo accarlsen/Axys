@@ -25,7 +25,7 @@ function PlanDay(props) {
             variables: {
                 id: props.plannedTasks
             },
-            refetchQueries: [{ query: getTasks }]
+            refetchQueries: [{ query: getTasks }, {query: getProgress}]
         })
         cancel();
     }

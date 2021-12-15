@@ -100,6 +100,9 @@ function TaskList() {
             return (x.accepted === y.accepted) ? 0 : x ? -1 : 1;
         });
 
+        let allTasks = [...plannedTasksData];
+        allTasks.push(...sortedData);
+
         
         return (
             <div className={style.wrapper}>
@@ -110,7 +113,8 @@ function TaskList() {
                             isAssignment={false} 
                             index={i + 1} 
                             isWritingComment={isWritingComment} 
-                            setIsWritingComment={setIsWritingComment} 
+                            setIsWritingComment={setIsWritingComment}
+                            planned={true}
                             
                             isPlanning={isPlanning} 
                             setIsPlanning={setIsPlanning} 
@@ -124,9 +128,9 @@ function TaskList() {
                         <Task 
                             task={task} 
                             isAssignment={false} 
-                            index={i + 1} 
+                            index={plannedTasksData.length + i + 1} 
                             isWritingComment={isWritingComment} 
-                            setIsWritingComment={setIsWritingComment} 
+                            setIsWritingComment={setIsWritingComment}
                             
                             isPlanning={isPlanning} 
                             setIsPlanning={setIsPlanning} 
@@ -136,7 +140,7 @@ function TaskList() {
                     ))}
                 </div>
                 <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
-                <SearchTask  searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
+                <SearchTask  searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={allTasks} />
                 <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData}/>
             </div>
         )

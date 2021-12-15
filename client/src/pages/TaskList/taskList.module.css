@@ -503,3 +503,30 @@
     width: fit-content;
     overflow: hidden;
 }
+
+
+
+.doneCheckmark {
+    position: relative;
+    height: 1rem;
+    width: 1.5rem;
+    vertical-align: middle;
+    top: -0.45rem;
+    right: 0.2rem;
+}
+
+.doneButton {
+    margin: auto;
+    height: 0.8rem;
+    width: 0.8rem;
+    background-color: #FFFFFF00;
+    border: 1px solid var(--greyer);
+    cursor: pointer;
+}
+
+.doneButtonDisplay {
+    margin-top: 0.1rem;
+    height: 0.8rem;
+    width: 0.8rem;
+    background-color: #FFFFFF00;
+}
