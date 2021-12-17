@@ -54,7 +54,7 @@ function PlanDay(props) {
     else {
         if (dataP && dataP.progress.amntPlanned > 0) return (
             <div className={style.PDWrapper} onClick={() => props.setIsPlanning(true)}>
-                <button className="button grey" >{"Goal " + dataP.progress.amntDone + "/" + dataP.progress.amntPlanned}</button>
+                <button className="button grey" >{"Daily Tasks: " + dataP.progress.amntDone + "/" + dataP.progress.amntPlanned}</button>
             </div>
         )
         else return (
