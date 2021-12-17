@@ -106,7 +106,7 @@ function TaskList() {
         
         return (
             <div className={style.wrapper}>
-                <div className={style.taskListWrapper}>
+                {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
                     {plannedTasksData.map((task, i) => (
                         <Task 
                             task={task} 
@@ -122,7 +122,7 @@ function TaskList() {
                             setPlannedTasks={setPlannedTasks}
                         />
                     ))}
-                </div>
+                </div>}
                 <div className={style.taskListWrapper}>
                     {sortedData.map((task, i) => (
                         <Task 

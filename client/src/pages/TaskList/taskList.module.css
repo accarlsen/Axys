@@ -113,7 +113,7 @@
 .taskNum{
     font-family: 'Roboto';
     font-weight: var(--p-weight);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-off);
     height: fit-content;
     margin: auto;
@@ -134,7 +134,7 @@
 .taskName{
     font-family: 'Roboto';
     font-weight: var(--p-weight);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-off);
     margin-bottom: 0.3rem;
     margin-left: 1rem;

@@ -64,7 +64,7 @@
 
 .p{
     font-family: 'Roboto';
-    font-size: 13px;
+    font-size: 14px;
     font-weight: var(--p-weight);
     margin: 0.3rem 0 0.3rem 0;
     color: var(--text-off);
@@ -72,7 +72,7 @@
 
 .ps{
     font-family: 'Roboto';
-    font-size: 11px;
+    font-size: 12px;
     font-weight: var(--p-weight);
     margin: 0.3rem 0 0.3rem 0;
     color: var(--text-off2);
@@ -110,8 +110,8 @@
     outline: none;
     padding: 5px;
 
-    font-size: 13px;
-    font-weight: 300;
+    font-size: 14px;
+    font-weight: var(--p-weight);
 
     -moz-box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
@@ -138,7 +138,8 @@
     padding: 0px;
     outline: none;
 
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: var(--p-weight);
 
     -moz-box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
@@ -224,8 +225,8 @@
     border: none;
     outline: none;
     font-family: 'Roboto';
-    font-size: 13px;
-    font-weight: 300;
+    font-size: 14px;
+    font-weight: var(--p-weight);
     color: var(--text);
     background-color: #00000000;
 
@@ -240,8 +241,8 @@
     border: none;
     outline: none;
     font-family: 'Roboto';
-    font-size: 11px;
-    font-weight: 300;
+    font-size: 12px;
+    font-weight: var(--p-weight);
     color: var(--text);
     background-color: #00000000;
 

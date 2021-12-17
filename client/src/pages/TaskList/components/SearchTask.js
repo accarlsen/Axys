@@ -155,7 +155,7 @@ function SearchTask(props) {
     }
     return (
         <div className={style.STPreview} onClick={() => props.setSearchActive(true)}>
-            <span className={style.taskNum} >Search Tasks</span>
+            <span className="p" >Search Tasks</span>
         </div>
     )
 }
