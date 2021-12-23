@@ -1,9 +1,7 @@
 :root{
-    --primary: #eb912a;
-    --secondary: #d17c1c;
     --background: #1b1b1b;
     --background2: #222;
-    --background3: #1d1d1d;
+    --navbar-bg: #1d1d1d;
     --backgroundGold: #312a00;
     --backgroundGold2:rgb(78, 67, 0)0;
 

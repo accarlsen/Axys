@@ -1,6 +1,6 @@
 .navbar{
     overflow: hidden;
-    background-color: var(--background3);
+    background-color: var(--navbar-bg);
     position: fixed;
     top: 0;
     width: 100%;

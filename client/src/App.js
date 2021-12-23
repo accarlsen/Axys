@@ -12,69 +12,14 @@ import Network from './pages/network/network';
 import Profile from './pages/profile/profile';
 import AssignmentList from './pages/TaskList/assignmentList';
 import Customize from './pages/customize/customize';
+import { adventTheme, darkTheme, lightTheme, materialDark } from './themes';
 
 function App() {
   const [token, setToken] = useState(null);
   const [personId, setPersonId] = useState(null);
   const [tokenExpiration, setTokenExpiration] = useState(null);
   const [admin, setAdmin] = useState(null);
-  const [theme, setTheme] = useState("darkTheme");
-
-  const lightTheme = {
-    "--background": "#f9f9f9",
-    "--background2": "#FFF",
-    "--background3": "#f2f2f2",
-    "--shadow": "#b8b8b8",
-    "--shadow-highlight": "#969696",
-    "--text": "#000",
-    "--text-off": "#272727",
-    "--text-off2": "#2A2A2A",
-    "--text-inverted": "#FFF",
-    "--grey": "rgb(248, 248, 248)",
-    "--greyer": "rgb(230, 230, 230)",
-    "--grey-dark": "rgb(133, 133, 133)",
-
-    "--blue-link": "#e0e0e0",
-    "--green": "#4ff4a2",
-    "--greenlight": "#22cf79",
-    "--green-dark": "#7feeb6",
-    "--red": "#f7532b",
-    "--red-light": "rgb(206, 76, 44)",
-    "--blue": "#52b8e7",
-
-    "--p-weight": "400",
-
-    "--greyGradient": "linear-gradient(to right, rgb(248, 248, 248), var(--background2))",
-    "--greyerGradient": "linear-gradient(to right, rgb(230, 230, 230), var(--grey))",
-  };
-  
-  const darkTheme = {
-    "--background": "#1b1b1b",
-    "--background2": "#222",
-    "--background3": "#1d1d1d",
-    "--shadow": "#b8b8b800",
-    "--shadow-highlight": "#96969600",
-    "--text": "#FFF",
-    "--text-off": "#e0e0e0",
-    "--text-off2": "#bbbbbb",
-    "--text-inverted": "#000",
-    "--grey": "rgb(49, 49, 49)",
-    "--greyer": "rgb(90, 90, 90)",
-    "--grey-dark": "rgb(153, 153, 153)",
-
-    "--blue-link": "#e0e0e0",
-    "--green": "#4ff4a2",
-    "--greenlight": "#22cf79",
-    "--green-dark": "#7feeb6",
-    "--red": "#f7532b",
-    "--red-light": "rgb(206, 76, 44)",
-    "--blue": "#52b8e7",
-
-    "--p-weight": "300",
-
-    "--greyGradient": "linear-gradient(to right, rgb(48, 48, 48), var(--background2))",
-    "--greyerGradient": "linear-gradient(to right, rgb(59, 59, 59), var(--grey))",
-  };
+  const [theme, setTheme] = useState("dark");
 
   const toggleTheme = () => {
     if (theme === "dark") setTheme("light")
@@ -82,8 +27,12 @@ function App() {
     applyTheme(theme)
   }
 
-  const applyTheme = theme => {
-    const theTheme = theme === "dark" ? lightTheme : darkTheme;
+  const applyTheme = (theme) => {
+    let theTheme = darkTheme
+    if( theme === "light") theTheme = lightTheme;
+    if( theme === "advent") theTheme = adventTheme;
+    if( theme === "material") theTheme = materialDark;
+
     Object.keys(theTheme).map(key => {
       const value = theTheme[key];
       document.documentElement.style.setProperty(key, value);
@@ -117,7 +66,7 @@ function App() {
           </Route>
           <Route path="/customization">
             <NavBar />
-            <Customize theme={theme} toggleTheme={toggleTheme} />
+            <Customize theme={theme} applyTheme={applyTheme} />
           </Route>
           <Route path="/">
             <NavBar />

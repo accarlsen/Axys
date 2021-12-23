@@ -12,7 +12,7 @@
     height: calc(100vh - 3rem);
     padding: 1rem;
     border-left: 1px solid var(--grey);
-    background-color: var(--background3);
+    background-color: var(--background);
 }
 
 .center{
@@ -63,7 +63,7 @@
     row-gap: 0.5rem;
 
     padding: 0.5rem;
-    border-bottom: 1px solid var(--shadow);
+    border-bottom: 1px solid var(--grey);
 }
 
 .FRPreviewTopGrid{
