@@ -71,7 +71,7 @@ function Login() {
                     maxlength="32"
                     minlength="8" />
 
-                <input className="button" type="submit" value="Log in" onClick={e => {
+                <input className="button grey" type="submit" value="Log in" onClick={e => {
                     e.preventDefault();
                     loginFunc({
                         variables: {

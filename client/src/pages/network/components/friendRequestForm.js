@@ -30,7 +30,7 @@ function FriendRequestForm() {
             <div>
                 <p className="p">Email: </p>
                 <input className="input" type={"text"} placeholer={"email..."} value={email} onChange={(e) => setEmail(String(e.target.value))}></input>
-                <input className="button" type={"submit"} value="Send" onClick={e => { sendFriendRequestQuery(e) }}></input>
+                <input className="button grey" type={"submit"} value="Send" onClick={e => { sendFriendRequestQuery(e) }}></input>
             </div>
         </div>
     )

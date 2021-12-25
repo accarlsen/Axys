@@ -49,7 +49,7 @@
 }
 
 .taskContent:hover > .removeTask, .taskContent:hover .commentIconWrapper{
-    color: var(--grey-dark);
+    color: var(--text-off2);
 }
 
 .commentIcon{
@@ -94,7 +94,7 @@
 }
 
 .commentWrapper > p{
-    color: rgb(212, 212, 212);
+    color: var(--text-off2);
 }
 
 .profilePicture{
@@ -220,7 +220,7 @@
     margin: auto;
     background-color: #FFFFFF00;
     border: none;
-    color: var(--grey-dark);
+    color: var(--text-off2);
     cursor: pointer;
 
     display: grid;
@@ -249,7 +249,7 @@
     margin: auto;
     background-color: #FFFFFF00;
     border: none;
-    color: var(--grey-dark);
+    color: var(--text-off2);
     cursor: pointer;
 
     border-radius: 1rem;
@@ -297,8 +297,8 @@
     color: var(--text-off2);
 }
 
-.statusCompleted{ color: var(--green); }
-.statusAccepted{ color: var(--green-dark); }
+.statusCompleted{ color: var(--button-conf); }
+.statusAccepted{ color: var(--button-conf-hover); }
 .statusIgnored{ color: var(--red); }
 .CTWrapper{
     position: fixed;
@@ -416,6 +416,14 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.buttonText{
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: var(--p-weight);
+    margin: 0.3rem 0 0.3rem 0;
+    color: var(--button-text);
 }
 
 .STPreview{

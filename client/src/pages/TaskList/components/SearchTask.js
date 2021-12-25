@@ -145,7 +145,7 @@ function SearchTask(props) {
                         :
                         <div className={style.STResults}>
                             <span className={style.STResText}>{task.name}</span>
-                            <button className="button" onClick={(e) => { ignoreTaskQuery(e) }}>Ignore</button>
+                            <button className="button grey" onClick={(e) => { ignoreTaskQuery(e) }}>Ignore</button>
                             <button className="button green" onClick={e => { acceptTaskQuery(e); }}>Accept</button>
                         </div>}
                     </div>}
@@ -155,7 +155,7 @@ function SearchTask(props) {
     }
     return (
         <div className={style.STPreview} onClick={() => props.setSearchActive(true)}>
-            <span className="p" >Search Tasks</span>
+            <span className={style.buttonText} >Search Tasks</span>
         </div>
     )
 }

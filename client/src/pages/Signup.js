@@ -256,7 +256,7 @@ function Signup() {
                     </div>
                 </div>
 
-                <a.input className="button" type="submit" value="Create user" onClick={e => {
+                <a.input className="button grey" type="submit" value="Create user" onClick={e => {
                     //if (toOpacity1 == 1 && toOpacity2 == 1 && toOpacity3 == 1 && toOpacity4 == 1 && toOpacity5 == 1) {
                     e.preventDefault();
                     AddPerson({

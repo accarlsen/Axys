@@ -9,19 +9,17 @@
     font-family: 'Roboto', 'Arial';
     font-style: normal;
     border-radius: 3px;
-    font-weight: 400;
+    font-weight: var(--button-text-weight);
     font-size: 14px;
     padding: 6px 20px 6px 20px;
-    color: var(--text-off);
-    background-color: var(--grey);
     cursor: pointer;
     border: solid 1px var(--shadow);
     transition: smooth, 0.2s;
 }
 
 .red{ background-color: var(--red); color: var(--text-inverted); font-weight: 500;}
-.green{ background: var(--green); color: var(--text-inverted); font-weight: 500;}
-.grey{ background-color: var(--grey); color: var(--text)}
+.green{ background: var(--button-conf); color: var(--text-inverted); font-weight: 500;}
+.grey{ background-color: var(--button-default); color: var(--button-text); }
 
 .button-small{
     width: fit-content;
@@ -36,11 +34,11 @@
     transition: smooth, 0.2s;
 }
 
-.button:hover, .button-small:hover{  background-color: var(--greyer) }
 .button:focus, .button-small:focus{  border: solid 1px var(--shadow); }
 
-.green:hover, .green:focus{ background-color: var(--greenlight);}
+.green:hover, .green:focus{ background-color: var(--button-conf-hover);}
 .red:hover, .red:focus{ background-color: var(--red-light);}
+.grey:hover, .grey:focus{ background-color: var(--button-default-hover);}
 
 .buttonInactive{
     width: fit-content;
@@ -51,9 +49,9 @@
     font-size: 14px;
     padding: 6px 20px 6px 20px;
     background-color: var(--background);
-    color: var(--grey-dark);
+    color: var(--text-off2);
     cursor: default;
-    border: solid 1px var(--grey);
+    border: solid 1px var(--text-off2);
 }
 
 /*

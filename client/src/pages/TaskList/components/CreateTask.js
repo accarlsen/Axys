@@ -137,7 +137,7 @@ function CreateTask(props) {
     }
     return (
         <div className={style.CTPreview} onClick={() => props.setTaskActive(true)}>
-            <span className="p" >+ New Task</span>
+            <span className={style.buttonText} >+ New Task</span>
         </div>
     )
 }

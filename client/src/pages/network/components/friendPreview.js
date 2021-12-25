@@ -35,8 +35,8 @@ function FriendPreview(props) {
                 <p className="p">{"Co-Founder & COO @ Favn Software"}</p>
             </div>
             <div>
-                <input className="button" type={"submit"} value="Write" onClick={e => { }}></input>
-                <input className="button" type={"submit"} value="Remove" onClick={e => { removeFriendQuery(e) }}></input>
+                <input className="button grey" type={"submit"} value="Write" onClick={e => { }}></input>
+                <input className="button grey" type={"submit"} value="Remove" onClick={e => { removeFriendQuery(e) }}></input>
             </div>
         </div>
     )
