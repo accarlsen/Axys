@@ -97,12 +97,12 @@ const materialDark = {
     "--grey-dark": "#404040",
 
     "--blue-link": "#e0e0e0",
-    "--green": "#066033",
-    "--greenlight": "#054826",
+    "--green": "#4ff4a2",
+    "--greenlight": "#22cf79",
     "--green-dark": "#7feeb6",
-    "--red": "#803319",
-    "--red-light": "#6a2a15",
-    "--blue": "#126287",
+    "--red": "#f7532b",
+    "--red-light": "rgb(206, 76, 44)",
+    "--blue": "#52b8e7",
 
     "--p-weight": "300",
 

@@ -21,7 +21,7 @@
 
 .red{ background-color: var(--red); color: var(--text-inverted); font-weight: 500;}
 .green{ background: var(--green); color: var(--text-inverted); font-weight: 500;}
-.grey{ background-color: var(--grey); }
+.grey{ background-color: var(--grey); color: var(--text)}
 
 .button-small{
     width: fit-content;

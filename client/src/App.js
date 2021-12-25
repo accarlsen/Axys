@@ -19,15 +19,13 @@ function App() {
   const [personId, setPersonId] = useState(null);
   const [tokenExpiration, setTokenExpiration] = useState(null);
   const [admin, setAdmin] = useState(null);
-  const [theme, setTheme] = useState("dark");
 
-  const toggleTheme = () => {
-    if (theme === "dark") setTheme("light")
-    else setTheme("dark")
-    applyTheme(theme)
-  }
+  let themeVar = localStorage.getItem("theme");
+  if (themeVar === null || themeVar == undefined) themeVar = "dark";
+  const [theme, setTheme] = useState(themeVar);
 
   const applyTheme = (theme) => {
+    localStorage.setItem("theme", theme)
     let theTheme = darkTheme
     if( theme === "light") theTheme = lightTheme;
     if( theme === "advent") theTheme = adventTheme;
@@ -39,6 +37,7 @@ function App() {
     });
   };
 
+  applyTheme(theme);
 
   return (
     <AuthContext.Provider value={{ token, setToken, personId, setPersonId, tokenExpiration, setTokenExpiration, admin, setAdmin}}>
