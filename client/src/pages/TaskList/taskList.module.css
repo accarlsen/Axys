@@ -1,8 +1,11 @@
 .wrapper{
-    min-height: 100vh;
+    min-height: calc(100vh - 8rem);
     width: 100%;
     overflow: hidden;
     align-items: center;
+
+    margin-top: 4rem;
+    margin-bottom: 4rem;
     /*background-image: url('../../assets/Pattern3.png');*/
 }
 
@@ -16,12 +19,18 @@
     background-color: var(--background2);
 
     margin: auto;
-    margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.titleWrapper{
+    margin-left: 2.5rem;
+    width: 28rem;
+    border-bottom: 1px solid var(--background);
 }
 
 .taskWrapper{
-    width: 29rem;
+    width: 28rem;
     border-bottom: 1px solid var(--background);
     cursor: default;   
 }

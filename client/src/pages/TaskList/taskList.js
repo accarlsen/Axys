@@ -82,15 +82,15 @@ function TaskList() {
     if (data) {
         const today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        
+
         const plannedTasksTemp = [...data.tasks];
         let plannedTasksData = [];
         let sortedData = [];
 
         for (let i = 0; i < plannedTasksTemp.length; i++) {
-            if (plannedTasksTemp[i].plannedDate === date){
+            if (plannedTasksTemp[i].plannedDate === date) {
                 plannedTasksData.push(plannedTasksTemp[i])
-            } else{
+            } else {
                 sortedData.push(plannedTasksTemp[i])
             }
         }
@@ -103,45 +103,51 @@ function TaskList() {
         let allTasks = [...plannedTasksData];
         allTasks.push(...sortedData);
 
-        
+
         return (
             <div className={style.wrapper}>
                 {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
+                    <div className={style.titleWrapper}>
+                        <h1 className="h4">Planned Tasks</h1>
+                    </div>
                     {plannedTasksData.map((task, i) => (
-                        <Task 
-                            task={task} 
-                            isAssignment={false} 
-                            index={i + 1} 
-                            isWritingComment={isWritingComment} 
+                        <Task
+                            task={task}
+                            isAssignment={false}
+                            index={i + 1}
+                            isWritingComment={isWritingComment}
                             setIsWritingComment={setIsWritingComment}
                             planned={true}
-                            
-                            isPlanning={isPlanning} 
-                            setIsPlanning={setIsPlanning} 
-                            plannedTasks={plannedTasks} 
+
+                            isPlanning={isPlanning}
+                            setIsPlanning={setIsPlanning}
+                            plannedTasks={plannedTasks}
                             setPlannedTasks={setPlannedTasks}
                         />
                     ))}
                 </div>}
                 <div className={style.taskListWrapper}>
+                    <div className={style.titleWrapper}>
+                        <h1 className="h4">Tasks</h1>
+                    </div>
                     {sortedData.map((task, i) => (
-                        <Task 
-                            task={task} 
-                            isAssignment={false} 
-                            index={plannedTasksData.length + i + 1} 
-                            isWritingComment={isWritingComment} 
+                        <Task
+                            task={task}
+                            isAssignment={false}
+                            index={plannedTasksData.length + i + 1}
+                            isWritingComment={isWritingComment}
                             setIsWritingComment={setIsWritingComment}
-                            
-                            isPlanning={isPlanning} 
-                            setIsPlanning={setIsPlanning} 
-                            plannedTasks={plannedTasks} 
+
+                            isPlanning={isPlanning}
+                            setIsPlanning={setIsPlanning}
+                            plannedTasks={plannedTasks}
                             setPlannedTasks={setPlannedTasks}
                         />
                     ))}
                 </div>
                 <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
-                <SearchTask  searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={allTasks} />
-                <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData}/>
+                <SearchTask searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={allTasks} />
+                <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData} />
             </div>
         )
     }
