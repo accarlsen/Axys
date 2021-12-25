@@ -80,8 +80,9 @@ function CreateTask(props) {
             setSearchFriends(false)
             setSearchName("")
             if(searchNameFirst !== null){
-                setAssigneeId(searchNameFirst.id);
-                setName(name + searchNameFirst.name + " ");
+                const resFriend = searchNames(searchName, dataF.profile.friends)[0];
+                setAssigneeId(resFriend.id);
+                setName(name + resFriend.name + " ");
             }
             searchNameFirst = null
             input.current.focus();
@@ -108,7 +109,7 @@ function CreateTask(props) {
 
     //DOM
     if (props.taskActive && dataF) {
-        searchNameFirst = dataF.profile.friends[0];
+        searchNameFirst = searchNames(searchName, dataF.profile.friends)[0];
         return (
             <div className={style.CTWrapper} onKeyDown={handleKeyDown}>
                 <div className={style.CTInnerWrapper}>
