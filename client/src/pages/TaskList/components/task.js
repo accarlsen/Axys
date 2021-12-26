@@ -57,13 +57,13 @@ function Task(props) {
         <div key={props.index} className={` ${style.taskWrapper} ${props.task.accepted === false ? style.goldenShine : ""}`}>
             <div className={style.taskContent}>
                 {props.isPlanning && !planned ?
-                <span className={`${style.doneButton}`} onClick={() => manipulatePlannedTasks()}>
-                    {isChecked && <svg className={style.doneCheckmark} viewBox="0 0 289 192" preserveAspectRatio="xMidYMid" width="289" height="192" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke="#25D195" strokeWidth="35" d="M10.6066 61.3934L129.116 179.903M108.393 180.458L277.458 11.3934" />
-                    </svg>}
-                </span>
-                :
-                <p className={style.taskNum}>{props.index}</p>}
+                    <span className={`${style.doneButton}`} onClick={() => manipulatePlannedTasks()}>
+                        {isChecked && <svg className={style.doneCheckmark} viewBox="0 0 289 192" preserveAspectRatio="xMidYMid" width="289" height="192" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke="#25D195" strokeWidth="35" d="M10.6066 61.3934L129.116 179.903M108.393 180.458L277.458 11.3934" />
+                        </svg>}
+                    </span>
+                    :
+                    <p className={style.taskNum}>{props.index}</p>}
                 <div>
                     <p className={style.taskName}>{props.task.name}</p>
                     <div className={style.taskUnderText}>
