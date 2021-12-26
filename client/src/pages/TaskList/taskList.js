@@ -113,7 +113,6 @@ function TaskList() {
                     {plannedTasksData.map((task, i) => (
                         <Task
                             task={task}
-                            isAssignment={false}
                             index={i + 1}
                             isWritingComment={isWritingComment}
                             setIsWritingComment={setIsWritingComment}
@@ -133,7 +132,6 @@ function TaskList() {
                     {sortedData.map((task, i) => (
                         <Task
                             task={task}
-                            isAssignment={false}
                             index={plannedTasksData.length + i + 1}
                             isWritingComment={isWritingComment}
                             setIsWritingComment={setIsWritingComment}
