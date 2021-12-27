@@ -1,7 +1,8 @@
 :root{
     --background: #1b1b1b;
     --background2: #222;
-    --navbar-bg: #1d1d1d;
+    --navbar-bg: #1b1b1b;
+    --navbar-bg-focus: #1d1d1d;
 
     --shadow: #b8b8b800;
     --shadow-highlight: #96969600;

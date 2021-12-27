@@ -1,7 +1,8 @@
 const lightTheme = {
     "--background": "#f9f9f9",
     "--background2": "#FFF",
-    "--navbar-bg": "#f2f2f2",
+    "--navbar-bg": "#FFF",
+    "--navbar-bg-focus" : "#f2f2f2",
     "--shadow": "#b8b8b8",
     "--shadow-highlight": "#969696",
     "--text": "#000",
@@ -32,7 +33,8 @@ const lightTheme = {
 const darkTheme = {
     "--background": "#1b1b1b",
     "--background2": "#222",
-    "--navbar-bg": "#1d1d1d",
+    "--navbar-bg": "#1b1b1b",
+    "--navbar-bg-focus" : "#1d1d1d",
     "--shadow": "#b8b8b800",
     "--shadow-highlight": "#96969600",
     "--text": "#FFF",
@@ -64,6 +66,8 @@ const adventTheme = {
     "--background": "rgb(15, 15, 30)",
     "--background2": "rgb(15, 15, 30)",
     "--navbar-bg": "rgb(15, 15, 30)",
+    "--navbar-bg-focus" : "rgb(15, 15, 30)",
+
     "--shadow": "#b8b8b800",
     "--shadow-highlight": "#96969600",
     "--text": "#FFF",
@@ -94,7 +98,8 @@ const adventTheme = {
 const materialDark = {
     "--background": "#121212",
     "--background2": "#1a1a1a",
-    "--navbar-bg": "#1a1a1a",
+    "--navbar-bg": "#121212",
+    "--navbar-bg-focus" : "#1a1a1a",
     "--shadow": "#b8b8b800",
     "--shadow-highlight": "#96969600",
     "--text": "#FFF",

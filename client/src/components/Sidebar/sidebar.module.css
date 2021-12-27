@@ -1,0 +1,74 @@
+.wrapper{
+    width: 12rem;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: var(--navbar-bg);
+    border-right: 1px solid var(--grey);
+}
+
+.divider{
+    
+    width: 12rem;
+    padding: 0.5rem;
+
+    font-family: 'Roboto';
+    font-size: 14px;
+    color: var(--text-off2);
+    font-weight: var(--p-weight);
+    user-select: none;
+    border-top: 1px solid var(----navbar-bg-focus);
+
+    display: grid;
+    grid-template-columns: 1.2rem auto;
+    column-gap: 0.5rem;
+}
+
+.divider > p {
+    margin: 0;
+    padding: 0;
+}
+
+.dropdownButton{
+    height: 1.2rem;
+    width: 1.2rem;
+    border-radius: 4px;
+    color: var(--text-off2);
+
+    background-color: var(--background);
+    border: none;
+}
+
+.dropdownButton:hover, .dropdownButton:focus{
+    background-color: var(--button-default);
+}
+
+.list{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.link{
+    color: var(--text-off2);
+    font-size: 13px;
+    font-weight: var(--p-weight);
+    padding: 0.3rem;
+    text-decoration: none;
+    padding-left: 1.5rem;
+    cursor: default;
+}
+
+.link:hover{
+    background-color: var(--navbar-bg-focus);
+}
+
+.linkSelected{
+    color: var(--text-off2);
+    font-size: 13px;
+    font-weight: var(--p-weight);
+    padding: 0.3rem;
+    text-decoration: none;
+    padding-left: 1.5rem;
+    cursor: default;
+    background-color: var(--navbar-bg-focus);
+}

@@ -1,12 +1,16 @@
 .wrapper{
-    min-height: calc(100vh - 8rem);
+    position: relative;
+    height: calc(100vh);
+    overflow-y: auto;
     width: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
     align-items: center;
-
-    margin-top: 4rem;
-    margin-bottom: 4rem;
     /*background-image: url('../../assets/Pattern3.png');*/
+}
+
+.innerWrapper {
+    padding-top: 4rem;
+    margin-bottom: 4rem;
 }
 
 .taskListWrapper{
@@ -24,7 +28,7 @@
 }
 
 .titleWrapper{
-    margin-left: 2.5rem;
+    padding-left: 2.5rem;
     width: 28rem;
     border-bottom: 1px solid var(--background);
 }
@@ -304,7 +308,7 @@
 .CTWrapper{
     position: fixed;
     bottom: 1rem;
-    left: calc(50% - 15rem);
+    left: calc(50% - 15rem + 6rem);
 
     background-color: var(--grey);
     border: 1px solid var(--background2);
@@ -371,11 +375,10 @@
     border-bottom: 1px solid var(--grey);
 }
 
-
 .CTPreview{
     position: fixed;
     bottom: 1rem;
-    left: calc(50% - 7.5rem);
+    left: calc(50% - 7.5rem + 6rem);
 
     padding: 7px 5px 7px 5px;
     box-shadow: 0px 1px 8px 2px var(--shadow);
@@ -397,7 +400,7 @@
 
     position: fixed;
     top: 0.5rem;
-    left: calc(50% - 15rem);
+    left: calc(50% - 15rem + 6rem);
 }
 
 .STGrid{
@@ -431,7 +434,7 @@
     z-index: 10111;
     position: fixed;
     top: 0.5rem;
-    left: calc(50% - 7.5rem);
+    left: calc(50% - 7.5rem + 6rem);
 
     padding: 7px 5px 7px 5px;
     box-shadow: 0px 1px 8px 2px var(--shadow);
@@ -497,7 +500,7 @@
 
     position: fixed;
     top: 0.5rem;
-    left: calc(50% + 8rem);
+    left: calc(50% + 8rem + 6rem);
 }
 
 .PDGrid{
@@ -521,7 +524,7 @@
     z-index: 10111;
     position: absolute;
     top: 0.5rem;
-    left: calc(50% + 8rem);
+    left: calc(50% + 8rem + 6rem);
 
     border-radius: 5px;
     width: fit-content;
