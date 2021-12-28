@@ -1,0 +1,25 @@
+.dropdownButton{
+    height: 1.2rem;
+    width: 1.2rem;
+    border-radius: 4px;
+
+    background-color: var(--background);
+    border: none;
+}
+
+.dropdownButton:hover, .dropdownButton:focus{
+    background-color: var(--button-default);
+}
+
+.dropdownIcon{
+    width: 100%;
+    height: auto;
+    fill: var(--text-off2);
+    color: var(--text-off2);
+
+}
+
+.dropdownIconFill{
+    fill: var(--text-off2);
+    color: var(--text-off2);
+}

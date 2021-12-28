@@ -7,6 +7,27 @@
     border-right: 1px solid var(--grey);
 }
 
+.profileWrapper{
+    width: 12rem;
+    padding: 1rem 0.5rem 0.5rem 0rem;
+}
+
+.profileName{
+    font-family: 'Roboto';
+    font-size: 14px;
+    width: 12rem;
+    height: fit-content;
+    color: var(--text-off2);
+    font-weight: var(--p-weight);
+    user-select: none;
+
+    margin: 0;
+    padding: 0.3rem;
+    padding-left: 1.5rem;
+    text-decoration: none;
+    border: none;
+}
+
 .divider{
     
     width: 12rem;
@@ -17,7 +38,7 @@
     color: var(--text-off2);
     font-weight: var(--p-weight);
     user-select: none;
-    border-top: 1px solid var(----navbar-bg-focus);
+    border-top: 1px solid var(--navbar-bg-focus);
 
     display: grid;
     grid-template-columns: 1.2rem auto;
@@ -27,20 +48,6 @@
 .divider > p {
     margin: 0;
     padding: 0;
-}
-
-.dropdownButton{
-    height: 1.2rem;
-    width: 1.2rem;
-    border-radius: 4px;
-    color: var(--text-off2);
-
-    background-color: var(--background);
-    border: none;
-}
-
-.dropdownButton:hover, .dropdownButton:focus{
-    background-color: var(--button-default);
 }
 
 .list{
@@ -56,6 +63,10 @@
     text-decoration: none;
     padding-left: 1.5rem;
     cursor: default;
+
+    display: grid;
+    grid-template-columns: 0.5rem auto;
+    column-gap: 0.6rem;
 }
 
 .link:hover{
@@ -71,4 +82,8 @@
     padding-left: 1.5rem;
     cursor: default;
     background-color: var(--navbar-bg-focus);
+
+    display: grid;
+    grid-template-columns: 0.5rem auto;
+    column-gap: 0.6rem;
 }

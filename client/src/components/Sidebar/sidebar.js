@@ -3,17 +3,17 @@ import { Link, useHistory } from "react-router-dom";
 import { useQuery } from '@apollo/client';
 import style from './sidebar.module.css';
 import { getProfile } from '../queries';
+import Dropdown from '../Dropdown/Dropdown';
 
 function Sidebar() {
 
     //Variables
     const [update, setUpdate] = useState(false);
     const [location, setLocation] = useState("/");
-    const [collapsed, setCollapsed] = useState({
-        profile: localStorage.getItem("collapsed.profile") ? true : false,
-        pages: localStorage.getItem("collapsed.pages") ? true : false,
-        projects: localStorage.getItem("collapsed.projects") ? true : false,
-    })
+
+    const [cProfile, setCProfile] = useState(localStorage.getItem("collapsed.profile") === true ? true : false)
+    const [cPages, setCPages] = useState(localStorage.getItem("collapsed.pages") === true ? true : false)
+    const [cProjects, setCProjects] = useState(localStorage.getItem("collapsed.projects") === true ? true : false)
 
     const history = useHistory();
     const userId = localStorage.getItem("personId");
@@ -34,42 +34,51 @@ function Sidebar() {
         history.push("/login")
     }
 
+    const logOut = () => {
+        localStorage.setItem('admin', false);
+        localStorage.removeItem('token');
+        setUpdate(true);
+        routeChange();
+    }
+
     //DOM
     if (data) return (
         <div className={style.wrapper}>
-            {collapsed.profile ?
-                <div></div>
-                :
-                <div className={style.profileWrapper}>
-                    <Link to={"/profile/" + userId}>Profile</Link>
-                    {localStorage.getItem('token') && <li><a onClick={() => {
-                        localStorage.setItem('admin', false);
-                        localStorage.removeItem('token');
-                        setUpdate(true);
-                        routeChange();
-                    }}>Log out</a></li>}
-                </div>
-            }
+
+            <div className={style.profileWrapper}>
+                <Link className={style.profileName} to={"/profile/" + userId}>
+                    {data.profile.name}
+                </Link>
+                {cProfile ?
+                    <div></div>
+                    :
+                    <div className={style.link}>
+                        <span>{">"}</span>
+                        <a onClick={() => logOut()}>Log out</a>
+                    </div>
+                }
+            </div>
+
             <div>
-                <div className={style.divider} onClick={() => { collapsed.pages ? setCollapsed({ pages: false }) : setCollapsed({ pages: true }) }}>
-                    <button className={style.dropdownButton}>{collapsed.pages ? ">" : "^"}</button>
+                <div className={style.divider} onClick={() => { cPages ? setCPages(false) : setCPages(true) }}>
+                    <Dropdown state={cPages} setState={setCPages} clickable={false} />
                     <p>{"Pages"}</p>
                 </div>
 
-                {collapsed.pages ?
+                {cPages ?
                     <div />
                     :
                     <div className={style.list}>
                         <Link className={location === "/" ? style.linkSelected : style.link} to={"/"} onClick={() => setLocation("/")}>
-                            <span># </span>
+                            <span>#</span>
                             <span>Overview</span>
                         </Link>
                         <Link className={location === "/assignments" ? style.linkSelected : style.link} to={"/assignments"} onClick={() => setLocation("/assignments")}>
-                            <span># </span>
+                            <span>#</span>
                             <span>Assignments</span>
                         </Link>
                         <Link className={location === "/network" ? style.linkSelected : style.link} to={"/network"} onClick={() => setLocation("/network")}>
-                            <span># </span>
+                            <span>#</span>
                             <span>Network</span>
                         </Link>
                     </div>
@@ -77,11 +86,11 @@ function Sidebar() {
             </div>
 
             <div>
-                <div className={style.divider} onClick={() => { collapsed.projects ? setCollapsed({ projects: false }) : setCollapsed({ projects: true }) }}>
-                    <button className={style.dropdownButton}>{collapsed.projects ? ">" : "^"}</button>
+                <div className={style.divider} onClick={() => { cProjects ? setCProjects(false) : setCProjects(true) }}>
+                    <Dropdown state={cProjects} setState={setCProjects} clickable={false} />
                     <p>{"Projects"}</p>
                 </div>
-                {collapsed.projects ?
+                {cProjects ?
                     <div></div>
                     :
                     <div className={style.projects}>
