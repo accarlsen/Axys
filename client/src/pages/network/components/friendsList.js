@@ -14,7 +14,7 @@ function FriendsList() {
     if(error) console.log(JSON.stringify(error, null, 2));
     if(loading) return(<span>Loading...</span>)
     if(data && data.friends.length > 0) return (
-        <div className={style.FRListWrapper}>
+        <div className={style.FListWrapper}>
             {console.log(data.friends)}
             {data.friends.map((friend) => (
                 <FriendPreview friend={friend} />

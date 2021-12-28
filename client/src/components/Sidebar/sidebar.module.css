@@ -5,6 +5,8 @@
     overflow-y: auto;
     background-color: var(--navbar-bg);
     border-right: 1px solid var(--grey);
+
+    z-index: 12000;
 }
 
 .profileWrapper{

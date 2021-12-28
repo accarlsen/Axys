@@ -19,8 +19,8 @@ function Network() {
 
             </div>
             <div className={`${FRList ? style.centerGrid : style.center}`}>
-                <div>
-                    <h1 className="h1">Network</h1>
+                <div className={style.innerWrapper}>
+                    <h1 className="h2">Friends</h1>
                     <FriendsList />
                 </div>
                 <FriendRequestList state={FRList} setState={setFRList} />

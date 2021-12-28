@@ -50,7 +50,7 @@ function FriendRequestForm(props) {
         <div className={style.FRFormWrapper} onKeyDown={handleKeyDown}>
             <input className="inputNoBorder" autoFocus={true} type={"text"} placeholder={"email..."} value={email} onChange={(e) => setEmail(String(e.target.value))}></input>
             <button className="button grey" onClick={() => cancel()}>Cancel</button>
-            <input className={`button ${validateEmail(email) ? "green" : "grey"}`} type={"submit"} value="Send" onClick={e => { if(validateEmail(email)) sendFriendRequestQuery(e) }}></input>
+            <input className={`button ${validateEmail(email) ? "green" : "inactive"}`} type={"submit"} value="Send" onClick={e => { if(validateEmail(email)) sendFriendRequestQuery(e) }}></input>
         </div>
     )
     else return (

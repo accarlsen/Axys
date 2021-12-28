@@ -20,6 +20,12 @@
 .red{ background-color: var(--red); color: var(--text-inverted); font-weight: 500;}
 .green{ background: var(--button-conf); color: var(--text-inverted); font-weight: 500;}
 .grey{ background-color: var(--button-default); color: var(--button-text); }
+.inactive, .inactive:hover, .inactive:focus{ 
+    background-color: #FFFFFF00;
+    color: var(--greyer);
+    cursor: default;
+    border: solid 1px var(--greyer) !important;
+}
 
 .button-small{
     width: fit-content;
