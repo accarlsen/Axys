@@ -54,10 +54,10 @@ function Task(props) {
     }
 
     return (
-        <div key={props.index} className={` ${style.taskWrapper} ${props.task.accepted === false ? style.goldenShine : ""}`}>
+        <div key={props.index} className={` ${style.taskWrapper} ${props.task.accepted === false ? style.goldenShine : ""}`} onClick={() => {if(props.isPlanning && !planned) manipulatePlannedTasks()}}>
             <div className={style.taskContent}>
                 {props.isPlanning && !planned ?
-                    <span className={`${style.doneButton}`} onClick={() => manipulatePlannedTasks()}>
+                    <span className={`${style.doneButton}`}>
                         {isChecked && <svg className={style.doneCheckmark} viewBox="0 0 289 192" preserveAspectRatio="xMidYMid" width="289" height="192" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path stroke="#25D195" strokeWidth="35" d="M10.6066 61.3934L129.116 179.903M108.393 180.458L277.458 11.3934" />
                         </svg>}
@@ -74,18 +74,20 @@ function Task(props) {
                         </div>
                     </div>
                 </div>
-                {props.task.comments.length > 0 ?
-                    <button className={style.commentIconWrapperLen} onClick={() => { showComments ? setShowComments(false) : setShowComments(true) }}>
+                {(!props.isPlanning || planned) ? props.task.comments.length > 0 ?
+                    <button className={style.commentIconWrapperLen} onClick={() => { showComments && (!props.isPlanning || planned) ? setShowComments(false) : setShowComments(true) }}>
                         <span>{props.task.comments.length}</span>
                         <img className={style.commentIcon} src={CommentIcon} alt={"Comment Icon"} />
                     </button>
                     :
-                    <button className={style.commentIconWrapper} onClick={() => { showComments ? setShowComments(false) : setShowComments(true) }}>
+                    <button className={style.commentIconWrapper} onClick={() => { showComments && (!props.isPlanning || planned) ? setShowComments(false) : setShowComments(true) }}>
                         <span>+</span>
                         <img className={style.commentIcon} src={CommentIcon} alt={"Comment Icon"} />
                     </button>
+                    :
+                    <div></div>
                 }
-                {props.task.authorId === id ? <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button> : <span></span>}
+                {props.task.authorId === id && (!props.isPlanning || planned) ? <button className={style.removeTask} onClick={(e) =>  deleteTaskQuery(e)}>x</button> : <span></span>}
             </div>
             <div className={style.commentListWrapper}>
                 <CommentList task={props.task} showComments={showComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
