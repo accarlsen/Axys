@@ -154,9 +154,9 @@ function SearchTask(props) {
         )
     }
     return (
-        <div className={style.STPreview} onClick={() => props.setSearchActive(true)}>
-            <span className={style.buttonText} >Search Tasks</span>
-        </div>
+        <button className={`button grey ${style.SearchPreview}`} onClick={() => props.setSearchActive(true)}>
+            Search Tasks
+        </button>
     )
 }
 

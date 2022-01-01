@@ -5,7 +5,7 @@ import style from './dropdown.module.css'
 function Dropdown(props) {
 
     const rotate = useSpring({
-        transform: props.state ? 'rotate(90deg)' : 'rotate(0deg)',
+        transform: props.state ? 'rotate(0deg)' : 'rotate(90deg)',
         config: {mass:1, tension:100, friction:1, clamp: true},
     })
 

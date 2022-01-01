@@ -34,13 +34,17 @@ function AssignmentList() {
     //DOM
     if (data) return (
         <div className={style.wrapper}>
-            <div className={style.taskListWrapper}>
-                <div className={style.titleWrapper}>
-                    <h1 className="h4">Created assignments</h1>
+            <div className={style.topBar}></div>
+
+            <div className={style.innerWrapper}>
+                <div className={style.taskListWrapper}>
+                    <div className={style.titleWrapper}>
+                        <h1 className="h4">Created assignments</h1>
+                    </div>
+                    {data.createdAssignments.map((task, i) => (
+                        <Assignment task={task} isAssignment={true} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
+                    ))}
                 </div>
-                {data.createdAssignments.map((task, i) => (
-                    <Assignment task={task} isAssignment={true} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
-                ))}
             </div>
         </div>
     )

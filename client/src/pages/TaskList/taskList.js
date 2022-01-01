@@ -106,6 +106,11 @@ function TaskList() {
 
         return (
             <div className={style.wrapper}>
+                <div className={style.topBar}>
+                    <SearchTask searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={allTasks} />
+                    <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData} />
+                </div>
+                
                 <div className={style.innerWrapper}>
                     {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
                         <div className={style.titleWrapper}>
@@ -146,8 +151,6 @@ function TaskList() {
                     </div>
                 </div>
                 <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
-                <SearchTask searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={allTasks} />
-                <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData} />
             </div>
         )
     }
