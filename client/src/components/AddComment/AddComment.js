@@ -21,7 +21,7 @@ function AddComment(props) {
                 text: text,
                 taskId: props.task.id
             },
-            refetchQueries: [{ query: getComments, variables: {taskId: props.task.id} }]
+            refetchQueries: [{ query: getComments, variables: { taskId: props.task.id } }]
         });
         setText("")
     }
@@ -29,8 +29,18 @@ function AddComment(props) {
     const onFocus = () => props.setIsWritingComment(true)
     const onBlur = () => props.setIsWritingComment(false)
 
+    //Keyboard input handler
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            addCommentQuery(event);
+        }
+        if (event.key === 'Escape') {
+            props.setShowComments(false)
+        }
+    }
+
     return (
-        <div className={style.wrapper}>
+        <div className={style.wrapper} onKeyDown={handleKeyDown}>
             <input className="inputNoBorder-small" autoFocus={true} onFocus={() => onFocus()} onBlur={() => onBlur()} value={text} placeholder={"Add Comment..."} onChange={e => { setText(String(e.target.value)); }}></input>
             <button className="button-small green" onClick={(e) => addCommentQuery(e)}>Add</button>
         </div>

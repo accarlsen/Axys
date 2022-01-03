@@ -90,7 +90,7 @@ function Task(props) {
                 {props.task.authorId === id && (!props.isPlanning || planned) ? <button className={style.removeTask} onClick={(e) =>  deleteTaskQuery(e)}>x</button> : <span></span>}
             </div>
             <div className={style.commentListWrapper}>
-                <CommentList task={props.task} showComments={showComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
+                <CommentList task={props.task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
             </div>
         </div>
     )

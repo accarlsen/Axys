@@ -19,7 +19,7 @@
 
 .red{ background-color: var(--red); color: var(--text-inverted); font-weight: 500;}
 .green{ background: var(--button-conf); color: var(--text-inverted); font-weight: 500;}
-.grey{ background-color: var(--button-default); color: var(--button-text); }
+.grey{ background-color: var(--button-default); color: var(--button-text); font-weight: 400;}
 .inactive, .inactive:hover, .inactive:focus{ 
     background-color: #FFFFFF00;
     color: var(--greyer);
@@ -32,7 +32,6 @@
     font-family: 'Roboto', 'Arial';
     font-style: normal;
     border-radius: 3px;
-    font-weight: 500;
     font-size: 12px;
     padding: 4px 10px 4px 10px;
     cursor: pointer;
