@@ -34,9 +34,6 @@ function AddComment(props) {
         if (event.key === 'Enter') {
             addCommentQuery(event);
         }
-        if (event.key === 'Escape') {
-            props.setShowComments(false)
-        }
     }
 
     return (

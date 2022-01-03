@@ -42,7 +42,8 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }, { query: getProgress }]
         });
-        resetStates();
+        setSearch(""); 
+        setShowComments(false);
         props.setSearchActive(false);
     }
 
@@ -54,7 +55,8 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        resetStates();
+        setSearch(""); 
+        setShowComments(false);
         props.setSearchActive(false);
     }
 
@@ -66,7 +68,8 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        resetStates();
+        setSearch(""); 
+        setShowComments(false);
         props.setSearchActive(false);
     }
 
@@ -78,13 +81,9 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        resetStates();
-        props.setSearchActive(false);
-    }
-
-    const resetStates = () => {
         setSearch(""); 
         setShowComments(false);
+        props.setSearchActive(false);
     }
 
     //UseEffect, runs upon update of component activation status or of selected states
@@ -123,8 +122,12 @@ function SearchTask(props) {
 
         }
         if (event.key === 'Escape' && !showComments) {
-            resetStates();
+            setSearch(""); 
             props.setSearchActive(false);
+        }
+        else if(event.key === 'Escape' && showComments) {
+            setShowComments(false);
+            props.setIsWritingComment(false);
         }
     }
 
@@ -185,7 +188,7 @@ function SearchTask(props) {
     }
     return (
         <button className={`button grey ${style.SearchPreview}`} onClick={() => props.setSearchActive(true)}>
-            Search Tasks
+            {"Search Tasks " + props.searchActive}
         </button>
     )
 }

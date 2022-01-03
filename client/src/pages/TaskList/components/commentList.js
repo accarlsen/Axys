@@ -94,13 +94,13 @@ function CommentList(props) {
                             {comment.authorId === id ? <button className={style.removeComment} onClick={(e) => deleteCommentQuery(e, comment.id)}>X</button> : <span></span>}
                         </div>
                     ))}
-                    <AddComment task={props.task} setShowComments={props.setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
+                    <AddComment task={props.task} showComments={props.showComments} setShowComments={props.setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
                 </div>
             )
         } else {
             return (
                 <div className={` `}>
-                    <AddComment task={props.task} setShowComments={props.setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
+                    <AddComment task={props.task} showComments={props.showComments} setShowComments={props.setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
                 </div>
             )
         }
