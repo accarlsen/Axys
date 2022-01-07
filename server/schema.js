@@ -305,6 +305,20 @@ const RootQuery = new GraphQLObjectType({
 
             }
         },
+        projects: {
+            type: new GraphQLList(TaskType),
+            resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+                return Project.find({ 
+                    $or: [
+                        { adminIds: context.personId},
+                        { memberIds: context.personId},
+                    ]
+                })
+            }
+        },
         login: {
             type: AuthType,
             args: {
