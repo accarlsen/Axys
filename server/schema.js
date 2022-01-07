@@ -28,6 +28,7 @@ const ProjectType = new GraphQLObjectType({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
+        createdTimeStamp: {type: GraphQLInt},
         creatorId: { type: GraphQLString },
         adminIds: {type: GraphQLList(GraphQLString)},
         memberIds: {type: GraphQLList(GraphQLString)},
@@ -320,7 +321,7 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         project: {
-            type: new ProjectType,
+            type: ProjectType,
             args: {
                 id: {type: GraphQLString},
             },
@@ -363,29 +364,6 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        addProject: {
-            type: ProjectType,
-            args: {
-                name: { type: GraphQLString },
-                time: { type: GraphQLString },
-                authorId: { type: GraphQLString },
-            },
-            async resolve(parent, args, context) {
-                if (!context.isAuth) {
-                    throw new Error('Unauthenticated user');
-                }
-                const person = await Person.findOne({ '_id': context.personId });
-                if (!person.admin) {
-                    throw new Error('Unauthorized user');
-                }
-                let project = new Project({
-                    name: args.name,
-                    time: args.time,
-                    authorId: person.id
-                });
-                return project.save();
-            }
-        },
         addPerson: {
             type: PersonType,
             args: {
@@ -545,6 +523,40 @@ const Mutation = new GraphQLObjectType({
                     timestamp: today.getTime(),
                 });
                 return comment.save();
+            }
+        },
+        addProject: {
+            type: ProjectType,
+            args: {
+                name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                simplifiedTasks: { type: GraphQLBoolean },
+                inviteRequired: { type: GraphQLBoolean },
+                inviteAdminExclusive: { type: GraphQLBoolean },
+            },
+            async resolve(parent, args, context) {
+                
+                if (!context.isAuth) { //Auth
+                    throw new Error('Unauthenticated user');
+                }
+
+                let timestamp = new Date();
+
+                //New Project
+                let project = new Project({
+                    name: args.name,
+                    description: args.description,
+                    createdTimestamp: timestamp.getTime(),
+                    creatorId: context.personId,
+                    adminIds: [context.personId],
+                    memberIds: [],
+
+                    simplifiedTasks: args.simplifiedTasks,
+                    inviteRequired: args.inviteRequired,
+                    inviteAdminExclusive: args.inviteAdminExclusive,
+                });
+                return project.save();
+
             }
         },
         sendFriendRequest: {

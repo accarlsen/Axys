@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const projectSchema = new Schema({
     name: String,
     description: String,
+    createdTimeStamp: Number,
     creatorId: String,
     adminIds: [String],
     memberIds: [String],
