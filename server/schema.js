@@ -22,32 +22,38 @@ const {
 
 
 
-const MutationType = new GraphQLObjectType({
-    name: 'MutationTest',
-    fields: () => ({
-        id: { type: GraphQLID },
-        name: { type: GraphQLString },
-        done: { type: GraphQLBoolean }
-    })
-});
-
 const ProjectType = new GraphQLObjectType({
     name: 'Project',
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
-        date: { type: GraphQLString },
-        estimatedTime: { type: GraphQLFloat },
-        usedTime: { type: GraphQLFloat },
-        authorId: { type: GraphQLString },
-        clockifyId: { type: GraphQLString }
-        /*fighters: {
-            type: new GraphQLList(FighterType),
+        creatorId: { type: GraphQLString },
+        adminIds: {type: GraphQLList(GraphQLString)},
+        memberIds: {type: GraphQLList(GraphQLString)},
+        
+        simplifiedTasks: {type: GraphQLBoolean},
+        inviteRequired: {type: GraphQLBoolean},
+        inviteAdminExclusive: {type: GraphQLBoolean},
+
+        creator: {
+            type: PersonType,
             resolve(parent, args) {
-                return Fighter.find({ projectId: parent.id });
+                return Person.findById(parent.creatorId);
             }
-        }*/
+        },
+        admins: {
+            type: new GraphQLList(PersonType),
+            resolve(parent, args) {
+                return Person.find({ '_id': { $in: parent.adminIds } });
+            }
+        },
+        members: {
+            type: new GraphQLList(PersonType),
+            resolve(parent, args) {
+                return Person.find({ '_id': { $in: parent.memberIds } });
+            }
+        }
     })
 })
 
@@ -214,20 +220,6 @@ const ProgressType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        /*project: {
-            type: ProjectType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return Project.findById(args.id);
-            }
-        },
-        task: {
-            type: TaskType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return Task.findById(args.id);
-            }
-        },*/
         profile: {
             type: PersonType,
             args: { id: { type: GraphQLID } },

@@ -29,14 +29,10 @@ function TaskList() {
     //UseEffect, runs upon any update to component
     useEffect(() => {
         const handleDown = (event) => {
-            console.log("key down")
+
             if (!isWritingComment && event.keyCode >= 48 && event.keyCode <= 57 && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey && !event.altGraphKey && event.key !== '@') {
                 //Number
-                console.log("num registered")
-
                 if (!searchActive && !taskActive) {
-                    console.log("opening...")
-
                     setActivationNumber(String.fromCharCode(event.keyCode));
                     setSearchActive(true);
                 }

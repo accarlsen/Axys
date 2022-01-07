@@ -188,7 +188,7 @@ function SearchTask(props) {
     }
     return (
         <button className={`button grey ${style.SearchPreview}`} onClick={() => props.setSearchActive(true)}>
-            {"Search Tasks " + props.searchActive}
+            {"Search Tasks"}
         </button>
     )
 }
