@@ -549,7 +549,7 @@ const Mutation = new GraphQLObjectType({
                     createdTimestamp: timestamp.getTime(),
                     creatorId: context.personId,
                     adminIds: [context.personId],
-                    memberIds: [],
+                    memberIds: [context.personId],
 
                     simplifiedTasks: args.simplifiedTasks,
                     inviteRequired: args.inviteRequired,

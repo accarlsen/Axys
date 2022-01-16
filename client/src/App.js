@@ -12,7 +12,7 @@ import Network from './pages/network/network';
 import Profile from './pages/profile/profile';
 import AssignmentList from './pages/TaskList/assignmentList';
 import Customize from './pages/customize/customize';
-import { adventTheme, darkTheme, lightTheme, materialDark } from './themes';
+import { adventTheme, darkTheme, lightTheme, materialDark, belugaBlue } from './themes';
 import style from './app.module.css';
 import Sidebar from './components/Sidebar/sidebar';
 
@@ -32,6 +32,7 @@ function App() {
     if (theme === "light") theTheme = lightTheme;
     if (theme === "advent") theTheme = adventTheme;
     if (theme === "material") theTheme = materialDark;
+    if (theme === "beluga") theTheme = belugaBlue;
 
     Object.keys(theTheme).map(key => {
       const value = theTheme[key];

@@ -127,9 +127,42 @@ const materialDark = {
     "--greyerGradient": "linear-gradient(to right, rgb(59, 59, 59), var(--grey))",
 };
 
+const belugaBlue = {
+    "--background": "#101c23",
+    "--background2": "#182a34",
+    "--navbar-bg": "rgb(20, 34, 43)",
+    "--navbar-bg-focus" : "rgb(39, 52, 59)",
+    "--shadow": "#b8b8b800",
+    "--shadow-highlight": "#96969600",
+    "--text": "#FFF",
+    "--text-off": "#f2f2f2",
+    "--text-off2": "#e6e6e6",
+    "--text-inverted": "#000",
+    "--grey": "#31444e",
+    "--greyer": "#3b515e",
+    "--grey-dark": "#455f6e",
+
+    "--blue-link": "#f2f2f2",
+    "--button-conf": "#4ff4a2",
+    "--button-conf-hover": "#22cf79",
+    "--button-text": "#FFF",
+    "--button-text-weight": "400",
+    "--button-default": "#31444e",
+    "--button-default-hover": "#3b515e",
+    "--red": "#f7532b",
+    "--red-light": "rgb(206, 76, 44)",
+    "--blue": "#52b8e7",
+
+    "--p-weight": "300",
+
+    "--greyGradient": "linear-gradient(to right, rgb(48, 48, 48), var(--background2))",
+    "--greyerGradient": "linear-gradient(to right, rgb(59, 59, 59), var(--grey))",
+};
+
 export{
     lightTheme,
     darkTheme,
     adventTheme,
-    materialDark
+    materialDark,
+    belugaBlue,
 }

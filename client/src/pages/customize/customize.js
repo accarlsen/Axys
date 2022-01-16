@@ -25,6 +25,8 @@ function CustomizationRenderer(props) {
         { name: "light", backgroundColor: "#f9f9f9", background2Color: "#FFF", textColor: "#000", shadowColor: "#b8b8b8" },
         { name: "advent", backgroundColor: "rgb(15, 15, 30)", background2Color: "rgb(15, 15, 30)", textColor: "rgb(5, 197, 0)", shadowColor: "#b8b8b800" },
         { name: "material", backgroundColor: "#121212", background2Color: "#222831", textColor: "#e0e0e0", shadowColor: "#b8b8b800" },
+        { name: "beluga", backgroundColor: "#0a0e10", background2Color: "#202c33", textColor: "#e0e0e0", shadowColor: "#b8b8b800" },
+
 
     ]
 

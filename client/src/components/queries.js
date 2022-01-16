@@ -24,10 +24,32 @@ const getProjects = gql`
     projects {
       id
       name
-      time
     }
   }
 `;
+
+const getProject = gql`
+  query ($id: ID) {
+    project(id: $id) {
+      id
+        name
+        description
+        createdTimeStamp
+        creatorId
+        adminIds
+        
+        simplifiedTasks
+        inviteRequired
+        inviteAdminExclusive
+
+        members{
+          id
+          name
+          email
+        }
+    }
+  }
+`
 
 const getTasks = gql`
   query {
@@ -212,13 +234,17 @@ const addComment = gql`
 const addProject = gql`
   mutation AddProject(
     $name: String,
-    $time: String,
-    $authorId: String
+    $description: String,
+    $simplifiedTasks: Boolean,
+    $inviteRequired: Boolean,
+    $inviteAdminExclusive: Boolean,
   ){
     addProject(
       name: $name,
-      time: $time,
-      authorId: $authorId
+      description: $description,
+      simplifiedTasks: $simplifiedTasks,
+      inviteRequired: $inviteRequired,
+      inviteAdminExclusive: $inviteAdminExclusive,
     ){
       id
     }
@@ -353,6 +379,7 @@ const login = gql`
 export {
   getProfile,
   getProjects,
+  getProject,
   getTasks,
   getProgress,
   getComments,
