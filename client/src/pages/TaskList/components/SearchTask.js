@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
+import { animated, useSpring } from 'react-spring'
 import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment, getProgress } from '../../../components/queries';
 import CommentIcon from './../assets/CommentIcon.svg'
 
 import style from './../taskList.module.css'
 import CommentList from './commentList';
+import FadeInOutTrans from '../../../components/FadeInOutTrans';
 
 function SearchTask(props) {
 
@@ -14,6 +16,19 @@ function SearchTask(props) {
     const [task, setTask] = useState();
     const [showComments, setShowComments] = useState(false);
     const idInput = useRef(null);
+
+    //Animations
+    const widen = useSpring({
+        to: { width: props.searchActive ? "30rem" : "10rem", left: props.searchActive ? "0rem" : "10rem" },
+        from: { width: props.searchActive ? "10rem" : "30rem", left: props.searchActive ? "10rem" : "0rem" },
+        config: { mass: 1, tension: 100, friction: 1, clamp: true },
+    })
+
+    const fade = useSpring({
+        to: { opacity: props.searchActive ? 1 : 0 },
+        from: { opacity: props.searchActive ? 0 : 1 },
+        config: { mass: 1, tension: 100, friction: 1, clamp: true },
+    })
 
     //Queries & mutations
     const [TaskDone, { error }] = useMutation(taskDone, {
@@ -42,7 +57,7 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }, { query: getProgress }]
         });
-        setSearch(""); 
+        setSearch("");
         setShowComments(false);
         props.setSearchActive(false);
     }
@@ -55,7 +70,7 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        setSearch(""); 
+        setSearch("");
         setShowComments(false);
         props.setSearchActive(false);
     }
@@ -68,7 +83,7 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        setSearch(""); 
+        setSearch("");
         setShowComments(false);
         props.setSearchActive(false);
     }
@@ -81,7 +96,7 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        setSearch(""); 
+        setSearch("");
         setShowComments(false);
         props.setSearchActive(false);
     }
@@ -98,7 +113,7 @@ function SearchTask(props) {
     }, [search, id]);
 
     useEffect(() => {
-        if(props.searchActive && !showComments) idInput.current.focus();
+        if (props.searchActive && !showComments) idInput.current.focus();
     }, [showComments])
 
     //Keyboard input handler
@@ -122,10 +137,10 @@ function SearchTask(props) {
 
         }
         if (event.key === 'Escape' && !showComments) {
-            setSearch(""); 
+            setSearch("");
             props.setSearchActive(false);
         }
-        else if(event.key === 'Escape' && showComments) {
+        else if (event.key === 'Escape' && showComments) {
             setShowComments(false);
             props.setIsWritingComment(false);
         }
@@ -140,84 +155,62 @@ function SearchTask(props) {
     };
 
     //DOM
-    if (props.searchActive) {
-        return (
-            <div className={style.STWrapper} onKeyDown={handleKeyDown}>
-                <div className={style.STInner}>
-                    <div className={style.STGrid}>
-                        <input ref={idInput} type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={" id..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
-                        {search.length > 0 && task !== null && task !== undefined &&
-                            <div>{task.accepted ?
-                                <div className={style.STButtonGrid}>
-                                    <button className="button-small grey" onClick={(e) => { }}>+ Daily Goals</button>
-
-                                    <button className={style.commentIconWrapperLenNoPadding} onClick={() => { showComments ? setShowComments(false) : setShowComments(true) }}>
-                                        <span>{task.comments.length > 0 ? task.comments.length : "+"}</span>
-                                        <img className={style.commentIcon} src={CommentIcon} alt={"Comment Icon"} />
-                                    </button>
-
-                                    <button className="button-small red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
-                                    <button className="button-small green" onClick={e => { updateStatusQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>
-                                </div>
-                                :
-                                <div className={style.STButtonGrid}>
-
-                                    <button className="button grey" onClick={(e) => { ignoreTaskQuery(e) }}>Ignore</button>
-                                    <button className="button green" onClick={e => { acceptTaskQuery(e); }}>Accept</button>
-                                </div>}
-                            </div>}
-                    </div>
-                    {search.length > 0 && task !== null && task !== undefined && <div>
-                        {task.accepted ? <div className={style.STResults}>
-                            <span className={style.STResText}>{task.name}</span>
-                            <div className={style.commentListWrapper}>
-                                <CommentList task={task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
-                            </div>
-                        </div>
-                            :
-                            <div className={style.STResults}>
-                                <span className={style.STResText}>{task.name}</span>
-                                <div className={style.commentListWrapper}>
-                                    <CommentList task={task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
-                                </div>
-                            </div>}
-                    </div>}
-                </div>
-            </div>
-        )
-    }
     return (
-        <button className={`button grey ${style.SearchPreview}`} onClick={() => props.setSearchActive(true)}>
-            {"Search Tasks"}
-        </button>
+        <div className={style.STWrapper} onKeyDown={handleKeyDown}>
+            <div className={style.STInner}>
+                <animated.div style={widen} className={style.STabs}>
+                    {
+                        props.searchActive ?
+                            <animated.div style={fade1}>
+                                <div className={style.STGrid}>
+                                    <input ref={idInput} type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={" id..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
+                                    {search.length > 0 && task !== null && task !== undefined &&
+                                        <div>{task.accepted ?
+                                            <div className={style.STButtonGrid}>
+                                                <button className="button-small grey" onClick={(e) => { }}>+ Daily Goals</button>
+
+                                                <button className={style.commentIconWrapperLenNoPadding} onClick={() => { showComments ? setShowComments(false) : setShowComments(true) }}>
+                                                    <span>{task.comments.length > 0 ? task.comments.length : "+"}</span>
+                                                    <img className={style.commentIcon} src={CommentIcon} alt={"Comment Icon"} />
+                                                </button>
+
+                                                <button className="button-small red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
+                                                <button className="button-small green" onClick={e => { updateStatusQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>
+                                            </div>
+                                            :
+                                            <div className={style.STButtonGrid}>
+
+                                                <button className="button grey" onClick={(e) => { ignoreTaskQuery(e) }}>Ignore</button>
+                                                <button className="button green" onClick={e => { acceptTaskQuery(e); }}>Accept</button>
+                                            </div>}
+                                        </div>}
+                                </div>
+                                {search.length > 0 && task !== null && task !== undefined && <div>
+                                    {task.accepted ? <div className={style.STResults}>
+                                        <span className={style.STResText}>{task.name}</span>
+                                        <div className={style.commentListWrapper}>
+                                            <CommentList task={task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
+                                        </div>
+                                    </div>
+                                        :
+                                        <div className={style.STResults}>
+                                            <span className={style.STResText}>{task.name}</span>
+                                            <div className={style.commentListWrapper}>
+                                                <CommentList task={task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
+                                            </div>
+                                        </div>}
+                                </div>}
+                            </animated.div>
+                            :
+                            <button className={`button grey ${style.SearchPreview}`} onClick={() => props.setSearchActive(true)}>
+                                {"Search Tasks"}
+                            </button>
+                    }
+
+                </animated.div>
+            </div>
+        </div>
     )
 }
 
 export default SearchTask;
-
-function STCreateComment(props) {
-
-    /*const [AddComment, {errorC}] = useMutation(addComment, {
-        variables: {text: comment, taskId: id}
-    })
-
-    const addCommentQuery = (event) => {
-        event.preventDefault();
-        AddComment({
-            variables: {
-                text: comment,
-                taskId: id
-            },
-            refetchQueries: [{ query: getTasks }]
-        });
-        setSearch("");
-        setComment("");
-        props.setSearchActive(false);
-    }*/
-
-    return (
-        <div className={style.STCCWrapper}>
-
-        </div>
-    )
-}
