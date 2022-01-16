@@ -145,14 +145,14 @@
 .FRFormWrapper{
     position: absolute;
     top: 0.1rem;
-    width: 20rem;
-    left: calc(50% - 8rem);
+    width: fit-content;
+    left: calc(50% - 12rem);
 
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 14rem auto auto;
     column-gap: 0.3rem;
     padding: 0.1rem;
     padding-left: 0.3rem;
     border-radius: 5px;
-    background-color: var(--background2);
+    background-color: var(--grey);
 }

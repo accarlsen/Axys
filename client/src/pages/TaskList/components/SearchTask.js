@@ -161,7 +161,7 @@ function SearchTask(props) {
                 <animated.div style={widen} className={style.STabs}>
                     {
                         props.searchActive ?
-                            <animated.div style={fade1}>
+                            <animated.div style={fade}>
                                 <div className={style.STGrid}>
                                     <input ref={idInput} type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={" id..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
                                     {search.length > 0 && task !== null && task !== undefined &&

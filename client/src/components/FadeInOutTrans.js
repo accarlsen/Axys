@@ -19,7 +19,7 @@ function FadeInOutTrans(props) {
         reverse:show,
     })
 
-    return spring(
+    return (
         (styles, item) => item &&
         <animated.div style={styles}>{items}</animated.div>
     )
