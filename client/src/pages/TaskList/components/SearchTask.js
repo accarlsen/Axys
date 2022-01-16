@@ -27,7 +27,7 @@ function SearchTask(props) {
     const fade = useSpring({
         to: { opacity: props.searchActive ? 1 : 0 },
         from: { opacity: props.searchActive ? 0 : 1 },
-        config: { mass: 1, tension: 100, friction: 1, clamp: true },
+        config: { mass: 2, tension: 100, friction: 1, clamp: true },
     })
 
     //Queries & mutations
@@ -161,11 +161,11 @@ function SearchTask(props) {
                 <animated.div style={widen} className={style.STabs}>
                     {
                         props.searchActive ?
-                            <animated.div style={fade}>
+                            <div>
                                 <div className={style.STGrid}>
                                     <input ref={idInput} type={"number"} className="inputNoBorder" autoFocus={true} value={search} placeholder={" id..."} onChange={e => { setSearch(String(e.target.value)); }}></input>
                                     {search.length > 0 && task !== null && task !== undefined &&
-                                        <div>{task.accepted ?
+                                        <animated.div style={fade}>{task.accepted ?
                                             <div className={style.STButtonGrid}>
                                                 <button className="button-small grey" onClick={(e) => { }}>+ Daily Goals</button>
 
@@ -183,24 +183,26 @@ function SearchTask(props) {
                                                 <button className="button grey" onClick={(e) => { ignoreTaskQuery(e) }}>Ignore</button>
                                                 <button className="button green" onClick={e => { acceptTaskQuery(e); }}>Accept</button>
                                             </div>}
-                                        </div>}
+                                        </animated.div>}
                                 </div>
-                                {search.length > 0 && task !== null && task !== undefined && <div>
-                                    {task.accepted ? <div className={style.STResults}>
-                                        <span className={style.STResText}>{task.name}</span>
-                                        <div className={style.commentListWrapper}>
-                                            <CommentList task={task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
-                                        </div>
-                                    </div>
-                                        :
-                                        <div className={style.STResults}>
+                                <animated.div style={fade}>
+                                    {search.length > 0 && task !== null && task !== undefined && <div>
+                                        {task.accepted ? <div className={style.STResults}>
                                             <span className={style.STResText}>{task.name}</span>
                                             <div className={style.commentListWrapper}>
                                                 <CommentList task={task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
                                             </div>
-                                        </div>}
-                                </div>}
-                            </animated.div>
+                                        </div>
+                                            :
+                                            <div className={style.STResults}>
+                                                <span className={style.STResText}>{task.name}</span>
+                                                <div className={style.commentListWrapper}>
+                                                    <CommentList task={task} showComments={showComments} setShowComments={setShowComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
+                                                </div>
+                                            </div>}
+                                    </div>}
+                                </animated.div>
+                            </div>
                             :
                             <button className={`button grey ${style.SearchPreview}`} onClick={() => props.setSearchActive(true)}>
                                 {"Search Tasks"}
