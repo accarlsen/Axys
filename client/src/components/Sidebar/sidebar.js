@@ -94,7 +94,10 @@ function Sidebar() {
                     <div></div>
                     :
                     <div className={style.projects}>
-
+                        <Link className={location === "/create-project" ? style.linkSelected : style.link} to={"/create-project"} onClick={() => setLocation("/create-project")}>
+                            <span>+</span>
+                            <span>Create Project</span>
+                        </Link>
                     </div>
                 }
             </div>

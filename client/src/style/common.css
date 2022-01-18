@@ -119,6 +119,7 @@
     outline: none;
     padding: 5px;
 
+    font-family: 'Roboto';
     font-size: 14px;
     font-weight: var(--p-weight);
 
@@ -129,6 +130,13 @@
 
 .input:focus{
     border: solid var(--greyer) 1px;
+}
+
+.textarea{
+    resize: none;
+    overflow: hidden;
+    min-height: 50px;
+    max-height: 100px
 }
 
 .input-signup{
