@@ -1,4 +1,6 @@
+import { useMutation } from '@apollo/client';
 import React, { useState } from 'react';
+import { addProject, getProjects } from '../../components/queries';
 import Textarea from '../../components/Textarea';
 import style from './createProject.module.css';
 
@@ -10,6 +12,27 @@ function CreateProject() {
     const [privateB, setPrivateB] = useState(false)
     const [requireAdmin, setRequireAdmin] = useState(false)
 
+    //Mutations
+    const [AddProject, { error }] = useMutation(addProject, {
+        variables: { name, description, privateB, requireAdmin }
+    }) 
+
+    //Methods
+    const addProjectQuery = (event) => { 
+        event.preventDefault(); //Enable custom behaviour
+        AddProject({
+            variables: {
+                name: name,
+                description: description,
+                simplifiedTasks: true,
+                inviteRequired: privateB,
+                inviteAdminExclusive: requireAdmin
+            },
+            //refetchQueries: [{ query: getProjects }]
+        });
+        setName("");
+        setDescription("");
+    }
 
     //Render
     return (
@@ -43,7 +66,7 @@ function CreateProject() {
                         </span>
                         <label className="p">Only admins can invite</label>
                     </div>
-                    <button className={`button green ${style.bottomMargin}`} >Create</button>
+                    <button className={`button green ${style.bottomMargin}`} onClick={(e) => addProjectQuery(e)} >Create</button>
                 </div>
             </div>
         </div>
