@@ -29,6 +29,10 @@
     overflow-y: auto;
 }
 
+.taskListOuterWrapper{
+    margin-bottom: 4rem;
+}
+
 .taskListWrapper{
     overflow-x: hidden;
 

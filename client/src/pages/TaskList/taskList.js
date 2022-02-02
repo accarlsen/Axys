@@ -114,48 +114,50 @@ function TaskList() {
                         setActivationNumber={setActivationNumber}
                         tasks={allTasks}
                         isWritingComment={isWritingComment}
-                        setIsWritingComment={setIsWritingComment} 
+                        setIsWritingComment={setIsWritingComment}
                     />
                     <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData} />
                 </div>
 
                 <div className={style.innerWrapper}>
-                    {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
-                        <div className={style.titleWrapper}>
-                            <h1 className="h4">Planned Tasks</h1>
-                        </div>
-                        {plannedTasksData.map((task, i) => (
-                            <Task
-                                task={task}
-                                index={i + 1}
-                                isWritingComment={isWritingComment}
-                                setIsWritingComment={setIsWritingComment}
-                                planned={true}
+                    <div className={style.taskListOuterWrapper}>
+                        {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
+                            <div className={style.titleWrapper}>
+                                <h1 className="h4">Planned Tasks</h1>
+                            </div>
+                            {plannedTasksData.map((task, i) => (
+                                <Task
+                                    task={task}
+                                    index={i + 1}
+                                    isWritingComment={isWritingComment}
+                                    setIsWritingComment={setIsWritingComment}
+                                    planned={true}
 
-                                isPlanning={isPlanning}
-                                setIsPlanning={setIsPlanning}
-                                plannedTasks={plannedTasks}
-                                setPlannedTasks={setPlannedTasks}
-                            />
-                        ))}
-                    </div>}
-                    <div className={style.taskListWrapper}>
-                        <div className={style.titleWrapper}>
-                            <h1 className="h4">Tasks</h1>
-                        </div>
-                        {sortedData.map((task, i) => (
-                            <Task
-                                task={task}
-                                index={plannedTasksData.length + i + 1}
-                                isWritingComment={isWritingComment}
-                                setIsWritingComment={setIsWritingComment}
+                                    isPlanning={isPlanning}
+                                    setIsPlanning={setIsPlanning}
+                                    plannedTasks={plannedTasks}
+                                    setPlannedTasks={setPlannedTasks}
+                                />
+                            ))}
+                        </div>}
+                        <div className={style.taskListWrapper}>
+                            <div className={style.titleWrapper}>
+                                <h1 className="h4">Tasks</h1>
+                            </div>
+                            {sortedData.map((task, i) => (
+                                <Task
+                                    task={task}
+                                    index={plannedTasksData.length + i + 1}
+                                    isWritingComment={isWritingComment}
+                                    setIsWritingComment={setIsWritingComment}
 
-                                isPlanning={isPlanning}
-                                setIsPlanning={setIsPlanning}
-                                plannedTasks={plannedTasks}
-                                setPlannedTasks={setPlannedTasks}
-                            />
-                        ))}
+                                    isPlanning={isPlanning}
+                                    setIsPlanning={setIsPlanning}
+                                    plannedTasks={plannedTasks}
+                                    setPlannedTasks={setPlannedTasks}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
                 <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />

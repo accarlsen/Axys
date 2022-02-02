@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import { useQuery } from '@apollo/client';
 import style from './sidebar.module.css';
-import { getProfile } from '../queries';
+import { getProfile, getProjects } from '../queries';
 import Dropdown from '../Dropdown/Dropdown';
 
 function Sidebar() {
@@ -22,6 +22,8 @@ function Sidebar() {
     const { loading, error, data } = useQuery(getProfile, {
         variables: { id: userId }
     });
+
+    const { loading: loadingP, error: errorP, data: dataP } = useQuery(getProjects);
 
     //Methods
     useEffect(
@@ -94,6 +96,12 @@ function Sidebar() {
                     <div></div>
                     :
                     <div className={style.projects}>
+                        {dataP && dataP.projects.map((project) => (
+                            <Link className={location === `/projects/${project.id}` ? style.linkSelected : style.link} to={`/projects/${project.id}`} onClick={() => setLocation(`/projects/${project.id}`)}>
+                                <span>#</span>
+                                <span>{project.name}</span>
+                            </Link>
+                        ))}
                         <Link className={location === "/create-project" ? style.linkSelected : style.link} to={"/create-project"} onClick={() => setLocation("/create-project")}>
                             <span>+</span>
                             <span>Create Project</span>
