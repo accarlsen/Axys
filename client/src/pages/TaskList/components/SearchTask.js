@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { animated, useSpring } from 'react-spring'
-import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment, getProgress } from '../../../components/queries';
+import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment, getProgress, planTask } from '../../../components/queries';
 import CommentIcon from './../assets/CommentIcon.svg'
 
 import style from './../taskList.module.css'
@@ -47,6 +47,10 @@ function SearchTask(props) {
         variables: { id: id }
     })
 
+    const [PlanTask, {errorP}] = useMutation(planTask, {
+        variables: {id: id}
+    })
+
     //Methods
     const updateStatusQuery = (event) => {
         event.preventDefault(); //Enable custom behaviour
@@ -57,9 +61,7 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }, { query: getProgress }]
         });
-        setSearch("");
-        setShowComments(false);
-        props.setSearchActive(false);
+        closeST();
     }
 
     const deleteTaskQuery = (event) => {
@@ -70,9 +72,7 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        setSearch("");
-        setShowComments(false);
-        props.setSearchActive(false);
+        closeST();
     }
 
     const acceptTaskQuery = (event) => {
@@ -83,9 +83,7 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
-        setSearch("");
-        setShowComments(false);
-        props.setSearchActive(false);
+        closeST();
     }
 
     const ignoreTaskQuery = (event) => {
@@ -96,9 +94,34 @@ function SearchTask(props) {
             },
             refetchQueries: [{ query: getTasks }]
         });
+        closeST();
+    }
+
+    const planTaskQuery = (event) => {
+        event.preventDefault();
+        PlanTask({
+            variables: {
+                id: id
+            },
+            refetchQueries: [{ query: getTasks }, {query: getProgress}]
+        });
+        closeST();
+    }
+
+    const closeST = () => {
         setSearch("");
         setShowComments(false);
         props.setSearchActive(false);
+    }
+
+    const checkForPlannedTask = () => {
+        const today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+        if(task !== null && task !== undefined && task.plannedDate === date ) {
+            return true;
+        }
+        return false
     }
 
     //UseEffect, runs upon update of component activation status or of selected states
@@ -167,7 +190,7 @@ function SearchTask(props) {
                                     {search.length > 0 && task !== null && task !== undefined &&
                                         <animated.div style={fade}>{task.accepted ?
                                             <div className={style.STButtonGrid}>
-                                                <button className="button-small grey" onClick={(e) => { }}>+ Daily Goals</button>
+                                                {!checkForPlannedTask() && <button className="button-small grey" onClick={(e) => { planTaskQuery(e)}}>+ Daily Goals</button>}
 
                                                 <button className={style.commentIconWrapperLenNoPadding} onClick={() => { showComments ? setShowComments(false) : setShowComments(true) }}>
                                                     <span>{task.comments.length > 0 ? task.comments.length : "+"}</span>
