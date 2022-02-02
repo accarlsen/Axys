@@ -311,8 +311,16 @@ const deleteTask = gql`
   }
 `;
 
-const taskPlanned = gql`
-  mutation TaskPlanned($id: [String]){
+const planTask = gql`
+  mutation PlanTask($id: String){
+    planTask(id: $id){
+      id
+    }
+  }
+`;
+
+const planTasks = gql`
+  mutation PlanTasks($id: [String]){
     planTasks(id: $id){
       id
     }
@@ -396,7 +404,8 @@ export {
   taskAccepted,
   taskIgnored,
   deleteTask,
-  taskPlanned,
+  planTask,
+  planTasks,
   commentLiked,
   deleteComment,
   addPerson,

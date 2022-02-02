@@ -823,6 +823,25 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
+        planTask: {
+            type: TaskType,
+            args: {
+                id: { type: GraphQLString },
+            },
+            resolve(parent, args) {
+                //Date & time
+                var today = new Date();
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+                return Task.updateMany(
+                    {'_id': args.id},
+                    {
+                        plannedDate: date
+                    },
+                    { new: true }
+                );
+            }
+        },
         planTasks: {
             type: TaskType,
             args: {

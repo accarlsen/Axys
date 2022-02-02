@@ -1,13 +1,13 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { getProgress, getTasks, taskPlanned } from '../../../components/queries';
+import { getProgress, getTasks, planTasks } from '../../../components/queries';
 
 import style from './../taskList.module.css'
 
 function PlanDay(props) {
 
     //Queries
-    const [TaskPlanned, { error }] = useMutation(taskPlanned, {
+    const [TaskPlanned, { error }] = useMutation(planTasks, {
         variables: props.plannedTasks
     })
 
