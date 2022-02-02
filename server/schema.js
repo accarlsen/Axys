@@ -732,7 +732,7 @@ const Mutation = new GraphQLObjectType({
                 )
             }
         },
-        taskDone: {
+        completeTask: {
             type: TaskType,
             args: {
                 id: { type: GraphQLID },
@@ -763,7 +763,7 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
-        taskAccepted: {
+        acceptTask: {
             type: TaskType,
             args: {
                 id: { type: GraphQLID },
@@ -793,7 +793,7 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
-        taskIgnored: {
+        ignoreTask: {
             type: TaskType,
             args: {
                 id: { type: GraphQLID },
@@ -823,7 +823,7 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
-        taskPlanned: {
+        planTasks: {
             type: TaskType,
             args: {
                 id: { type: GraphQLList(GraphQLString) },
@@ -857,7 +857,7 @@ const Mutation = new GraphQLObjectType({
                 return Task.findByIdAndDelete(args.id, { useFindAndModify: false });
             }
         },
-        commentLiked: { //Handles liking and un-liking
+        likeComment: { //Handles liking and un-liking
             type: CommentType,
             args: {
                 id: { type: GraphQLID },

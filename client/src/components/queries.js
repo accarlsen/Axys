@@ -281,7 +281,7 @@ const removeFriend = gql`
 
 const taskDone = gql`
   mutation TaskDone($id: ID, $done: Boolean){
-    taskDone(id: $id, done: $done){
+    completeTask(id: $id, done: $done){
       id
     }
   }
@@ -289,7 +289,7 @@ const taskDone = gql`
 
 const taskAccepted = gql`
   mutation TaskDone($id: ID){
-    taskAccepted(id: $id){
+    acceptTask(id: $id){
       id
     }
   }
@@ -297,7 +297,7 @@ const taskAccepted = gql`
 
 const taskIgnored = gql`
   mutation TaskDone($id: ID){
-    taskIgnored(id: $id){
+    ignoreTask(id: $id){
       id
     }
   }
@@ -313,7 +313,7 @@ const deleteTask = gql`
 
 const taskPlanned = gql`
   mutation TaskPlanned($id: [String]){
-    taskPlanned(id: $id){
+    planTasks(id: $id){
       id
     }
   }
@@ -321,7 +321,7 @@ const taskPlanned = gql`
 
 const commentLiked = gql`
   mutation CommentLiked($id: ID){
-    commentLiked(id: $id){
+    likeComment(id: $id){
       id
     }
   }
