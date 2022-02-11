@@ -114,7 +114,7 @@
 
     color: var(--text);
     background-color: #00000000;
-    border: solid var(--grey) 1px;
+    border: solid var(--greyer) 1px;
     border-radius: 5px;
     outline: none;
     padding: 5px;
@@ -129,7 +129,7 @@
 }
 
 .input:focus{
-    border: solid var(--greyer) 1px;
+    border: solid var(--grey-dark) 1px;
 }
 
 .textarea{

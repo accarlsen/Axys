@@ -215,6 +215,42 @@ const ProgressType = new GraphQLObjectType({
     })
 })
 
+//Helper methods____________________________________________________
+function checkExists(object, objectName){
+    if (object === null || object === undefined) {
+        throw new Error("Failed to find " + (objectName.split("").length > 0 ? objectName : "object") + " in database");
+    }
+    return true
+}
+
+//Authorization verification methods________________________________
+
+async function checkProjectAdmin(projectId, personId, project){
+    if(project === null){
+        project = await Project.findOne({'_id' : projectId})
+        checkExists(project, "Project")
+    }   
+
+    if(project.adminIds.includes(personId)){
+        return true
+    } else{
+        throw new Error("Unauthorized: You do not have the required auhtorization.");
+    }
+}
+
+async function checkProjectMember(projectId, personId, project){
+    if(project === null){
+        project = await Project.findOne({'_id' : projectId})
+        checkExists(project, "Project")
+    }   
+
+    if(project.memberIds.includes(personId)){
+        return true
+    } else{
+        throw new Error("Unauthorized: You do not have the required auhtorization.");
+    }
+}
+
 
 //Root-Query________________________________________________________
 
@@ -907,6 +943,17 @@ const Mutation = new GraphQLObjectType({
             },
             resolve(parent, args, context) {
                 return Comment.findByIdAndDelete(args.id, { useFindAndModify: false });
+            }
+        },
+        addPersonToProject: {
+            type: ProjectType,
+            args: {
+                projectId: {type: GraphQLID},
+                personId: {type: GraphQLID},
+                isAdmin: {type: GraphQLBoolean},
+            },
+            resolve(parent, args, context){
+
             }
         }
         

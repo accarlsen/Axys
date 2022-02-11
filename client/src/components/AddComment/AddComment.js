@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 
 import style from './addComment.module.css'
 import { addComment, getComments } from '../queries';
+import Textarea from '../Textarea';
 
 function AddComment(props) {
 
@@ -26,6 +27,11 @@ function AddComment(props) {
         setText("")
     }
 
+    function auto_grow(e) {
+        e.target.style.height = "inherit";
+        e.target.style.height = `${e.target.scrollHeight}px`;
+    }
+
     const onFocus = () => props.setIsWritingComment(true)
     const onBlur = () => props.setIsWritingComment(false)
 
@@ -38,8 +44,21 @@ function AddComment(props) {
 
     return (
         <div className={style.wrapper} onKeyDown={handleKeyDown}>
-            <input className="inputNoBorder-small" autoFocus={true} onFocus={() => onFocus()} onBlur={() => onBlur()} value={text} placeholder={"Add Comment..."} onChange={e => { setText(String(e.target.value)); }}></input>
-            <button className="button-small green" onClick={(e) => addCommentQuery(e)}>Add</button>
+            {/*<input className="inputNoBorder-small" autoFocus={true} onFocus={() => onFocus()} onBlur={() => onBlur()} value={text} placeholder={"Add Comment..."} onChange={e => { setText(String(e.target.value)); }}></input>*/}
+            <textarea
+                className="input textarea"
+                onChange={e => { setText(String(e.target.value)); }}
+                value={text}
+                onInput={(e) => { auto_grow(e) }}
+                autoFocus={true} 
+                onFocus={() => onFocus()} 
+                onBlur={() => onBlur()}
+                placeholder={"Add Comment..."}
+            >
+            </textarea>
+            <div>
+                <button className="button-small green" onClick={(e) => addCommentQuery(e)}>Add</button>
+            </div>
         </div>
     )
 }
