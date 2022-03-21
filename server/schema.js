@@ -981,26 +981,61 @@ const Mutation = new GraphQLObjectType({
                 const project = await Project.findOne({'_id' : args.projectId})
                 checkExists(project, "Project")
 
-                if (project.adminIds.includes(context.personId) && (project.creatorId !== args.userId && !project.adminIds.includes(args.personId))){
+                if (project.creatorId === context.personId) {
+                    if(context.personId === args.userId) { //Error if owner tries to remove themselves
+                        throw new Error("An owner cannot leave their own project, consider deleting the project instead.");
+                    }
+                    else if(project.adminIds.includes(args.userId)){ //When owner removes an admin
+                        await Project.findByIdAndUpdate(
+                            args.projectId, 
+                            { 
+                                $pull: { memberIds: args.userId },
+                                $pull: { adminIds: args.userId } 
+                            }, 
+                            { new: true }
+                        )
+                    }
+                    else{ //When owner removes a member
+                        args.projectId, { $pull: { memberIds: args.userId } }, { new: true }
+                    }
+                }
+                else if (project.adminIds.includes(context.personId) && (project.creatorId !== args.userId && !project.adminIds.includes(args.personId))){ //When an admin removes a member
                     await Project.findByIdAndUpdate(
                         args.projectId, { $pull: { memberIds: args.userId } }, { new: true }
                     )                
                 }
-                else if (project.creatorId === context.personId) {
-                    if(project.adminIds.includes(args.userId)){
-                        args.projectId, 
-                        { 
-                            $pull: { memberIds: args.userId },
-                            $pull: { adminIds: args.userId } 
-                        }, 
-                        { new: true }
-                    }
-                    else{
-                        args.projectId, { $pull: { memberIds: args.userId } }, { new: true }
-                    }
-                }
                 else{
                     throw new Error("Unauthorized: You do not have the required auhtorization.");
+                }
+            }
+        },
+        leaveProject: {
+            type: ProjectType,
+            args: {
+                projectId: {type: GraphQLID},
+            },
+            async resolve(parent, args, context) {                
+
+                const project = await Project.findOne({'_id' : args.projectId})
+                checkExists(project, "Project")
+
+                if (project.creatorId === context.personId) { //Error if the owner attempts to leave their own project
+                    throw new Error("An owner cannot leave their own project, consider deleting the project instead.");
+                }
+                else if (project.adminIds.includes(context.personId)){ //When an admin leaves
+                    await Project.findByIdAndUpdate(
+                        args.projectId, 
+                        { 
+                            $pull: { memberIds: context.personId },
+                            $pull: { adminIds: context.personId } 
+                        }, 
+                        { new: true }
+                    )             
+                }
+                else{ //When a member leaves
+                    await Project.findByIdAndUpdate(
+                        args.projectId, { $pull: { memberIds: context.personId } }, { new: true }
+                    )   
                 }
             }
         }
