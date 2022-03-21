@@ -225,28 +225,22 @@ function checkExists(object, objectName){
 
 //Authorization verification methods________________________________
 
-async function checkProjectAdmin(projectId, personId, project){
+async function checkProjectRole(projectId, personId, typeCheck, project){
     if(project === null){
         project = await Project.findOne({'_id' : projectId})
         checkExists(project, "Project")
     }   
 
-    if(project.adminIds.includes(personId)){
+    if(typeCheck === "member" && project.memberIds.includes(personId)){
         return true
-    } else{
-        throw new Error("Unauthorized: You do not have the required auhtorization.");
     }
-}
-
-async function checkProjectMember(projectId, personId, project){
-    if(project === null){
-        project = await Project.findOne({'_id' : projectId})
-        checkExists(project, "Project")
-    }   
-
-    if(project.memberIds.includes(personId)){
+    else if(typeCheck === "admin" && project.adminIds.includes(personId)){
         return true
-    } else{
+    } 
+    else if(typeCheck === "owner" && project.creatorId === personId){
+        return true
+    }
+    else{
         throw new Error("Unauthorized: You do not have the required auhtorization.");
     }
 }
@@ -949,14 +943,33 @@ const Mutation = new GraphQLObjectType({
             type: ProjectType,
             args: {
                 projectId: {type: GraphQLID},
-                personId: {type: GraphQLID},
-                isAdmin: {type: GraphQLBoolean},
+                newMemberId: {type: GraphQLID},
+                asAdmin: {type: GraphQLBoolean},
             },
-            resolve(parent, args, context){
+            async resolve(parent, args, context){
+                //If adding member -> admin/owner requiered, if adding admin -> owner required
+                if (args.asAdmin) {
+                    checkProjectRole(args.projectId, context.personId, "owner", null)
+                } else{
+                    checkProjectRole(args.projectId, context.personId, "admin", null)
+                }
 
+                if (args.asAdmin) {
+                    await Project.findByIdAndUpdate(
+                        args.projectId, 
+                        { 
+                            $push: { memberIds: args.newMemberId },
+                            $push: { adminIds: args.newMemberId},
+                        }, 
+                        { new: true }
+                    );
+                } else {
+                    await Project.findByIdAndUpdate(
+                        args.projectId, { $push: { memberIds: args.newMemberId } }, { new: true }
+                    );
+                }
             }
         }
-        
     }
 });
 
