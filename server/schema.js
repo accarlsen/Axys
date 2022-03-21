@@ -969,7 +969,42 @@ const Mutation = new GraphQLObjectType({
                     );
                 }
             }
+        },
+        removePersonFromProject: {
+            type: ProjectType,
+            args: {
+                projectId: {type: GraphQLID},
+                userId: {type: GraphQLID},
+            },
+            async resolve(parent, args, context) {                
+
+                const project = await Project.findOne({'_id' : args.projectId})
+                checkExists(project, "Project")
+
+                if (project.adminIds.includes(context.personId) && (project.creatorId !== args.userId && !project.adminIds.includes(args.personId))){
+                    await Project.findByIdAndUpdate(
+                        args.projectId, { $pull: { memberIds: args.userId } }, { new: true }
+                    )                
+                }
+                else if (project.creatorId === context.personId) {
+                    if(project.adminIds.includes(args.userId)){
+                        args.projectId, 
+                        { 
+                            $pull: { memberIds: args.userId },
+                            $pull: { adminIds: args.userId } 
+                        }, 
+                        { new: true }
+                    }
+                    else{
+                        args.projectId, { $pull: { memberIds: args.userId } }, { new: true }
+                    }
+                }
+                else{
+                    throw new Error("Unauthorized: You do not have the required auhtorization.");
+                }
+            }
         }
+
     }
 });
 
