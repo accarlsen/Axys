@@ -230,3 +230,12 @@
     width: 0.8rem;
     background-color: #FFFFFF00;
 }
+
+.authorDisplay{
+    margin-bottom: 0.5rem;
+    margin-left: 1rem;
+}
+
+.authorDisplayPlaceholder{
+    margin-bottom: 0.5rem;
+}

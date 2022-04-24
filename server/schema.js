@@ -769,10 +769,9 @@ const Mutation = new GraphQLObjectType({
                 done: { type: GraphQLBoolean }
             },
             async resolve(parent, args, context) {
-
-                const task = await Task.findById(args.id)
-                if (task.assigneeId !== context.personId) {
-                    throw new Error('Cannot complete task: Unauthorized');
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
                 }
 
                 //Date & time
@@ -781,8 +780,8 @@ const Mutation = new GraphQLObjectType({
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.updateMany(
+                    {'_id': args.id, assigneeId: context.personId},
                     {
                         done: args.done,
                         timestampDone: today.getTime(),
@@ -799,10 +798,9 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLID },
             },
             async resolve(parent, args, context) {
-
-                const task = await Task.findById(args.id)
-                if (task.assigneeId !== context.personId) {
-                    throw new Error('Cannot accept task: Unauthorized');
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
                 }
 
                 //Date & time
@@ -811,8 +809,8 @@ const Mutation = new GraphQLObjectType({
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.updateMany(
+                    {'_id': args.id, assigneeId: context.personId},
                     {
                         accepted: true,
                         timestampAccepted: today.getTime(),
@@ -829,10 +827,9 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLID },
             },
             async resolve(parent, args, context) {
-
-                const task = await Task.findById(args.id)
-                if (task.assigneeId !== context.personId) {
-                    throw new Error('Cannot ignore task: Unauthorized');
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
                 }
 
                 //Date & time
@@ -841,8 +838,8 @@ const Mutation = new GraphQLObjectType({
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.updateMany(
+                    {'_id': args.id, assigneeId: context.personId},
                     {
                         ignored: true,
                         timestampIgnored: today.getTime(),
@@ -858,13 +855,18 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLString },
             },
-            resolve(parent, args) {
+            resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
                 //Date & time
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
                 return Task.updateMany(
-                    {'_id': args.id},
+                    {'_id': args.id, assigneeId: context.personId},
                     {
                         plannedDate: date
                     },
@@ -877,13 +879,18 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLList(GraphQLString) },
             },
-            resolve(parent, args) {
+            resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
                 //Date & time
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
                 return Task.updateMany(
-                    {'_id': {$in: args.id}},
+                    {'_id': {$in: args.id}, assigneeId: context.personId},
                     {
                         plannedDate: date
                     },
@@ -897,9 +904,13 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLID }
             },
             async resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
 
                 const task = await Task.findById(args.id)
-                if (task.authorId !== context.personId) {
+                if (task.authorId !== context.personId && task.assigneeId !== context.personId) {
                     throw new Error('Cannot delete task: Unauthorized');
                 }
 
@@ -914,7 +925,7 @@ const Mutation = new GraphQLObjectType({
             async resolve(parent, args, context) {
                 const comment = await Comment.findById(args.id);
                 if (comment === null || comment === undefined) {
-                    throw new Error('Failed to find friend-request in database');
+                    throw new Error('Failed to find comment in database');
                 }
 
                 //TODO consider adding auth that only authorized people can like comment
@@ -936,6 +947,8 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLID},
             },
             resolve(parent, args, context) {
+                //TODO: check auth
+
                 return Comment.findByIdAndDelete(args.id, { useFindAndModify: false });
             }
         },
