@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
+
 import { getTasks } from '../../components/queries';
 import CreateTask from './components/CreateTask';
 
-import style from './taskList.module.css'
+import style from './../../project.module.css'
 import SearchTask from './components/SearchTask';
-import { useHistory } from 'react-router-dom';
+import PlanDay from './components/planDay';
 import Task from '../../components/Task/Task';
-import PlanDay from '../../components/PlanDay/planDay';
 
 
 function TaskList() {

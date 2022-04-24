@@ -1,8 +1,8 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { getProgress, getTasks, planTasks } from '../../../components/queries';
+import { getProgress, getTasks, planTasks } from '../queries';
 
-import style from './../taskList.module.css'
+import style from './planDay.module.css'
 
 function PlanDay(props) {
 
