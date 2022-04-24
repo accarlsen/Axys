@@ -4,10 +4,10 @@ import { getTasks } from '../../components/queries';
 import CreateTask from './components/CreateTask';
 
 import style from './taskList.module.css'
-import Task from './components/task';
 import SearchTask from './components/SearchTask';
 import { useHistory } from 'react-router-dom';
 import PlanDay from './components/planDay';
+import Task from '../../components/Task/Task';
 
 
 function TaskList() {

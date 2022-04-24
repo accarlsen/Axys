@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 import style from './../taskList.module.css'
 import { deleteTask, getTasks } from '../../../components/queries';
 import { Link } from 'react-router-dom';
-import CommentList from './commentList';
+import CommentList from './../../../components/CommentList/CommentList';
 import CommentIcon from './../assets/CommentIcon.svg'
 
 function Assignment(props) {

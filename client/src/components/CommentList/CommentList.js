@@ -1,12 +1,11 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import style from './../taskList.module.css'
-import { addComment, commentLiked, deleteComment, deleteTask, getComments, getTasks } from '../../../components/queries';
-import { Link } from 'react-router-dom';
-import AddComment from '../../../components/AddComment/AddComment';
-import LikeIcon from './../assets/LikeIcon.svg'
-import LikedIcon from './../assets/LikedIcon.svg'
+import style from './commentList.module.css'
+import { commentLiked, deleteComment, getComments } from './../queries';
+import AddComment from '../AddComment/AddComment';
+import LikeIcon from './assets/LikeIcon.svg'
+import LikedIcon from './assets/LikedIcon.svg'
 
 
 function CommentList(props) {

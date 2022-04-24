@@ -5,7 +5,7 @@ import { getTasks, taskDone, deleteTask, taskAccepted, taskIgnored, addComment, 
 import CommentIcon from './../assets/CommentIcon.svg'
 
 import style from './../taskList.module.css'
-import CommentList from './commentList';
+import CommentList from './../../../components/CommentList/CommentList';
 import FadeInOutTrans from '../../../components/FadeInOutTrans';
 
 function SearchTask(props) {
