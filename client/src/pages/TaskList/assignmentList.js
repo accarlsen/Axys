@@ -3,9 +3,8 @@ import { useQuery } from '@apollo/client';
 import { getCreatedAssignments } from '../../components/queries';
 
 import style from './taskList.module.css'
-import Task from './components/task';
 import { useHistory } from 'react-router-dom';
-import Assignment from './components/assignment';
+import Assignment from '../../components/Assignment/Assignment';
 
 function AssignmentList() {
 

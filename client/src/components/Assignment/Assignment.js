@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
-import style from './../taskList.module.css'
-import { deleteTask, getTasks } from '../../../components/queries';
+import style from './assignment.module.css'
+import { deleteTask, getTasks } from '../queries';
 import { Link } from 'react-router-dom';
-import CommentList from './../../../components/CommentList/CommentList';
-import CommentIcon from './../assets/CommentIcon.svg'
+import CommentIcon from './assets/CommentIcon.svg'
+import CommentList from '../CommentList/CommentList';
 
 function Assignment(props) {
 
