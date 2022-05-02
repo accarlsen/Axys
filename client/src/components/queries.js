@@ -96,6 +96,39 @@ const getTasks = gql`
   }
 `;
 
+const getTasksInProject = gql`
+  query ($id: String, $includeCompleted: Boolean) {
+    tasksInProject(id: $id, includeCompleted: $includeCompleted) {
+      id
+      name
+      progress
+      weight
+      date
+      time
+      authorId
+      assigneeId
+      parentId
+      projectId
+      accepted
+      ignored
+      plannedDate
+      assignee{
+        id
+        fname
+        lname
+        name
+      }
+      author{
+        id
+        name
+      }
+      comments{
+        id
+      }
+    }
+  }
+`;
+
 const getProgress = gql`
   query{ 
     progress {
@@ -404,6 +437,7 @@ export {
   getProjects,
   getProject,
   getTasks,
+  getTasksInProject,
   getProgress,
   getComments,
   getCreatedAssignments,

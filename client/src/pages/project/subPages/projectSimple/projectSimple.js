@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { getTasks } from '../../../../components/queries';
+import { getTasks, getTasksInProject } from '../../../../components/queries';
 
 import style from './projectSimple.module.css'
 import { useHistory } from 'react-router-dom';
@@ -13,6 +13,9 @@ import CreateTask from '../../../../components/CreateTask/CreateTask';
 function ProjectSimple(props) {
 
     //Variables
+    let id = props.project.id
+    let includeCompleted = false
+
     const [taskActive, setTaskActive] = useState(false);
     const [searchActive, setSearchActive] = useState(false);
     const [activationLetter, setActivationLetter] = useState("");
@@ -24,7 +27,9 @@ function ProjectSimple(props) {
     const [plannedTasks, setPlannedTasks] = useState([])
 
     //Queries
-    const { loading, error, data } = useQuery(getTasks);
+    const { loading, error, data } = useQuery(getTasksInProject, {
+        variables: {id: id, includeCompleted: includeCompleted}
+    });
 
     //UseEffect, runs upon any update to component
     useEffect(() => {
@@ -67,7 +72,7 @@ function ProjectSimple(props) {
         history.push("/login")
     }
 
-
+    //DOM
     if (loading) return <span>Loading...</span>
     if (error) {
         console.log(error.message);
@@ -78,12 +83,15 @@ function ProjectSimple(props) {
         }
     }
 
-    //DOM
     if (data) {
         const today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-        const plannedTasksTemp = [...data.tasks];
+        console.log(data)
+        let plannedTasksTemp = [];
+
+        if(data.tasksInProject?.length > 0) plannedTasksTemp = [...data.tasksInProject];
+        
         let plannedTasksData = [];
         let sortedData = [];
 
@@ -170,7 +178,13 @@ function ProjectSimple(props) {
                         </div>
                     </div>
                 </div>
-                <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
+                <CreateTask 
+                    taskActive={taskActive} 
+                    setTaskActive={setTaskActive} 
+                    activationLetter={activationLetter} 
+                    setActivationLetter={setActivationLetter} 
+                    projectId={props.project.id} 
+                />
             </div>
         )
     }

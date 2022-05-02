@@ -282,7 +282,7 @@ const RootQuery = new GraphQLObjectType({
         tasksInProject: {
             type: new GraphQLList(TaskType),
             args: {
-                id: {type: GraphQLID},
+                id: {type: GraphQLString},
                 includeCompleted: {type: GraphQLBoolean},
             },
             async resolve(parent, args, context) {
@@ -302,11 +302,11 @@ const RootQuery = new GraphQLObjectType({
                 
                 let tasks;
                 if(args.includeCompleted){
-                    Task.find({ projectId: args.id });
+                    tasks = await Task.find({ projectId: args.id });
                 } else{
-                    Task.find({ projectId: args.id, done: false });
+                    tasks = await Task.find({ projectId: args.id, done: false });
                 }
-                return tasks
+                return tasks;
             }
         },
         progress: {

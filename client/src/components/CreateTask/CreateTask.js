@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { addTask, getProfile, getTasks } from '../queries';
+import { addTask, getProfile, getTasks, getTasksInProject } from '../queries';
 
 import style from './createTask.module.css'
 
@@ -29,19 +29,31 @@ function CreateTask(props) {
     })
 
     useEffect(() => {
-        
+
     }, [searchName])
 
     //Methods
-    const addTaskQuery = (event) => { 
+    const addTaskQuery = (event) => {
         event.preventDefault(); //Enable custom behaviour
-        AddTask({
-            variables: {
-                name: name,
-                assigneeId: assigneeId,
-            },
-            refetchQueries: [{ query: getTasks }]
-        });
+        if (props.projectId !== null && props.projectId !== undefined && props.projectId !== "") {
+            AddTask({
+                variables: {
+                    name: name,
+                    assigneeId: assigneeId,
+                    projectId: props.projectId
+                },
+                refetchQueries: [{ query: getTasksInProject, variables: {id: props.projectId, includeCompleted: false} }] //TODO: replace variables with passed in Project-object
+            });
+        }
+        else {
+            AddTask({
+                variables: {
+                    name: name,
+                    assigneeId: assigneeId
+                },
+                refetchQueries: [{ query: getTasks }]
+            });
+        }
         props.setTaskActive(false);
         setName("");
     }
@@ -56,7 +68,7 @@ function CreateTask(props) {
 
     const selectAssignee = (friend) => {
         setName(name + friend.name + " ");
-        setAssigneeId(friend.id); 
+        setAssigneeId(friend.id);
         setSearchFriends(false);
         setSearchName("")
         searchNameFirst = null
@@ -79,7 +91,7 @@ function CreateTask(props) {
         else if (searchFriends && event.key === 'Enter') {
             setSearchFriends(false)
             setSearchName("")
-            if(searchNameFirst !== null){
+            if (searchNameFirst !== null) {
                 const resFriend = searchNames(searchName, dataF.profile.friends)[0];
                 setAssigneeId(resFriend.id);
                 setName(name + resFriend.name + " ");
@@ -116,20 +128,20 @@ function CreateTask(props) {
                     <input className="inputNoBorder" ref={input} autoFocus={true} value={name} placeholder={"name..."} onChange={e => { setName(String(e.target.value)); }}></input>
                     <span className="button grey" onClick={() => { cancel() }}>Cancel</span>
                     <span className="button green" onClick={e => { addTaskQuery(e) }}>Create</span>
-                
+
                     {searchFriends && <div className={style.CTFriendListWapper}>
-                        <input className={` ${style.CTfriendSearch} inputNoBorder`} autoFocus={true} value={searchName} onChange={(e) => { if(e.target.value !== '@') setSearchName(e.target.value);}} />
+                        <input className={` ${style.CTfriendSearch} inputNoBorder`} autoFocus={true} value={searchName} onChange={(e) => { if (e.target.value !== '@') setSearchName(e.target.value); }} />
                         {searchName === "" ? dataF.profile.friends.map((friend, i) => (
-                            <button className={i === 0 ? style.CTFriendListItemTop : style.CTFriendListItem} onClick={e => {selectAssignee(friend)}}>
+                            <button className={i === 0 ? style.CTFriendListItemTop : style.CTFriendListItem} onClick={e => { selectAssignee(friend) }}>
                                 {friend.fname + " " + friend.lname}
                             </button>
                         ))
-                        : 
-                        searchNames(searchName, dataF.profile.friends).map((friend, i) => (
-                            <button className={i === 0 ? style.CTFriendListItemTop : style.CTFriendListItem} onClick={e => {selectAssignee(friend)}}>
-                                {friend.name}
-                            </button>
-                        ))}
+                            :
+                            searchNames(searchName, dataF.profile.friends).map((friend, i) => (
+                                <button className={i === 0 ? style.CTFriendListItemTop : style.CTFriendListItem} onClick={e => { selectAssignee(friend) }}>
+                                    {friend.name}
+                                </button>
+                            ))}
                     </div>}
                 </div>
             </div>

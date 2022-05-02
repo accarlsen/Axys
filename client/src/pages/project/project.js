@@ -7,7 +7,7 @@ import ProjectSimple from './subPages/projectSimple/projectSimple';
 function Project() {
 
     let id = window.location.href.split("/")[window.location.href.split("/").length - 1]
-    console.log(id)
+    
     //Queries & mutations
     const {data, loading, error} = useQuery(getProject, {
         variables: {id: id}
