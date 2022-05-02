@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
+import { getTasks } from '../../../../components/queries';
+
+import style from './projectSimple.module.css'
 import { useHistory } from 'react-router-dom';
-
-import { getTasks } from '../../components/queries';
-import CreateTask from './components/CreateTask';
-
-import style from './../../project.module.css'
-import SearchTask from './components/SearchTask';
-import PlanDay from './components/planDay';
-import Task from '../../components/Task/Task';
+import Task from '../../../../components/Task/Task';
+import PlanDay from '../../../../components/PlanDay/planDay';
+import SearchTask from '../../../../components/SearchTask/SearchTask';
+import CreateTask from '../../../../components/CreateTask/CreateTask';
 
 
-function TaskList() {
+function ProjectSimple(props) {
 
     //Variables
     const [taskActive, setTaskActive] = useState(false);
@@ -121,6 +120,16 @@ function TaskList() {
                 </div>
 
                 <div className={style.innerWrapper}>
+
+                    <div className={style.taskListOuterWrapper}>
+                        <div className={style.taskListWrapper}>
+                            <div className={style.titleWrapper}>
+                                <h1 className="h4">{props.project.name}</h1>
+                                <p className="p mb-1">{props.project.description}</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className={style.taskListOuterWrapper}>
                         {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
                             <div className={style.titleWrapper}>
@@ -169,4 +178,4 @@ function TaskList() {
     return <div></div>
 }
 
-export default TaskList;
+export default ProjectSimple;

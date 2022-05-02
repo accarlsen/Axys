@@ -97,7 +97,7 @@ function Sidebar() {
                     :
                     <div className={style.projects}>
                         {dataP && dataP.projects.map((project) => (
-                            <Link className={location === `/projects/${project.id}` ? style.linkSelected : style.link} to={`/projects/${project.id}`} onClick={() => setLocation(`/projects/${project.id}`)}>
+                            <Link className={location === `/project/${project.id}` ? style.linkSelected : style.link} to={`/project/${project.id}`} onClick={() => setLocation(`/project/${project.id}`)}>
                                 <span>#</span>
                                 <span>{project.name}</span>
                             </Link>

@@ -29,7 +29,7 @@ const getProjects = gql`
 `;
 
 const getProject = gql`
-  query ($id: ID) {
+  query ($id: String) {
     project(id: $id) {
       id
         name
@@ -41,6 +41,18 @@ const getProject = gql`
         simplifiedTasks
         inviteRequired
         inviteAdminExclusive
+
+        creator{
+          id
+          name
+          email
+        }
+
+        admins{
+          id
+          name
+          email
+        }
 
         members{
           id

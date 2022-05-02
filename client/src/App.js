@@ -16,6 +16,7 @@ import { adventTheme, darkTheme, lightTheme, materialDark, belugaBlue } from './
 import style from './app.module.css';
 import Sidebar from './components/Sidebar/sidebar';
 import CreateProject from './pages/createProject/createProject';
+import Project from './pages/project/project';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -59,6 +60,7 @@ function App() {
                   <Route exact path="/network"> <Network /> </Route>
                   <Route exact path="/assignments">  <AssignmentList /> </Route>
                   <Route exact path="/create-project"> <CreateProject /> </Route>
+                  <Route path="/project/"> <Project /> </Route>
                   <Route path="/profile/"> <Profile /> </Route>
                   <Route path="/customization"> <Customize theme={theme} applyTheme={applyTheme} /> </Route>
                   <Route path="/"> <TaskList /> </Route>
