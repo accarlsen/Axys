@@ -9,7 +9,7 @@ function Sidebar() {
 
     //Variables
     const [update, setUpdate] = useState(false);
-    const [location, setLocation] = useState("/");
+    const [location, setLocation] = useState(window.location.pathname);
 
     const [cProfile, setCProfile] = useState(localStorage.getItem("collapsed.profile") === true ? true : false)
     const [cPages, setCPages] = useState(localStorage.getItem("collapsed.pages") === true ? true : false)

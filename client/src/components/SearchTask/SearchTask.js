@@ -10,6 +10,8 @@ import CommentList from '../CommentList/CommentList';
 function SearchTask(props) {
 
     //Variables
+    const userId = localStorage.getItem("personId")
+
     const [search, setSearch] = useState("");
     const [id, setId] = useState("");
     const [task, setTask] = useState();
@@ -196,8 +198,8 @@ function SearchTask(props) {
                                                     <img className={style.commentIcon} src={CommentIcon} alt={"Comment Icon"} />
                                                 </button>
 
-                                                <button className="button-small red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>
-                                                <button className="button-small green" onClick={e => { updateStatusQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>
+                                                {task.authorId === userId && <button className="button-small red" onClick={(e) => { deleteTaskQuery(e) }}>Delete</button>}
+                                                {task.assigneeId === userId && <button className="button-small green" onClick={e => { updateStatusQuery(e); /*updateStatusQuery(e);*/ }}>Done</button>}
                                             </div>
                                             :
                                             <div className={style.STButtonGrid}>

@@ -28,7 +28,7 @@ function ProjectSimple(props) {
 
     //Queries
     const { loading, error, data } = useQuery(getTasksInProject, {
-        variables: {id: id, includeCompleted: includeCompleted}
+        variables: { id: id, includeCompleted: includeCompleted }
     });
 
     //UseEffect, runs upon any update to component
@@ -90,8 +90,8 @@ function ProjectSimple(props) {
         console.log(data)
         let plannedTasksTemp = [];
 
-        if(data.tasksInProject?.length > 0) plannedTasksTemp = [...data.tasksInProject];
-        
+        if (data.tasksInProject?.length > 0) plannedTasksTemp = [...data.tasksInProject];
+
         let plannedTasksData = [];
         let sortedData = [];
 
@@ -136,36 +136,15 @@ function ProjectSimple(props) {
                                 <p className="p mb-1">{props.project.description}</p>
                             </div>
                         </div>
-                    </div>
 
-                    <div className={style.taskListOuterWrapper}>
-                        {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
-                            <div className={style.titleWrapper}>
-                                <h1 className="h4">Planned Tasks</h1>
-                            </div>
-                            {plannedTasksData.map((task, i) => (
-                                <Task
-                                    task={task}
-                                    index={i + 1}
-                                    isWritingComment={isWritingComment}
-                                    setIsWritingComment={setIsWritingComment}
-                                    planned={true}
-
-                                    isPlanning={isPlanning}
-                                    setIsPlanning={setIsPlanning}
-                                    plannedTasks={plannedTasks}
-                                    setPlannedTasks={setPlannedTasks}
-                                />
-                            ))}
-                        </div>}
                         <div className={style.taskListWrapper}>
                             <div className={style.titleWrapper}>
                                 <h1 className="h4">Tasks</h1>
                             </div>
-                            {sortedData.map((task, i) => (
+                            {allTasks.map((task, i) => (
                                 <Task
                                     task={task}
-                                    index={plannedTasksData.length + i + 1}
+                                    index={i + 1}
                                     isWritingComment={isWritingComment}
                                     setIsWritingComment={setIsWritingComment}
 
@@ -178,12 +157,12 @@ function ProjectSimple(props) {
                         </div>
                     </div>
                 </div>
-                <CreateTask 
-                    taskActive={taskActive} 
-                    setTaskActive={setTaskActive} 
-                    activationLetter={activationLetter} 
-                    setActivationLetter={setActivationLetter} 
-                    projectId={props.project.id} 
+                <CreateTask
+                    taskActive={taskActive}
+                    setTaskActive={setTaskActive}
+                    activationLetter={activationLetter}
+                    setActivationLetter={setActivationLetter}
+                    projectId={props.project.id}
                 />
             </div>
         )
