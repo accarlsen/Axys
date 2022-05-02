@@ -75,6 +75,7 @@ const getTasks = gql`
       authorId
       assigneeId
       parentId
+      projectId
       accepted
       ignored
       plannedDate
@@ -213,11 +214,13 @@ const addTask = gql`
     $name: String,
     $assigneeId: String,
     $parentId: String,
+    $projectId: String,
   ){
     addTask(
       name: $name,
       assigneeId: $assigneeId,
       parentId: $parentId,
+      projectId: $projectId,
     ){
       id
       name

@@ -68,6 +68,7 @@ const TaskType = new GraphQLObjectType({
         parentId: { type: GraphQLID },
         authorId: { type: GraphQLString },
         assigneeId: { type: GraphQLString },
+        projectId: {type: GraphQLString},
         date: { type: GraphQLString },
         time: { type: GraphQLString },
         plannedDate: {type: GraphQLString},
@@ -278,6 +279,36 @@ const RootQuery = new GraphQLObjectType({
                 return Task.find({ assigneeId: context.personId, done: false, ignored: {$ne: true} });
             }
         },
+        tasksInProject: {
+            type: new GraphQLList(TaskType),
+            args: {
+                id: {type: GraphQLID},
+                includeCompleted: {type: GraphQLBoolean},
+            },
+            async resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
+                //Validate data-access-rights
+                const project = await Project.find({
+                    '_id': args.id, 
+                    $or: [
+                        { adminIds: context.personId},
+                        { memberIds: context.personId},
+                    ]}
+                )
+                checkExists(project, "Project")
+                
+                let tasks;
+                if(args.includeCompleted){
+                    Task.find({ projectId: args.id });
+                } else{
+                    Task.find({ projectId: args.id, done: false });
+                }
+                return tasks
+            }
+        },
         progress: {
             // TODO: receive input for a specified date
             type: ProgressType,
@@ -481,6 +512,7 @@ const Mutation = new GraphQLObjectType({
                 name: { type: GraphQLString },
                 assigneeId: { type: GraphQLString },
                 parentId: { type: GraphQLString },
+                projectId: {type: GraphQLString},
             },
             async resolve(parent, args, context) {
 
@@ -514,6 +546,7 @@ const Mutation = new GraphQLObjectType({
                     assigneeId: args.assigneeId,
                     authorId: context.personId,
                     parentId: args.parentId,
+                    projectId: args.projectId,
                     date: date,
                     time: time,
 
