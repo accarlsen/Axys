@@ -182,7 +182,7 @@ function SearchTask(props) {
     return (
         <div className={style.STWrapper} onKeyDown={handleKeyDown}>
             <div className={style.STInner}>
-                <animated.div style={widen} className={style.STabs}>
+                <div className={props.searchActive ? style.STabsActive : style.STabs}>
                     {
                         props.searchActive ?
                             <div>
@@ -233,7 +233,7 @@ function SearchTask(props) {
                             </button>
                     }
 
-                </animated.div>
+                </div>
             </div>
         </div>
     )

@@ -331,7 +331,7 @@ const RootQuery = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                return Task.find({ authorId: context.personId, assigneeId: { $ne: context.personId }, done: false });
+                return Task.find({ authorId: context.personId, $and: [{assigneeId: {$ne: context.personId}}, {assigneeId: {$ne: null}}] , done: false });
             }
         },
         comments: {

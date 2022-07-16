@@ -5,7 +5,7 @@ import style from './task.module.css'
 import { Link } from 'react-router-dom';
 import CommentIcon from './assets/CommentIcon.svg'
 import CommentList from '../CommentList/CommentList';
-import { deleteTask, getTasks } from '../queries';
+import { deleteTask, getTasksInProject, getTasks } from '../queries';
 
 function Task(props) {
 
@@ -26,12 +26,22 @@ function Task(props) {
     //Methods
     const deleteTaskQuery = (event) => {
         event.preventDefault();
-        DeleteTask({
-            variables: {
-                id: props.task.id
-            },
-            refetchQueries: [{ query: getTasks }]
-        });
+        if(props.task.projectId === null || props.task.projectId === undefined || props.task.projectId === ""){
+            DeleteTask({
+                variables: {
+                    id: props.task.id
+                },
+                refetchQueries: [{ query: getTasks }]
+            });
+        } 
+        else{
+            DeleteTask({
+                variables: {
+                    id: props.task.id
+                },
+                refetchQueries: [{ query: getTasksInProject, variables: {id: props.task.projectId, includeCompleted: false} }]
+            });
+        }
     }
 
     const manipulatePlannedTasks = () => {

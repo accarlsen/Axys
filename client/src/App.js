@@ -5,7 +5,6 @@ import './style/root.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import NavBar from './components/NavBar';
 import { AuthContext } from './context/auth-context';
 import TaskList from './pages/TaskList/taskList';
 import Network from './pages/network/network';
@@ -17,6 +16,7 @@ import style from './app.module.css';
 import Sidebar from './components/Sidebar/sidebar';
 import CreateProject from './pages/createProject/createProject';
 import Project from './pages/project/project';
+import ProjectRerouter from './pages/project/projectRerouter';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -60,6 +60,7 @@ function App() {
                   <Route exact path="/network"> <Network /> </Route>
                   <Route exact path="/assignments">  <AssignmentList /> </Route>
                   <Route exact path="/create-project"> <CreateProject /> </Route>
+                  <Route path="/project-router/"> <ProjectRerouter /> </Route>
                   <Route path="/project/"> <Project /> </Route>
                   <Route path="/profile/"> <Profile /> </Route>
                   <Route path="/customization"> <Customize theme={theme} applyTheme={applyTheme} /> </Route>
