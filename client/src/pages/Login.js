@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useSpring, animated as a } from 'react-spring';
-import {useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import { login } from './../components/queries';
 import { AuthContext } from './../context/auth-context';
@@ -23,16 +23,43 @@ function Login() {
 
     const context = useContext(AuthContext);
 
+    //Methods
+    const loginQuery = (e) => {
+        e.preventDefault();
+        loginFunc({
+            variables: {
+                email: email,
+                password: password
+            },
+            options: {
+                context: {
+                    headers: {
+                        "Authorization": context.token ? `Bearer $(context.token)` : ''
+                    }
+                }
+            }
+        })
+        setEmail("");
+        setPassword("");
+    }
+
+    //Key-inputs
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            loginQuery(event);
+        }
+    }
+
     if (loading) return <p>Loading ...</p>;
     if (data) {
         context.setToken(data.login.token);
         context.setPersonId(data.login.personId);
         context.setTokenExpiration(data.login.tokenExpiration);
-        if(data.login.admin) {
+        if (data.login.admin) {
             context.setAdmin(data.login.admin);
             localStorage.setItem('admin', data.login.admin);
         }
-        else{
+        else {
             context.setAdmin(false);
             localStorage.setItem('admin', null);
         }
@@ -43,7 +70,7 @@ function Login() {
     }
 
     return (
-        <div className="login-wrapper">
+        <div className="login-wrapper" onKeyDown={handleKeyDown}>
             <a.div className="login-card card" style={props}>
                 <h1 className="h2 login-title">Login</h1>
                 <span></span>
@@ -71,26 +98,11 @@ function Login() {
                     maxlength="32"
                     minlength="8" />
 
-                <input className="button grey" type="submit" value="Log in" onClick={e => {
-                    e.preventDefault();
-                    loginFunc({
-                        variables: {
-                            email: email,
-                            password: password
-                        },
-                        options: {
-                            context: {
-                                headers: {
-                                    "Authorization": context.token ? `Bearer $(context.token)` : ''
-                                }
-                            }
-                        }
-                    })
-                    setEmail("");
-                    setPassword("");
-                    
+                <div className="login-inline">
+                    <input className="button grey" type="submit" value="Log in" onClick={e => { loginQuery(e) }}></input>
+                    <Link className='a' to={"/signup"}><p className="p">{"Or sign up >"}</p></Link>
+                </div>
 
-                }}></input>
             </a.div>
         </div>
     );

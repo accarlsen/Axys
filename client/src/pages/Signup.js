@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSpring, animated as a } from 'react-spring';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import InputCheck from './../components/InputCheck.js';
@@ -256,25 +256,28 @@ function Signup() {
                     </div>
                 </div>
 
-                <a.input className="button grey" type="submit" value="Create user" onClick={e => {
-                    //if (toOpacity1 == 1 && toOpacity2 == 1 && toOpacity3 == 1 && toOpacity4 == 1 && toOpacity5 == 1) {
-                    e.preventDefault();
-                    AddPerson({
-                        variables: {
-                            fname: fname,
-                            lname: lname,
-                            email: email,
-                            password: password
-                        }
-                    })
-                    setValue1("");
-                    setValue2("");
-                    setValue3("");
-                    setValue4("");
-                    setValue5("");
-                    setUpdate(true);
-                    routeChange();
-                }}></a.input>
+                <div className="login-inline">
+                    <a.input className="button grey" type="submit" value="Create user" onClick={e => {
+                        //if (toOpacity1 == 1 && toOpacity2 == 1 && toOpacity3 == 1 && toOpacity4 == 1 && toOpacity5 == 1) {
+                        e.preventDefault();
+                        AddPerson({
+                            variables: {
+                                fname: fname,
+                                lname: lname,
+                                email: email,
+                                password: password
+                            }
+                        })
+                        setValue1("");
+                        setValue2("");
+                        setValue3("");
+                        setValue4("");
+                        setValue5("");
+                        setUpdate(true);
+                        routeChange();
+                    }}></a.input>
+                    <Link className='a' to={"/login"}><p className="p">{"Or log in >"}</p></Link>
+                </div>
             </a.div>
         </div>
     );

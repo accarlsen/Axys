@@ -51,3 +51,10 @@
 .signup-eye:hover{
     cursor: pointer;
 }
+
+.signup-inline{
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 2rem;
+    width: fit-content;
+}

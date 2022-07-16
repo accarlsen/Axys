@@ -28,7 +28,7 @@ function CreateProject() {
                 inviteRequired: privateB,
                 inviteAdminExclusive: requireAdmin
             },
-            //refetchQueries: [{ query: getProjects }]
+            refetchQueries: [{ query: getProjects }]
         });
         setName("");
         setDescription("");
