@@ -9,26 +9,29 @@
     font-family: 'Roboto', 'Arial';
     font-style: normal;
     border-radius: 3px;
-    font-weight: 400;
+    font-weight: var(--button-text-weight);
     font-size: 14px;
     padding: 6px 20px 6px 20px;
-    color: var(--text-off);
-    background-color: var(--grey);
     cursor: pointer;
     border: solid 1px var(--shadow);
     transition: smooth, 0.2s;
 }
 
 .red{ background-color: var(--red); color: var(--text-inverted); font-weight: 500;}
-.green{ background: var(--green); color: var(--text-inverted); font-weight: 500;}
-.grey{ background-color: var(--grey); }
+.green{ background: var(--button-conf); color: var(--text-inverted); font-weight: 500;}
+.grey{ background-color: var(--button-default); color: var(--button-text); font-weight: 400;}
+.inactive, .inactive:hover, .inactive:focus{ 
+    background-color: #FFFFFF00;
+    color: var(--greyer);
+    cursor: default;
+    border: solid 1px var(--greyer) !important;
+}
 
 .button-small{
     width: fit-content;
     font-family: 'Roboto', 'Arial';
     font-style: normal;
     border-radius: 3px;
-    font-weight: 500;
     font-size: 12px;
     padding: 4px 10px 4px 10px;
     cursor: pointer;
@@ -36,11 +39,11 @@
     transition: smooth, 0.2s;
 }
 
-.button:hover, .button-small:hover{  background-color: var(--greyer) }
 .button:focus, .button-small:focus{  border: solid 1px var(--shadow); }
 
-.green:hover, .green:focus{ background-color: var(--greenlight);}
+.green:hover, .green:focus{ background-color: var(--button-conf-hover);}
 .red:hover, .red:focus{ background-color: var(--red-light);}
+.grey:hover, .grey:focus{ background-color: var(--button-default-hover);}
 
 .buttonInactive{
     width: fit-content;
@@ -51,9 +54,9 @@
     font-size: 14px;
     padding: 6px 20px 6px 20px;
     background-color: var(--background);
-    color: var(--grey-dark);
+    color: var(--text-off2);
     cursor: default;
-    border: solid 1px var(--grey);
+    border: solid 1px var(--text-off2);
 }
 
 /*
@@ -64,7 +67,7 @@
 
 .p{
     font-family: 'Roboto';
-    font-size: 13px;
+    font-size: 14px;
     font-weight: var(--p-weight);
     margin: 0.3rem 0 0.3rem 0;
     color: var(--text-off);
@@ -72,7 +75,7 @@
 
 .ps{
     font-family: 'Roboto';
-    font-size: 11px;
+    font-size: 12px;
     font-weight: var(--p-weight);
     margin: 0.3rem 0 0.3rem 0;
     color: var(--text-off2);
@@ -96,6 +99,12 @@
     color: var(--text);
 }
 
+.h4{
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text);
+}
+
 .input{
     position: relative;
     width: 100%;
@@ -105,13 +114,14 @@
 
     color: var(--text);
     background-color: #00000000;
-    border: solid var(--grey) 1px;
+    border: solid var(--greyer) 1px;
     border-radius: 5px;
     outline: none;
     padding: 5px;
 
-    font-size: 13px;
-    font-weight: 300;
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: var(--p-weight);
 
     -moz-box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
@@ -119,7 +129,14 @@
 }
 
 .input:focus{
-    border: solid var(--greyer) 1px;
+    border: solid var(--grey-dark) 1px;
+}
+
+.textarea{
+    resize: none;
+    overflow: hidden;
+    min-height: 50px;
+    max-height: 100px
 }
 
 .input-signup{
@@ -138,7 +155,8 @@
     padding: 0px;
     outline: none;
 
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: var(--p-weight);
 
     -moz-box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
@@ -224,8 +242,8 @@
     border: none;
     outline: none;
     font-family: 'Roboto';
-    font-size: 13px;
-    font-weight: 300;
+    font-size: 14px;
+    font-weight: var(--p-weight);
     color: var(--text);
     background-color: #00000000;
 
@@ -240,8 +258,8 @@
     border: none;
     outline: none;
     font-family: 'Roboto';
-    font-size: 11px;
-    font-weight: 300;
+    font-size: 12px;
+    font-weight: var(--p-weight);
     color: var(--text);
     background-color: #00000000;
 
@@ -263,3 +281,7 @@ input[type=number] {
   }
 
 .mt-1{ margin-top: 0.5rem;}
+.mt-2{ margin-top: 1rem;}
+
+.mb-1{ margin-bottom: 0.5rem;}
+.mb-2{ margin-bottom: 1rem;}

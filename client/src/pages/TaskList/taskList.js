@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { getTasks } from '../../components/queries';
-import CreateTask from './components/CreateTask';
 
 import style from './taskList.module.css'
-import Task from './components/task';
-import SearchTask from './components/SearchTask';
 import { useHistory } from 'react-router-dom';
+import Task from '../../components/Task/Task';
+import PlanDay from '../../components/PlanDay/planDay';
+import SearchTask from '../../components/SearchTask/SearchTask';
+import CreateTask from '../../components/CreateTask/CreateTask';
 
 
 function TaskList() {
@@ -19,8 +20,8 @@ function TaskList() {
     const [isWritingComment, setIsWritingComment] = useState(false)
     const history = useHistory();
 
-    const CTRef = useRef(null)
-    const STRef = useRef(null)
+    const [isPlanning, setIsPlanning] = useState(false)
+    const [plannedTasks, setPlannedTasks] = useState([])
 
     //Queries
     const { loading, error, data } = useQuery(getTasks);
@@ -79,22 +80,87 @@ function TaskList() {
 
     //DOM
     if (data) {
-        let sortedData = [...data.tasks];
-        console.log(sortedData)
+        const today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+        const plannedTasksTemp = [...data.tasks];
+        let plannedTasksData = [];
+        let sortedData = [];
+
+        for (let i = 0; i < plannedTasksTemp.length; i++) {
+            if (plannedTasksTemp[i].plannedDate === date) {
+                plannedTasksData.push(plannedTasksTemp[i])
+            } else {
+                sortedData.push(plannedTasksTemp[i])
+            }
+        }
+
         sortedData.sort(function (x, y) {
             // false values first
             return (x.accepted === y.accepted) ? 0 : x ? -1 : 1;
         });
 
+        let allTasks = [...plannedTasksData];
+        allTasks.push(...sortedData);
+
+
         return (
             <div className={style.wrapper}>
-                <div className={style.taskListWrapper}>
-                    {sortedData.map((task, i) => (
-                        <Task task={task} isAssignment={false} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
-                    ))}
+                <div className={style.topBar}>
+                    <SearchTask
+                        searchActive={searchActive}
+                        setSearchActive={setSearchActive}
+                        activationNumber={activationNumber}
+                        setActivationNumber={setActivationNumber}
+                        tasks={allTasks}
+                        isWritingComment={isWritingComment}
+                        setIsWritingComment={setIsWritingComment}
+                    />
+                    <PlanDay isPlanning={isPlanning} setIsPlanning={setIsPlanning} plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} plannedTasksData={plannedTasksData} />
                 </div>
-                <CreateTask ref={CTRef} taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
-                <SearchTask ref={STRef} searchActive={searchActive} setSearchActive={setSearchActive} activationNumber={activationNumber} setActivationNumber={setActivationNumber} tasks={data.tasks} />
+
+                <div className={style.innerWrapper}>
+                    <div className={style.taskListOuterWrapper}>
+                        {plannedTasksData.length > 0 && <div className={style.taskListWrapper}>
+                            <div className={style.titleWrapper}>
+                                <h1 className="h4">Planned Tasks</h1>
+                            </div>
+                            {plannedTasksData.map((task, i) => (
+                                <Task
+                                    task={task}
+                                    index={i + 1}
+                                    isWritingComment={isWritingComment}
+                                    setIsWritingComment={setIsWritingComment}
+                                    planned={true}
+
+                                    isPlanning={isPlanning}
+                                    setIsPlanning={setIsPlanning}
+                                    plannedTasks={plannedTasks}
+                                    setPlannedTasks={setPlannedTasks}
+                                />
+                            ))}
+                        </div>}
+                        <div className={style.taskListWrapper}>
+                            <div className={style.titleWrapper}>
+                                <h1 className="h4">Tasks</h1>
+                            </div>
+                            {sortedData.map((task, i) => (
+                                <Task
+                                    task={task}
+                                    index={plannedTasksData.length + i + 1}
+                                    isWritingComment={isWritingComment}
+                                    setIsWritingComment={setIsWritingComment}
+
+                                    isPlanning={isPlanning}
+                                    setIsPlanning={setIsPlanning}
+                                    plannedTasks={plannedTasks}
+                                    setPlannedTasks={setPlannedTasks}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <CreateTask taskActive={taskActive} setTaskActive={setTaskActive} activationLetter={activationLetter} setActivationLetter={setActivationLetter} />
             </div>
         )
     }

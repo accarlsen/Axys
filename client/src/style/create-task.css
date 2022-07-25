@@ -55,7 +55,7 @@
     padding-top: 0.6vh;
     font-size: 0.9rem;
     color: white;
-    background-color: var(--green);
+    background-color: var(--button-conf);
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -63,7 +63,7 @@
 
 .create-task-button:focus,
 .create-task-button:active{
-    background-color: var(--greenlight);
+    background-color: var(--button-conf-hover);
 }
 
 .create-task-expander{

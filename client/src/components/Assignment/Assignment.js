@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
-import style from './../taskList.module.css'
-import { deleteTask, getTasks } from '../../../components/queries';
+import style from './assignment.module.css'
+import { deleteTask, getTasks } from '../queries';
 import { Link } from 'react-router-dom';
-import CommentList from './commentList';
-import CommentIcon from './../assets/CommentIcon.svg'
+import CommentIcon from './assets/CommentIcon.svg'
+import CommentList from '../CommentList/CommentList';
 
-function Task(props) {
+function Assignment(props) {
 
     const id = localStorage.getItem("personId");
     const [showComments, setShowComments] = useState(false)
@@ -27,22 +27,17 @@ function Task(props) {
     }
 
     return (
-        <div key={props.index} className={` ${style.taskWrapper} ${props.task.accepted === false ? style.goldenShine : ""}`}>
+        <div key={props.index} className={` ${style.taskWrapper}`}>
             <div className={style.taskContent}>
                 <p className={style.taskNum}>{props.index}</p>
                 <div>
                     <p className={style.taskName}>{props.task.name}</p>
                     <div className={style.taskUnderText}>
-                        <div>
-                            {id !== props.task.authorId ? <div className={style.authorDisplay}><span className="ps">{props.task.accepted ? "From " : "Suggested by "}</span><Link className={`ps ${style.link}`} to={"/profile/" + props.task.author.id}>
-                                {props.task.author.name}
-                            </Link></div> : <div className={style.authorDisplayPlaceholder}></div>}
-                            {props.isAssignment && <div className={style.authorDisplay}><span className="ps">Assigned to </span><Link className={`ps ${style.link}`} to={"/profile/" + props.task.assignee.id}>
-                                {props.task.assignee.name}
-                            </Link></div>}
-                        </div>
+                        <div className={style.authorDisplay}><span className="ps">Assigned to </span><Link className={`ps ${style.link}`} to={"/profile/" + props.task.assignee.id}>
+                            {props.task.assignee.name}
+                        </Link></div>
                         <div className={style.authorDisplay}>
-                            <Status isAssignment={props.isAssignment} task={props.task} />
+                            <Status task={props.task} />
                         </div>
                     </div>
                 </div>
@@ -57,7 +52,7 @@ function Task(props) {
                         <img className={style.commentIcon} src={CommentIcon} alt={"Comment Icon"} />
                     </button>
                 }
-                <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button>
+                {props.task.authorId === id ? <button className={style.removeTask} onClick={(e) => deleteTaskQuery(e)}>x</button> : <span></span>}
             </div>
             <div className={style.commentListWrapper}>
                 <CommentList task={props.task} showComments={showComments} isWritingComment={props.isWritingComment} setIsWritingComment={props.setIsWritingComment} />
@@ -67,20 +62,18 @@ function Task(props) {
 }
 
 function Status(props) {
-    if (props.isAssignment) {
-        if (props.task.done) return (
-            <p className={`ps ${style.statusCompleted}`}>Completed</p>
-        )
-        else if (props.task.accepted) return (
-            <p className={`ps ${style.statusAccepted}`}>Accepted</p>
-        )
-        else if (props.task.ignored) return (
-            <p className={`ps ${style.statusIgnored}`}>Ignored</p>
-        )
-    }
-    return (
+    if (props.task.done) return (
+        <span className={`ps ${style.statusCompleted}`}>Completed</span>
+    )
+    else if (props.task.accepted) return (
+        <span className={`ps ${style.statusAccepted}`}>Accepted</span>
+    )
+    else if (props.task.ignored) return (
+        <span className={`ps ${style.statusIgnored}`}>Ignored</span>
+    )
+    else return (
         <div></div>
     )
 }
 
-export default Task;
+export default Assignment;

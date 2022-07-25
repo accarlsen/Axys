@@ -1,0 +1,241 @@
+.innerWrapper {
+
+    height: 100%;
+    overflow-y: auto;
+}
+
+.taskListOuterWrapper{
+    margin-bottom: 4rem;
+}
+
+.taskListWrapper{
+    overflow-x: hidden;
+
+    border-radius: 0.5rem;
+    width: 28rem;
+
+    box-shadow: 0px 1px 8px 2px var(--shadow);
+    background-color: var(--background2);
+
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.titleWrapper{
+    padding-left: 2.5rem;
+    width: 28rem;
+    border-bottom: 1px solid var(--background);
+}
+
+.taskWrapper{
+    width: 28rem;
+    border-bottom: 1px solid var(--background);
+    cursor: default;   
+}
+
+.goldenShine{
+    /*box-shadow: inset 0 0 10px #979797; */
+    background-image: var(--greyGradient);
+}
+
+.goldenShine:hover{
+    background-image: var(--greyerGradient);
+}
+
+.commentIcon{
+    display: none;
+    width: 0.9rem;
+    height: auto;
+    margin-top: 0.1rem;
+}
+
+.taskContent:hover .commentIcon{
+    display: block;
+}
+
+.commentIconWrapperLen > .commentIcon, .commentIconWrapperLenNoPadding > .commentIcon{
+    display: block;
+}
+
+.taskContent{
+    display: grid;
+    grid-template-columns: 1rem 19rem 4rem 2rem;
+
+    width: 100%;
+    margin-left: 0.5rem;
+}
+
+.commentListWrapper{
+    width: 100%;
+}
+
+.taskWrapper:hover{
+    background-color: var(--grey);
+}
+
+.taskContent:hover > .removeTask, .taskContent:hover .commentIconWrapper{
+    color: var(--text-off2);
+}
+
+.link{
+    color: var(--blue-link);
+    text-decoration: none;
+}
+
+.taskNum{
+    font-family: 'Roboto';
+    font-weight: var(--p-weight);
+    font-size: 12px;
+    color: var(--text-off);
+    height: fit-content;
+    margin: auto;
+}
+
+.doneWrapper{
+    width: 1rem;
+    height: 1rem;
+    margin: auto;
+}
+
+.doneBg{
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid var(--shadow);
+}
+
+.taskName{
+    font-family: 'Roboto';
+    font-weight: var(--p-weight);
+    font-size: 14px;
+    color: var(--text-off);
+    margin-bottom: 0.3rem;
+    margin-left: 1rem;
+}
+
+.removeTask{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 16px;
+    padding: 10px 15px 10px 15px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: #FFFFFF00;
+    cursor: pointer;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.commentIconWrapper{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 12px;
+    padding: 10px 10px 10px 10px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: #FFFFFF00;
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.commentIconWrapperLenNoPadding{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    padding: 0px 10px 0px 10px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: var(--text-off2);
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.commentIconWrapperLen{
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: var(--p-weight);
+    font-size: 11px;
+    padding: 10px 10px 10px 10px;
+    margin: auto;
+    background-color: #FFFFFF00;
+    border: none;
+    color: var(--text-off2);
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.25rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.taskUnderText{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.doneCheckmark {
+    position: relative;
+    height: 1rem;
+    width: 1.5rem;
+    vertical-align: middle;
+    top: -0.45rem;
+    right: 0.2rem;
+}
+
+.doneButton {
+    margin: auto;
+    height: 0.8rem;
+    width: 0.8rem;
+    background-color: #FFFFFF00;
+    border: 1px solid var(--greyer);
+    cursor: pointer;
+}
+
+.doneButtonDisplay {
+    margin-top: 0.1rem;
+    height: 0.8rem;
+    width: 0.8rem;
+    background-color: #FFFFFF00;
+}
+
+.authorDisplay{
+    margin-bottom: 0.5rem;
+    margin-left: 1rem;
+}
+
+.authorDisplayPlaceholder{
+    margin-bottom: 0.5rem;
+}

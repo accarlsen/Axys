@@ -1,0 +1,4 @@
+.sidebarGrid{
+    display: grid;
+    grid-template-columns: 12rem auto;
+}

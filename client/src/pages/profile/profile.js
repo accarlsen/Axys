@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { editProfile, getProfile } from '../../components/queries';
+import { editProfile, getProfile, getProgress } from '../../components/queries';
 
 import style from './profile.module.css';
 
@@ -13,13 +13,16 @@ function Profile() {
         variables: { id: id }
     });
 
-    if (data) return (<ProfileRenderer profile={data} id={id} />)
+    const { loading: loadingP, error: errorP, data: dataP} = useQuery(getProgress)
+
+    if (data && dataP) return (<ProfileRenderer profile={data} id={id} progress={dataP} />)
     return (<div></div>)
 }
 
 function ProfileRenderer(props) {
     const data = props.profile
     const id = props.id
+
 
     //____________________
     //Variables and states
@@ -102,16 +105,16 @@ function ProfileRenderer(props) {
                 <div className={style.card}>
                     <h1 className={` h2 ${style.profileTitle}`}>{data.profile.fname + " " + data.profile.lname}</h1>
                     <p className="p">Location: Palm Springs, Toronto</p>
-                    <p className="mt-2 p">Status: Champagne Socialist</p>
-                    <p className="mt-2 p">"A citizen gets eaten, unless an animal is beaten"</p>
+                    <p className="mt-2 p">Status: void</p>
+                    {props.progress.progress.amntPlanned > 0 && <p className="mt-2 p">{"Daily goal: " + props.progress.progress.amntDone + "/" + props.progress.progress.amntPlanned}</p>}
                     <p className="p">{data.profile.email}</p>
                     <div className={style.buttonGrid}>
                         <Link className={style.linkWidth} to={"/customization"}>
-                            <button className="button">
+                            <button className="button grey">
                                 Customization
                             </button>
                         </Link>
-                        {id === localStorage.getItem("personId") && <button className="button" onClick={() => setEdit(true)}>Edit Profile</button>}
+                        {id === localStorage.getItem("personId") && <button className="button grey" onClick={() => setEdit(true)}>Edit Profile</button>}
                     </div>
                 </div>
             </div>
@@ -145,13 +148,13 @@ function ProfileRenderer(props) {
                                         <input className="input mt-1" type="password" placeholder="Confirm password" onChange={e => { setPasswordConf(String(e.target.value)); }} value={passwordConf}></input>
                                     </div>
                                     :
-                                    <button className="button" onClick={() => setEditPassword(true)}>Change password</button>
+                                    <button className="button grey" onClick={() => setEditPassword(true)}>Change password</button>
                                 }
                             </div>
                         </div>
 
                         <div className={style.editSubmitGrid}>
-                            <button className="button" onClick={() => { setEdit(false); setEditPassword(false); resetStates(); }}>Cancel</button>
+                            <button className="button grey" onClick={() => { setEdit(false); setEditPassword(false); resetStates(); }}>Cancel</button>
                             <button className={checkForChanges() ? "button green" : "buttonInactive"} onClick={() => { if (checkForChanges()) setConfirm(true) }}>Save</button>
                         </div>
                     </div>
@@ -179,7 +182,7 @@ function ProfileRenderer(props) {
                         </div>
 
                         <div className={style.editSubmitGrid}>
-                            <button className="button" onClick={() => { setConfirm(false); }}>Cancel</button>
+                            <button className="button grey" onClick={() => { setConfirm(false); }}>Cancel</button>
                             <button className={curPassword.length > 0 ? "button green" : "buttonInactive"} onClick={(e) => { if (curPassword.length > 0) editProfileQuery(e); }}>Confirm Changes</button>
                         </div>
                     </div>

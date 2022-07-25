@@ -1,6 +1,6 @@
 .navbar{
     overflow: hidden;
-    background-color: var(--background3);
+    background-color: var(--navbar-bg);
     position: fixed;
     top: 0;
     width: 100%;
@@ -20,7 +20,7 @@ li {
   
 li a {
     display: block;
-    color: var(--text-off);
+    color: var(--button-text);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;

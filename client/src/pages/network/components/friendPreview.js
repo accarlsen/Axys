@@ -29,14 +29,13 @@ function FriendPreview(props) {
                 <img className={style.FPreviewPicture} src={"http://totallyhistory.com/wp-content/uploads/2013/10/Daniel-Kahneman.jpg"} />
             </Link>
             <div>
-                <Link to={"/profile/" + props.friend.id}>
-                    <p className={` p ${style.FPreviewName}`}>{props.friend.fname + " " + props.friend.lname}</p>
+                <Link className={style.FPreviewName} to={"/profile/" + props.friend.id}>
+                    <p className={` p `}>{props.friend.fname + " " + props.friend.lname}</p>
                 </Link>
                 <p className="p">{"Co-Founder & COO @ Favn Software"}</p>
             </div>
             <div>
-                <input className="button" type={"submit"} value="Write" onClick={e => { }}></input>
-                <input className="button" type={"submit"} value="Remove" onClick={e => { removeFriendQuery(e) }}></input>
+                <input className="button grey" type={"submit"} value="Remove" onClick={e => { removeFriendQuery(e) }}></input>
             </div>
         </div>
     )

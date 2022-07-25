@@ -22,32 +22,39 @@ const {
 
 
 
-const MutationType = new GraphQLObjectType({
-    name: 'MutationTest',
-    fields: () => ({
-        id: { type: GraphQLID },
-        name: { type: GraphQLString },
-        done: { type: GraphQLBoolean }
-    })
-});
-
 const ProjectType = new GraphQLObjectType({
     name: 'Project',
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
-        date: { type: GraphQLString },
-        estimatedTime: { type: GraphQLFloat },
-        usedTime: { type: GraphQLFloat },
-        authorId: { type: GraphQLString },
-        clockifyId: { type: GraphQLString }
-        /*fighters: {
-            type: new GraphQLList(FighterType),
+        createdTimeStamp: {type: GraphQLInt},
+        creatorId: { type: GraphQLString },
+        adminIds: {type: GraphQLList(GraphQLString)},
+        memberIds: {type: GraphQLList(GraphQLString)},
+        
+        simplifiedTasks: {type: GraphQLBoolean},
+        inviteRequired: {type: GraphQLBoolean},
+        inviteAdminExclusive: {type: GraphQLBoolean},
+
+        creator: {
+            type: PersonType,
             resolve(parent, args) {
-                return Fighter.find({ projectId: parent.id });
+                return Person.findById(parent.creatorId);
             }
-        }*/
+        },
+        admins: {
+            type: new GraphQLList(PersonType),
+            resolve(parent, args) {
+                return Person.find({ '_id': { $in: parent.adminIds } });
+            }
+        },
+        members: {
+            type: new GraphQLList(PersonType),
+            resolve(parent, args) {
+                return Person.find({ '_id': { $in: parent.memberIds } });
+            }
+        }
     })
 })
 
@@ -61,6 +68,7 @@ const TaskType = new GraphQLObjectType({
         parentId: { type: GraphQLID },
         authorId: { type: GraphQLString },
         assigneeId: { type: GraphQLString },
+        projectId: {type: GraphQLString},
         date: { type: GraphQLString },
         time: { type: GraphQLString },
         plannedDate: {type: GraphQLString},
@@ -208,26 +216,42 @@ const ProgressType = new GraphQLObjectType({
     })
 })
 
+//Helper methods____________________________________________________
+function checkExists(object, objectName){
+    if (object === null || object === undefined) {
+        throw new Error("Failed to find " + (objectName.split("").length > 0 ? objectName : "object") + " in database");
+    }
+    return true
+}
+
+//Authorization verification methods________________________________
+
+async function checkProjectRole(projectId, personId, typeCheck, project){
+    if(project === null){
+        project = await Project.findOne({'_id' : projectId})
+        checkExists(project, "Project")
+    }   
+
+    if(typeCheck === "member" && project.memberIds.includes(personId)){
+        return true
+    }
+    else if(typeCheck === "admin" && project.adminIds.includes(personId)){
+        return true
+    } 
+    else if(typeCheck === "owner" && project.creatorId === personId){
+        return true
+    }
+    else{
+        throw new Error("Unauthorized: You do not have the required auhtorization.");
+    }
+}
+
 
 //Root-Query________________________________________________________
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        /*project: {
-            type: ProjectType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return Project.findById(args.id);
-            }
-        },
-        task: {
-            type: TaskType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return Task.findById(args.id);
-            }
-        },*/
         profile: {
             type: PersonType,
             args: { id: { type: GraphQLID } },
@@ -255,6 +279,36 @@ const RootQuery = new GraphQLObjectType({
                 return Task.find({ assigneeId: context.personId, done: false, ignored: {$ne: true} });
             }
         },
+        tasksInProject: {
+            type: new GraphQLList(TaskType),
+            args: {
+                id: {type: GraphQLString},
+                includeCompleted: {type: GraphQLBoolean},
+            },
+            async resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
+                //Validate data-access-rights
+                const project = await Project.find({
+                    '_id': args.id, 
+                    $or: [
+                        { adminIds: context.personId},
+                        { memberIds: context.personId},
+                    ]}
+                )
+                checkExists(project, "Project")
+                
+                let tasks;
+                if(args.includeCompleted){
+                    tasks = await Task.find({ projectId: args.id });
+                } else{
+                    tasks = await Task.find({ projectId: args.id, done: false });
+                }
+                return tasks;
+            }
+        },
         progress: {
             // TODO: receive input for a specified date
             type: ProgressType,
@@ -265,10 +319,10 @@ const RootQuery = new GraphQLObjectType({
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-                const amntPlanned = await Task.find({$sum:{ assigneeId: context.personId, plannedDate: date, ignored: {$ne: true} }});
-                const amntDone = await Task.find({ $sum:{ assigneeId: context.personId, plannedDate: date, done: true, ignored: {$ne: true} }});
+                const amntPlanned = await Task.find({ assigneeId: context.personId, plannedDate: date, ignored: {$ne: true} });
+                const amntDone = await Task.find({ assigneeId: context.personId, plannedDate: date, done: true, ignored: {$ne: true} });
 
-                return { amntPlanned: amntPlanned, amntDone: amntDone };
+                return { amntPlanned: amntPlanned.length, amntDone: amntDone.length };
             }
         },
         createdAssignments: {
@@ -277,7 +331,7 @@ const RootQuery = new GraphQLObjectType({
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
-                return Task.find({ authorId: context.personId, assigneeId: { $ne: context.personId }, done: false });
+                return Task.find({ authorId: context.personId, $and: [{assigneeId: {$ne: context.personId}}, {assigneeId: {$ne: null}}] , done: false });
             }
         },
         comments: {
@@ -313,6 +367,37 @@ const RootQuery = new GraphQLObjectType({
 
             }
         },
+        projects: {
+            type: new GraphQLList(ProjectType),
+            resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+                return Project.find({ 
+                    $or: [
+                        { adminIds: context.personId},
+                        { memberIds: context.personId},
+                    ]
+                })
+            }
+        },
+        project: {
+            type: ProjectType,
+            args: {
+                id: {type: GraphQLString},
+            },
+            resolve(parent, args, context) {
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+                return Project.findOne({ 
+                    $or: [
+                        { '_id': args.id, adminIds: context.personId},
+                        { '_id': args.id, memberIds: context.personId},
+                    ]
+                })
+            }
+        },
         login: {
             type: AuthType,
             args: {
@@ -340,29 +425,6 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        addProject: {
-            type: ProjectType,
-            args: {
-                name: { type: GraphQLString },
-                time: { type: GraphQLString },
-                authorId: { type: GraphQLString },
-            },
-            async resolve(parent, args, context) {
-                if (!context.isAuth) {
-                    throw new Error('Unauthenticated user');
-                }
-                const person = await Person.findOne({ '_id': context.personId });
-                if (!person.admin) {
-                    throw new Error('Unauthorized user');
-                }
-                let project = new Project({
-                    name: args.name,
-                    time: args.time,
-                    authorId: person.id
-                });
-                return project.save();
-            }
-        },
         addPerson: {
             type: PersonType,
             args: {
@@ -450,27 +512,31 @@ const Mutation = new GraphQLObjectType({
                 name: { type: GraphQLString },
                 assigneeId: { type: GraphQLString },
                 parentId: { type: GraphQLString },
+                projectId: {type: GraphQLString},
             },
-            resolve(parent, args, context) {
+            async resolve(parent, args, context) {
 
                 //Auth
                 if (!context.isAuth) {
                     throw new Error('Unauthenticated user');
                 }
 
-                //TODO Check if assigning friend
-
-                //Date & time
-                let today = new Date();
-
-                let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
                 //Check if assignment or task
                 let accepted = false;
                 if(context.personId === args.assigneeId) {
                     accepted = true;
                 }
+                else{ //Check if assigning friend
+                    const person = await Person.findOne({ '_id': context.personId })
+                    if (!person.friendIds.includes(args.assigneeId)) {
+                        throw new Error('Error creating task: Assignee not in users friendslist');
+                    }
+                }
+
+                //Date & time
+                let today = new Date();
+                let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
                 //New Task
                 let task = new Task({
@@ -480,6 +546,7 @@ const Mutation = new GraphQLObjectType({
                     assigneeId: args.assigneeId,
                     authorId: context.personId,
                     parentId: args.parentId,
+                    projectId: args.projectId,
                     date: date,
                     time: time,
 
@@ -519,6 +586,40 @@ const Mutation = new GraphQLObjectType({
                     timestamp: today.getTime(),
                 });
                 return comment.save();
+            }
+        },
+        addProject: {
+            type: ProjectType,
+            args: {
+                name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                simplifiedTasks: { type: GraphQLBoolean },
+                inviteRequired: { type: GraphQLBoolean },
+                inviteAdminExclusive: { type: GraphQLBoolean },
+            },
+            async resolve(parent, args, context) {
+                
+                if (!context.isAuth) { //Auth
+                    throw new Error('Unauthenticated user');
+                }
+
+                let timestamp = new Date();
+
+                //New Project
+                let project = new Project({
+                    name: args.name,
+                    description: args.description,
+                    createdTimestamp: timestamp.getTime(),
+                    creatorId: context.personId,
+                    adminIds: [context.personId],
+                    memberIds: [context.personId],
+
+                    simplifiedTasks: args.simplifiedTasks,
+                    inviteRequired: args.inviteRequired,
+                    inviteAdminExclusive: args.inviteAdminExclusive,
+                });
+                return project.save();
+
             }
         },
         sendFriendRequest: {
@@ -694,15 +795,17 @@ const Mutation = new GraphQLObjectType({
                 )
             }
         },
-        taskDone: {
+        completeTask: {
             type: TaskType,
             args: {
                 id: { type: GraphQLID },
                 done: { type: GraphQLBoolean }
             },
-            resolve(parent, args, context) {
-
-                //TODO auth that modified task is assigned to modifier
+            async resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
 
                 //Date & time
                 var today = new Date();
@@ -710,8 +813,8 @@ const Mutation = new GraphQLObjectType({
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.updateMany(
+                    {'_id': args.id, assigneeId: context.personId},
                     {
                         done: args.done,
                         timestampDone: today.getTime(),
@@ -722,14 +825,16 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
-        taskAccepted: {
+        acceptTask: {
             type: TaskType,
             args: {
                 id: { type: GraphQLID },
             },
-            resolve(parent, args, context) {
-
-                //TODO auth that modified task is assigned to modifier
+            async resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
 
                 //Date & time
                 var today = new Date();
@@ -737,8 +842,8 @@ const Mutation = new GraphQLObjectType({
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.updateMany(
+                    {'_id': args.id, assigneeId: context.personId},
                     {
                         accepted: true,
                         timestampAccepted: today.getTime(),
@@ -749,14 +854,16 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
-        taskIgnored: {
+        ignoreTask: {
             type: TaskType,
             args: {
                 id: { type: GraphQLID },
             },
-            resolve(parent, args, context) {
-
-                //TODO auth that modified task is assigned to modifier
+            async resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
 
                 //Date & time
                 var today = new Date();
@@ -764,8 +871,8 @@ const Mutation = new GraphQLObjectType({
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.updateMany(
+                    {'_id': args.id, assigneeId: context.personId},
                     {
                         ignored: true,
                         timestampIgnored: today.getTime(),
@@ -776,18 +883,47 @@ const Mutation = new GraphQLObjectType({
                 );
             }
         },
-        taskPlanned: {
+        planTask: {
             type: TaskType,
             args: {
-                id: { type: GraphQLID },
+                id: { type: GraphQLString },
             },
-            resolve(parent, args) {
+            resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
                 //Date & time
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-                return Task.findByIdAndUpdate(
-                    args.id,
+                return Task.updateMany(
+                    {'_id': args.id, assigneeId: context.personId},
+                    {
+                        plannedDate: date
+                    },
+                    { new: true }
+                );
+            }
+        },
+        planTasks: {
+            type: TaskType,
+            args: {
+                id: { type: GraphQLList(GraphQLString) },
+            },
+            resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
+                //Date & time
+                var today = new Date();
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+                return Task.updateMany(
+                    {'_id': {$in: args.id}, assigneeId: context.personId},
                     {
                         plannedDate: date
                     },
@@ -800,11 +936,21 @@ const Mutation = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLID }
             },
-            resolve(parent, args) {
+            async resolve(parent, args, context) {
+                //Auth
+                if (!context.isAuth) {
+                    throw new Error('Unauthenticated user');
+                }
+
+                const task = await Task.findById(args.id)
+                if (task.authorId !== context.personId && task.assigneeId !== context.personId) {
+                    throw new Error('Cannot delete task: Unauthorized');
+                }
+
                 return Task.findByIdAndDelete(args.id, { useFindAndModify: false });
             }
         },
-        commentLiked: { //Handles liking and un-liking
+        likeComment: { //Handles liking and un-liking
             type: CommentType,
             args: {
                 id: { type: GraphQLID },
@@ -812,7 +958,7 @@ const Mutation = new GraphQLObjectType({
             async resolve(parent, args, context) {
                 const comment = await Comment.findById(args.id);
                 if (comment === null || comment === undefined) {
-                    throw new Error('Failed to find friend-request in database');
+                    throw new Error('Failed to find comment in database');
                 }
 
                 //TODO consider adding auth that only authorized people can like comment
@@ -834,10 +980,112 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLID},
             },
             resolve(parent, args, context) {
+                //TODO: check auth
+
                 return Comment.findByIdAndDelete(args.id, { useFindAndModify: false });
             }
+        },
+        addPersonToProject: {
+            type: ProjectType,
+            args: {
+                projectId: {type: GraphQLID},
+                newMemberId: {type: GraphQLID},
+                asAdmin: {type: GraphQLBoolean},
+            },
+            async resolve(parent, args, context){
+                //If adding member -> admin/owner requiered, if adding admin -> owner required
+                if (args.asAdmin) {
+                    checkProjectRole(args.projectId, context.personId, "owner", null)
+                } else{
+                    checkProjectRole(args.projectId, context.personId, "admin", null)
+                }
+
+                if (args.asAdmin) {
+                    await Project.findByIdAndUpdate(
+                        args.projectId, 
+                        { 
+                            $push: { memberIds: args.newMemberId },
+                            $push: { adminIds: args.newMemberId},
+                        }, 
+                        { new: true }
+                    );
+                } else {
+                    await Project.findByIdAndUpdate(
+                        args.projectId, { $push: { memberIds: args.newMemberId } }, { new: true }
+                    );
+                }
+            }
+        },
+        removePersonFromProject: {
+            type: ProjectType,
+            args: {
+                projectId: {type: GraphQLID},
+                userId: {type: GraphQLID},
+            },
+            async resolve(parent, args, context) {                
+
+                const project = await Project.findOne({'_id' : args.projectId})
+                checkExists(project, "Project")
+
+                if (project.creatorId === context.personId) {
+                    if(context.personId === args.userId) { //Error if owner tries to remove themselves
+                        throw new Error("An owner cannot leave their own project, consider deleting the project instead.");
+                    }
+                    else if(project.adminIds.includes(args.userId)){ //When owner removes an admin
+                        await Project.findByIdAndUpdate(
+                            args.projectId, 
+                            { 
+                                $pull: { memberIds: args.userId },
+                                $pull: { adminIds: args.userId } 
+                            }, 
+                            { new: true }
+                        )
+                    }
+                    else{ //When owner removes a member
+                        args.projectId, { $pull: { memberIds: args.userId } }, { new: true }
+                    }
+                }
+                else if (project.adminIds.includes(context.personId) && (project.creatorId !== args.userId && !project.adminIds.includes(args.personId))){ //When an admin removes a member
+                    await Project.findByIdAndUpdate(
+                        args.projectId, { $pull: { memberIds: args.userId } }, { new: true }
+                    )                
+                }
+                else{
+                    throw new Error("Unauthorized: You do not have the required auhtorization.");
+                }
+            }
+        },
+        leaveProject: {
+            type: ProjectType,
+            args: {
+                projectId: {type: GraphQLID},
+            },
+            async resolve(parent, args, context) {                
+
+                const project = await Project.findOne({'_id' : args.projectId})
+                checkExists(project, "Project")
+
+                if (project.creatorId === context.personId) { //Error if the owner attempts to leave their own project
+                    throw new Error("An owner cannot leave their own project, consider deleting the project instead.");
+                }
+                else if (project.adminIds.includes(context.personId)){ //When an admin leaves
+                    await Project.findByIdAndUpdate(
+                        args.projectId, 
+                        { 
+                            $pull: { memberIds: context.personId },
+                            $pull: { adminIds: context.personId } 
+                        }, 
+                        { new: true }
+                    )             
+                }
+                else{ //When a member leaves
+                    await Project.findByIdAndUpdate(
+                        args.projectId, { $pull: { memberIds: context.personId } }, { new: true }
+                    )   
+                }
+            }
         }
-        
+
     }
 });
 

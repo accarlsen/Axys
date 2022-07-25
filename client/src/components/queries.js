@@ -24,10 +24,44 @@ const getProjects = gql`
     projects {
       id
       name
-      time
     }
   }
 `;
+
+const getProject = gql`
+  query ($id: String) {
+    project(id: $id) {
+      id
+        name
+        description
+        createdTimeStamp
+        creatorId
+        adminIds
+        
+        simplifiedTasks
+        inviteRequired
+        inviteAdminExclusive
+
+        creator{
+          id
+          name
+          email
+        }
+
+        admins{
+          id
+          name
+          email
+        }
+
+        members{
+          id
+          name
+          email
+        }
+    }
+  }
+`
 
 const getTasks = gql`
   query {
@@ -41,8 +75,10 @@ const getTasks = gql`
       authorId
       assigneeId
       parentId
+      projectId
       accepted
       ignored
+      plannedDate
       assignee{
         id
         fname
@@ -56,6 +92,48 @@ const getTasks = gql`
       comments{
         id
       }
+    }
+  }
+`;
+
+const getTasksInProject = gql`
+  query ($id: String, $includeCompleted: Boolean) {
+    tasksInProject(id: $id, includeCompleted: $includeCompleted) {
+      id
+      name
+      progress
+      weight
+      date
+      time
+      authorId
+      assigneeId
+      parentId
+      projectId
+      accepted
+      ignored
+      plannedDate
+      assignee{
+        id
+        fname
+        lname
+        name
+      }
+      author{
+        id
+        name
+      }
+      comments{
+        id
+      }
+    }
+  }
+`;
+
+const getProgress = gql`
+  query{ 
+    progress {
+      amntDone
+      amntPlanned
     }
   }
 `;
@@ -169,11 +247,13 @@ const addTask = gql`
     $name: String,
     $assigneeId: String,
     $parentId: String,
+    $projectId: String,
   ){
     addTask(
       name: $name,
       assigneeId: $assigneeId,
       parentId: $parentId,
+      projectId: $projectId,
     ){
       id
       name
@@ -202,13 +282,17 @@ const addComment = gql`
 const addProject = gql`
   mutation AddProject(
     $name: String,
-    $time: String,
-    $authorId: String
+    $description: String,
+    $simplifiedTasks: Boolean,
+    $inviteRequired: Boolean,
+    $inviteAdminExclusive: Boolean,
   ){
     addProject(
       name: $name,
-      time: $time,
-      authorId: $authorId
+      description: $description,
+      simplifiedTasks: $simplifiedTasks,
+      inviteRequired: $inviteRequired,
+      inviteAdminExclusive: $inviteAdminExclusive,
     ){
       id
     }
@@ -245,7 +329,7 @@ const removeFriend = gql`
 
 const taskDone = gql`
   mutation TaskDone($id: ID, $done: Boolean){
-    taskDone(id: $id, done: $done){
+    completeTask(id: $id, done: $done){
       id
     }
   }
@@ -253,7 +337,7 @@ const taskDone = gql`
 
 const taskAccepted = gql`
   mutation TaskDone($id: ID){
-    taskAccepted(id: $id){
+    acceptTask(id: $id){
       id
     }
   }
@@ -261,7 +345,7 @@ const taskAccepted = gql`
 
 const taskIgnored = gql`
   mutation TaskDone($id: ID){
-    taskIgnored(id: $id){
+    ignoreTask(id: $id){
       id
     }
   }
@@ -275,9 +359,25 @@ const deleteTask = gql`
   }
 `;
 
+const planTask = gql`
+  mutation PlanTask($id: String){
+    planTask(id: $id){
+      id
+    }
+  }
+`;
+
+const planTasks = gql`
+  mutation PlanTasks($id: [String]){
+    planTasks(id: $id){
+      id
+    }
+  }
+`;
+
 const commentLiked = gql`
   mutation CommentLiked($id: ID){
-    commentLiked(id: $id){
+    likeComment(id: $id){
       id
     }
   }
@@ -335,7 +435,10 @@ const login = gql`
 export {
   getProfile,
   getProjects,
+  getProject,
   getTasks,
+  getTasksInProject,
+  getProgress,
   getComments,
   getCreatedAssignments,
   getFriendRequests,
@@ -350,6 +453,8 @@ export {
   taskAccepted,
   taskIgnored,
   deleteTask,
+  planTask,
+  planTasks,
   commentLiked,
   deleteComment,
   addPerson,

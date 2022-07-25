@@ -1,0 +1,97 @@
+.CTWrapper{
+    position: fixed;
+    bottom: 1rem;
+    left: calc(50% - 15rem + 6rem);
+
+    background-color: var(--grey);
+    border: 1px solid var(--background2);
+    padding: 7px 5px 7px 5px;
+    box-shadow: 0px 1px 8px 2px var(--shadow);
+    border-radius: 5px;
+    width: 30rem;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.CTInnerWrapper{
+    position: relative;
+
+    display: grid;
+    grid-template-columns: auto 5rem 5.3rem;
+    column-gap: 1rem;
+}
+
+.CTFriendListWapper{
+    position: absolute;
+    margin: auto;
+    bottom: calc(100%);
+    max-width: 12rem;
+    max-height: 20rem;
+    overflow-y: scroll;
+    background-color: var(--background2);
+    border: solid 1px var(--grey-dark);
+
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+.CTFriendListItem{
+    border: none;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-family: 'Roboto';
+    font-size: 16px;
+    font-weight: var(--p-weight);
+    background-color: var(--background2);
+    color: var(--text-off);
+    text-align: left;
+}
+
+.CTFriendListItemTop{
+    border: none;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-family: 'Roboto';
+    font-size: 16px;
+    font-weight: var(--p-weight);
+    background-color: var(--grey);
+    color: var(--text-off);
+    text-align: left;
+}
+
+.CTFriendListItem:hover, .CTFriendListItem:focus {
+    background-color: var(--grey);
+}
+
+.CTfriendSearch{
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--grey);
+}
+
+.CTPreview{
+    position: fixed;
+    bottom: 1rem;
+    left: calc(50% - 7.5rem + 6rem);
+
+    padding: 7px 5px 7px 5px;
+    box-shadow: 0px 1px 8px 2px var(--shadow);
+    border-radius: 5px;
+    width: 15rem;
+    overflow: hidden;
+    background-color: var(--grey);
+    border: 1px solid var(--background2);
+    text-align: center;
+    cursor: pointer;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.buttonText{
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: var(--p-weight);
+    margin: 0.3rem 0 0.3rem 0;
+    color: var(--button-text);
+}

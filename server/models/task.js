@@ -8,6 +8,7 @@ const taskSchema = new Schema({
     authorId: String,
     assigneeId: String,
     parentId: String,
+    projectId: String,
     date: String,
     time: String,
     plannedDate: String,

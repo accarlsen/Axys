@@ -3,8 +3,8 @@ import { useQuery } from '@apollo/client';
 import { getCreatedAssignments } from '../../components/queries';
 
 import style from './taskList.module.css'
-import Task from './components/task';
 import { useHistory } from 'react-router-dom';
+import Assignment from '../../components/Assignment/Assignment';
 
 function AssignmentList() {
 
@@ -29,15 +29,21 @@ function AssignmentList() {
             routeChange();
         }
     }
-    if(data) console.log(data.createdAssignments)
+    if (data) console.log(data.createdAssignments)
     //DOM
     if (data) return (
         <div className={style.wrapper}>
-            <h1 className={`h3 ${style.topTitle}`}>Created assignments</h1>
-            <div className={style.taskListWrapper}>
-                {data.createdAssignments.map((task, i) => (
-                    <Task task={task} isAssignment={true} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
-                ))}
+            <div className={style.topBar}></div>
+
+            <div className={style.innerWrapper}>
+                <div className={style.taskListWrapper}>
+                    <div className={style.titleWrapper}>
+                        <h1 className="h4">Created assignments</h1>
+                    </div>
+                    {data.createdAssignments.map((task, i) => (
+                        <Assignment task={task} isAssignment={true} index={i + 1} isWritingComment={isWritingComment} setIsWritingComment={setIsWritingComment} />
+                    ))}
+                </div>
             </div>
         </div>
     )
